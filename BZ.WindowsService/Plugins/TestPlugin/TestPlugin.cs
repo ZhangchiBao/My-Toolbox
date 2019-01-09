@@ -22,11 +22,9 @@ namespace TestPlugin
             }
         }
 
-        public TimeSpan Interval { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
         public void Start()
         {
-            File.AppendAllText(@"d:\temp.log", DateTime.Now.ToString(), Encoding.UTF8);
+            File.AppendAllText("d:\\temp.log", DateTime.Now.ToString(), Encoding.UTF8);
         }
 
         public void Stop()
