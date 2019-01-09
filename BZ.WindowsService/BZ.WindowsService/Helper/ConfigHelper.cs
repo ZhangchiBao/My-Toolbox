@@ -65,6 +65,10 @@ namespace BZ.WindowsService.Helper
                 }
                 set
                 {
+                    if (string.IsNullOrEmpty(value))
+                    {
+                        value = "BZ.Services";
+                    }
                     base["name"] = value;
                 }
             }
