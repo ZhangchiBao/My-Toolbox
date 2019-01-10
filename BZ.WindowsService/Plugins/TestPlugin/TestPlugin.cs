@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TestPlugin
@@ -24,7 +25,7 @@ namespace TestPlugin
 
         public void Start()
         {
-            File.AppendAllText("d:\\temp.log", DateTime.Now.ToString(), Encoding.UTF8);
+            File.AppendAllText("d:\\temp.log", DateTime.Now.ToString() + "\t" + Thread.CurrentThread.ManagedThreadId + Environment.NewLine, Encoding.UTF8);
         }
 
         public void Stop()

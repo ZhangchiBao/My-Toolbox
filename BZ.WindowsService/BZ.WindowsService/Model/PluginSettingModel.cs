@@ -1,4 +1,5 @@
-﻿using Stylet;
+﻿using BZ.WindowsService.Helper;
+using Stylet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,15 @@ namespace BZ.WindowsService.Model
 {
     public class PluginSettingModel : PropertyChangedBase
     {
+        public PluginSettingModel(ConfigHelper.PluginSettingSection settingSection)
+        {
+            Name = settingSection.Name;
+            Author = settingSection.Author;
+            Interval = settingSection.Interval < 0 ? 0 : settingSection.Interval;
+            Enabled = settingSection.Enabled;
+            ThreadCount = settingSection.ThreadCount <= 0 ? 1 : settingSection.ThreadCount;
+        }
+
         /// <summary>
         /// 插件名称
         /// </summary>
@@ -22,12 +32,17 @@ namespace BZ.WindowsService.Model
         /// <summary>
         /// 运行间隔
         /// </summary>
-        public uint Interval { get; set; }
+        public int Interval { get; set; }
 
         /// <summary>
         /// 是否启用
         /// </summary>
         public bool Enabled { get; set; }
+
+        /// <summary>
+        /// 线程数
+        /// </summary>
+        public int ThreadCount { get; set; }
 
         public Action PropertyChangedAction { get; set; }
 

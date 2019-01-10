@@ -34,9 +34,9 @@ namespace BZ.WindowsService.Helper
         /// <param name="serverName">服务名</param>
         /// <param name="filepath">程序文件路径</param>
         /// <returns></returns>
-        public bool InstallmyService(string serverName, string filepath)
+        public bool InstallService(string serverName, string filepath)
         {
-            string[] cmds = new string[] 
+            string[] cmds = new string[]
             {
                $"sc create {serverName} binpath= \"{filepath} -s\" displayname= \"{serverName}\"",
                $"sc config {serverName} start= auto",
@@ -57,8 +57,12 @@ namespace BZ.WindowsService.Helper
         /// 卸载Windows服务
         /// </summary>
         /// <param name="filepath">服务名</param>
-        public void UnInstallmyService(string serverName)
+        public void UnInstallService(string serverName)
         {
+            if (IsRunning(serverName))
+            {
+                StopService(serverName);
+            }
             string[] cmds = new string[] {
                $"sc delete {serverName}"
             };
@@ -98,7 +102,7 @@ namespace BZ.WindowsService.Helper
         /// </summary>
         /// <param name="name">程序的服务名</param>
         /// <returns>启动成功返回 true,否则返回 false;</returns>
-        public bool StarmyService(string name)
+        public bool StartService(string name)
         {
             ServiceController sc = new ServiceController(name);
             if (sc.Status == ServiceControllerStatus.Stopped || sc.Status == ServiceControllerStatus.StopPending)
@@ -118,7 +122,7 @@ namespace BZ.WindowsService.Helper
         /// </summary>
         /// <param name="name">程序的服务名</param>
         /// <returns>停止成功返回 true,否则返回 false;</returns>
-        public bool StopmyService(string name)
+        public bool StopService(string name)
         {
             ServiceController sc = new ServiceController(name);
             if (sc.Status == ServiceControllerStatus.Running || sc.Status == ServiceControllerStatus.StartPending)
@@ -138,9 +142,9 @@ namespace BZ.WindowsService.Helper
         /// </summary>
         /// <param name="name">程序的服务名</param>
         /// <returns>重启成功返回 true,否则返回 false;</returns>
-        public bool RefreshmyService(string name)
+        public bool RefreshService(string name)
         {
-            return StopmyService(name) && StarmyService(name);
+            return StopService(name) && StartService(name);
         }
 
         /// <summary>

@@ -18,7 +18,7 @@ namespace BZ.WindowsService.Helper
 
         static ConfigHelper()
         {
-            config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            config = ConfigurationManager.OpenExeConfiguration(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
 
             #region 初始化Section
             if (!config.Sections.Keys.Cast<string>().Any(a => a == SECTION_NAME))
@@ -131,16 +131,32 @@ namespace BZ.WindowsService.Helper
             /// <summary>
             /// 运行间隔
             /// </summary>
-            [ConfigurationProperty("interval", DefaultValue = (uint)0)]
-            public uint Interval
+            [ConfigurationProperty("interval", DefaultValue = 0)]
+            public int Interval
             {
                 get
                 {
-                    return (uint)base["interval"];
+                    return (int)base["interval"];
                 }
                 set
                 {
                     base["interval"] = value;
+                }
+            }
+
+            /// <summary>
+            /// 线程数
+            /// </summary>
+            [ConfigurationProperty("count", DefaultValue = 1)]
+            public int ThreadCount
+            {
+                get
+                {
+                    return (int)base["count"];
+                }
+                set
+                {
+                    base["count"] = value;
                 }
             }
 
