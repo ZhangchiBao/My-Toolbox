@@ -5,11 +5,13 @@ VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BZ.WindowsService", "BZ.WindowsService\BZ.WindowsService.csproj", "{8EF81756-50B8-4745-BA60-749D46B55B25}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BZ.WindowsService.Common", "BZ.WindowsService.Common\BZ.WindowsService.Common.csproj", "{1305D500-EFF5-4DDA-9A18-113E22D69741}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{9D6F2DBD-D64B-4FC2-95F6-7B2261042762}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPlugin", "Plugins\TestPlugin\TestPlugin.csproj", "{0B721CFB-3FF4-4CDC-84DB-20407DE69143}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginTests", "PluginTests\PluginTests.csproj", "{671EC1BC-E973-4E5A-9331-3B6F0DADA1D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BZ.WindowsService.Common", "BZ.WindowsService.Common\BZ.WindowsService.Common.csproj", "{D5726CC3-34C2-4E2C-9F88-702856F70A8B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,14 +23,18 @@ Global
 		{8EF81756-50B8-4745-BA60-749D46B55B25}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8EF81756-50B8-4745-BA60-749D46B55B25}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8EF81756-50B8-4745-BA60-749D46B55B25}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1305D500-EFF5-4DDA-9A18-113E22D69741}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1305D500-EFF5-4DDA-9A18-113E22D69741}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1305D500-EFF5-4DDA-9A18-113E22D69741}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1305D500-EFF5-4DDA-9A18-113E22D69741}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0B721CFB-3FF4-4CDC-84DB-20407DE69143}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0B721CFB-3FF4-4CDC-84DB-20407DE69143}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B721CFB-3FF4-4CDC-84DB-20407DE69143}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B721CFB-3FF4-4CDC-84DB-20407DE69143}.Release|Any CPU.Build.0 = Release|Any CPU
+		{671EC1BC-E973-4E5A-9331-3B6F0DADA1D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{671EC1BC-E973-4E5A-9331-3B6F0DADA1D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{671EC1BC-E973-4E5A-9331-3B6F0DADA1D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{671EC1BC-E973-4E5A-9331-3B6F0DADA1D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5726CC3-34C2-4E2C-9F88-702856F70A8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5726CC3-34C2-4E2C-9F88-702856F70A8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5726CC3-34C2-4E2C-9F88-702856F70A8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5726CC3-34C2-4E2C-9F88-702856F70A8B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

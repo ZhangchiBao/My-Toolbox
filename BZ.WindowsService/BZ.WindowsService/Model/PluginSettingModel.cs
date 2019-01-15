@@ -1,10 +1,6 @@
 ﻿using BZ.WindowsService.Helper;
 using Stylet;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BZ.WindowsService.Model
 {
@@ -19,6 +15,11 @@ namespace BZ.WindowsService.Model
             ThreadCount = settingSection.ThreadCount <= 0 ? 1 : settingSection.ThreadCount;
         }
 
+        public PluginSettingModel(ConfigHelper.PluginSettingSection settingSection, Common.IPlugin plugin) : this(settingSection)
+        {
+            Version = new PluginVersionModel { Local = plugin.PluginData.Version };
+        }
+
         /// <summary>
         /// 插件名称
         /// </summary>
@@ -28,6 +29,11 @@ namespace BZ.WindowsService.Model
         /// 作者
         /// </summary>
         public string Author { get; set; }
+
+        /// <summary>
+        /// 版本
+        /// </summary>
+        public PluginVersionModel Version { get; set; }
 
         /// <summary>
         /// 运行间隔
@@ -51,5 +57,21 @@ namespace BZ.WindowsService.Model
             base.OnPropertyChanged(propertyName);
             PropertyChangedAction?.Invoke();
         }
+    }
+
+    /// <summary>
+    /// 插件版本
+    /// </summary>
+    public class PluginVersionModel
+    {
+        /// <summary>
+        /// 本地
+        /// </summary>
+        public string Local { get; set; }
+
+        /// <summary>
+        /// 远程
+        /// </summary>
+        public string Remote { get; set; }
     }
 }

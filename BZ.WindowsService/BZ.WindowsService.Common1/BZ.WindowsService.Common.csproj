@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0B721CFB-3FF4-4CDC-84DB-20407DE69143}</ProjectGuid>
+    <ProjectGuid>{1305D500-EFF5-4DDA-9A18-113E22D69741}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TestPlugin</RootNamespace>
-    <AssemblyName>TestPlugin</AssemblyName>
+    <RootNamespace>BZ.WindowsService.Common</RootNamespace>
+    <AssemblyName>BZ.WindowsService.Common</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -41,14 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TestPlugin.cs" />
+    <Compile Include="IPlugin.cs" />
+    <Compile Include="PluginData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\BZ.WindowsService.Common\BZ.WindowsService.Common.csproj">
-      <Project>{d5726cc3-34c2-4e2c-9f88-702856f70a8b}</Project>
-      <Name>BZ.WindowsService.Common</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
