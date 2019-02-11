@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ExtendedLib.WPF</name>
+    </assembly>
+    <members>
+        <member name="T:System.Windows.WindowCompositionAttribute">
+            <summary>
+            窗口合成属性
+            </summary>
+        </member>
+        <member name="F:System.Windows.WindowCompositionAttribute.WCA_UNDEFINED">
+            <summary>
+            未定义的
+            </summary>
+        </member>
+        <member name="M:System.Windows.WindowExtensions.EnableBlur(System.Windows.Window)">
+            <summary>
+            启用模糊
+            </summary>
+            <param name="window"></param>
+        </member>
+        <member name="M:System.Windows.WindowExtensions.DisableBlur(System.Windows.Window)">
+            <summary>
+            禁用模糊
+            </summary>
+            <param name="window"></param>
+        </member>
+        <member name="M:System.Windows.WindowExtensions.GetIntPtr(System.Windows.Window)">
+            <summary>
+            获取窗口句柄
+            </summary>
+            <param name="window"></param>
+            <returns></returns>
+        </member>
+        <member name="M:System.Windows.WindowExtensions.ToCustomer(System.Windows.Window)">
+            <summary>
+            用WindowChrome实现自定义界面
+            </summary>
+            <param name="window"></param>
+        </member>
+        <member name="M:System.Windows.WindowExtensions.ToCustomer(System.Windows.Window,System.Double)">
+            <summary>
+            用WindowChrome实现自定义界面
+            </summary>
+            <param name="window"></param>
+            <param name="captionHeight">标题高度</param>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,56 @@
+﻿<Controls:CustomDialog x:Class="Book.Pages.SitesSettingView"
+                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                       xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                       xmlns:local="clr-namespace:Book.Pages"
+                       xmlns:s="https://github.com/canton7/Stylet"
+                       Title="网站设置"
+                       mc:Ignorable="d" 
+                       d:DataContext="{d:DesignData local:SitesSettingViewModel}"
+                       d:DesignHeight="450" d:DesignWidth="800">
+    <Controls:CustomDialog.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="ExpandDetails">
+                <ToggleButton Name="ShowDetails" 
+                              IsChecked="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, 
+                                                  Path=DetailsVisibility, 
+                                                  Converter={StaticResource VisbilityToBooleanConverter}, 
+                                                  Mode=TwoWay}" 
+                              Margin="4" />
+            </DataTemplate>
+        </ResourceDictionary>
+    </Controls:CustomDialog.Resources>
+    <DockPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Bottom">
+            <Button Content="确定" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10" Command="{s:Action Method=CloseWindow}"/>
+        </StackPanel>
+        <StackPanel DockPanel.Dock="Right" Margin="0,30">
+            <Button Content="新增" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5" Command="{s:Action Method=AddSite}"/>
+            <Button Content="删除" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5" Command="{s:Action Method=DeleteSite}"/>
+        </StackPanel>
+        <DataGrid IsReadOnly="True"
+                  CanUserResizeColumns="False"
+                  CanUserResizeRows="False"
+                  CanUserSortColumns="False"
+                  SelectionMode="Single"
+                  MinHeight="100"
+                  AutoGenerateColumns="False"
+                  MouseDoubleClick="{s:Action Method=SitesGridDoubleClick}"
+                  SelectedItem="{Binding Path=SelectedSite,UpdateSourceTrigger=PropertyChanged}"
+                  ItemsSource="{Binding Path=Sites,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                  AreRowDetailsFrozen="True">
+            <DataGrid.Columns>
+                <!--<DataGridTemplateColumn Header="" CellTemplate="{StaticResource ExpandDetails}" Width="30" />-->
+                <DataGridTextColumn Header="网站名称" Binding="{Binding Path=Name}" IsReadOnly="True" Width="*" TextBlock.TextAlignment="Center"/>
+                <DataGridTextColumn Header="地址" Binding="{Binding Path=URL}" IsReadOnly="True" Width="3*" TextBlock.TextAlignment="Center"/>
+            </DataGrid.Columns>
+            <!--<DataGrid.RowDetailsTemplate>
+                <DataTemplate>
+                    <ContentControl s:View.Model="{Binding DataContext.SiteDetailViewModel, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:SitesSettingView}}}"/>
+                </DataTemplate>
+            </DataGrid.RowDetailsTemplate>-->
+        </DataGrid>
+    </DockPanel>
+</Controls:CustomDialog>
