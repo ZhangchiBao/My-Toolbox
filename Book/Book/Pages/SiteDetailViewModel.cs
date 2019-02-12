@@ -1,12 +1,11 @@
 ﻿using Book.Models;
-using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
 using Newtonsoft.Json;
 using Stylet;
 using StyletIoC;
 using System;
 using System.Linq;
 using System.Xml.Linq;
+using Telerik.Windows.Controls;
 
 namespace Book.Pages
 {
@@ -135,10 +134,10 @@ namespace Book.Pages
         /// <summary>
         /// 关闭对话框
         /// </summary>
-        private async void CloseDialog()
+        private void CloseDialog()
         {
-            var dialog = (CustomDialog)View;
-            await ((MetroWindow)viewManager.CreateAndBindViewForModelIfNecessary(container.Get<ShellViewModel>())).HideMetroDialogAsync(dialog);
+            var dialog = (RadWindow)View;
+            dialog.Close();
         }
 
         private void ObjToProperties()

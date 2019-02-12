@@ -1,7 +1,5 @@
 ﻿using Book.Models;
 using HtmlAgilityPack;
-using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
 using Newtonsoft.Json;
 using Stylet;
 using StyletIoC;
@@ -9,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Telerik.Windows.Controls;
 
 namespace Book.Pages
 {
@@ -33,11 +32,11 @@ namespace Book.Pages
 
         public bool CanDoSearch => !string.IsNullOrEmpty(SearchKeyword);
 
-        public async void CloseWindow()
+        public void CloseWindow()
         {
-            var dialog = (CustomDialog)View;
-            await ((MetroWindow)viewManager.CreateAndBindViewForModelIfNecessary(container.Get<ShellViewModel>())).HideMetroDialogAsync(dialog);
+            var dialog = (RadWindow)View;
             isOpen = false;
+            dialog.Close();
         }
 
         public void DoSearch()
@@ -47,37 +46,52 @@ namespace Book.Pages
             XElement xElement = XElement.Load("sites.xml");
             var nodes = xElement.Nodes();
             var sites = nodes.Select(xNode => JsonConvert.DeserializeObject<SiteInfo>(JsonConvert.SerializeXNode(xNode, Formatting.None, true))).ToList();
-            Parallel.ForEach(sites, site =>
+            var tasks = sites.Select(site => new Task(() =>
             {
-                Task.Run(() =>
+                HtmlNodeCollection resultNodes = null;
+                int index = 0;
+                do
                 {
-                    HtmlNodeCollection resultNodes = null;
-                    int index = 0;
-                    do
+                    HtmlWeb web = new HtmlWeb();
+                    var url = site.SearchURL.Replace("[s]", SearchKeyword).Replace("[p]", index.ToString());
+                    var doc = web.Load(url);
+                    resultNodes = doc.DocumentNode.SelectNodes(@"//" + site.BookResultsNode);
+                    if (resultNodes != null)
                     {
-                        HtmlWeb web = new HtmlWeb();
-                        var url = site.SearchURL.Replace("[s]", SearchKeyword).Replace("[p]", index.ToString());
-                        var doc = web.Load(url);
-                        resultNodes = doc.DocumentNode.SelectNodes(@"//" + site.BookResultsNode);
-                        if (resultNodes != null)
+                        foreach (HtmlNode resultNode in resultNodes)
                         {
-                            foreach (HtmlNode resultNode in resultNodes)
+                            var bookName = resultNode.SelectSingleNode(site.BookNameNode).InnerText;
+                            var author = resultNode.SelectSingleNode(site.AuthorNode)?.InnerText;
+                            var href = resultNode.SelectSingleNode(site.BookURLNode).GetAttributeValue("href", string.Empty);
+                            string update = string.Empty;
+                            if (!string.IsNullOrEmpty(site.UpdateNode))
                             {
-                                var bookName = resultNode.SelectSingleNode(site.BookNameNode).InnerText;
-                                var author = resultNode.SelectSingleNode(site.AuthorNode).InnerText;
-                                var href = resultNode.SelectSingleNode(site.BookURLNode).GetAttributeValue("href", string.Empty);
-                                var update = resultNode.SelectSingleNode(site.UpdateNode).InnerText;
-                                var description = resultNode.SelectSingleNode(site.DescriptionNode).InnerText;
-                                System.Windows.Application.Current.Dispatcher.Invoke(() =>
-                                {
-                                    BookSearchResults.Add(new BookSearchResult { BookName = bookName, Author = author, Description = description, Update = update, SRC = href, Source = site.Name });
-                                });
+                                update = resultNode.SelectSingleNode(site.UpdateNode)?.InnerText;
                             }
+                            string description = string.Empty;
+                            if (!string.IsNullOrEmpty(site.DescriptionNode))
+                            {
+                                description = resultNode.SelectSingleNode(site.DescriptionNode)?.InnerText;
+                            }
+
+                            System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                BookSearchResults.Add(new BookSearchResult
+                                {
+                                    BookName = bookName?.Trim('\r')?.Trim('\n')?.Trim(),
+                                    Author = author?.Trim('\r')?.Trim('\n')?.Trim(),
+                                    Description = description?.Trim('\r')?.Trim('\n')?.Trim(),
+                                    Update = update?.Trim('\r')?.Trim('\n')?.Trim(),
+                                    SRC = href,
+                                    Source = site.Name?.Trim('\r')?.Trim('\n')?.Trim()
+                                });
+                            });
                         }
-                        index++;
-                    } while (resultNodes != null && resultNodes.Count >= site.SearchSize && isOpen);
-                });
-            });
+                    }
+                    index++;
+                } while (resultNodes != null && resultNodes.Count >= site.SearchSize && isOpen);
+            })).ToList();
+            tasks.ForEach(task => task.Start());
         }
     }
 }

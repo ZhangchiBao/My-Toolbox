@@ -1,56 +1,43 @@
-﻿<Controls:CustomDialog x:Class="Book.Pages.SitesSettingView"
-                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                       xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
-                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-                       xmlns:local="clr-namespace:Book.Pages"
-                       xmlns:s="https://github.com/canton7/Stylet"
-                       Title="网站设置"
-                       mc:Ignorable="d" 
-                       d:DataContext="{d:DesignData local:SitesSettingViewModel}"
-                       d:DesignHeight="450" d:DesignWidth="800">
-    <Controls:CustomDialog.Resources>
-        <ResourceDictionary>
-            <DataTemplate x:Key="ExpandDetails">
-                <ToggleButton Name="ShowDetails" 
-                              IsChecked="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, 
-                                                  Path=DetailsVisibility, 
-                                                  Converter={StaticResource VisbilityToBooleanConverter}, 
-                                                  Mode=TwoWay}" 
-                              Margin="4" />
-            </DataTemplate>
-        </ResourceDictionary>
-    </Controls:CustomDialog.Resources>
+﻿<telerik:RadWindow x:Class="Book.Pages.SitesSettingView"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                   xmlns:local="clr-namespace:Book.Pages"
+                   xmlns:s="https://github.com/canton7/Stylet"
+                   Header="网站设置" Height="300" Width="500"
+                   WindowStartupLocation="CenterOwner"
+                   ResizeMode="NoResize"
+                   CanMove="False"
+                   CanClose="False"
+                   Style="{StaticResource RadWindowStyle}"
+                   mc:Ignorable="d" 
+                   d:DataContext="{d:DesignData local:SitesSettingViewModel}"
+                   d:DesignHeight="450" d:DesignWidth="600">
     <DockPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Bottom">
-            <Button Content="确定" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10" Command="{s:Action Method=CloseDialog}"/>
+            <telerik:RadButton Content="确定" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10" Command="{s:Action Method=CloseDialog}"/>
         </StackPanel>
-        <DataGrid IsReadOnly="True"
-                  CanUserResizeColumns="False"
-                  CanUserResizeRows="False"
-                  CanUserSortColumns="False"
-                  SelectionMode="Single"
-                  MinHeight="100"
-                  BorderThickness="1"
-                  Margin="0,10,0,0"
-                  AutoGenerateColumns="False"
-                  SelectionUnit="FullRow"
-                  MouseDoubleClick="{s:Action Method=SitesGridDoubleClick}"
-                  MouseRightButtonDown="{s:Action Method=SitesGridRightButtonDown}"
-                  SelectedItem="{Binding Path=SelectedSite,UpdateSourceTrigger=PropertyChanged}"
-                  ItemsSource="{Binding Path=Sites,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
-                  AreRowDetailsFrozen="True">
-            <DataGrid.ContextMenu>
+        <telerik:RadGridView
+            AutoGenerateColumns="False"
+            ShowGroupPanel="False"
+            RowIndicatorVisibility="Collapsed"
+            MouseDoubleClick="{s:Action Method=SitesGridDoubleClick}"
+            IsFilteringAllowed="False"
+            MouseRightButtonDown="{s:Action Method=SitesGridRightButtonDown}"
+            SelectedItem="{Binding Path=SelectedSite,UpdateSourceTrigger=PropertyChanged}"
+            ItemsSource="{Binding Path=Sites,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}">
+            <telerik:RadGridView.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="新建站点" Command="{s:Action Method=AddSite}"/>
                     <MenuItem Header="删除站点" Command="{s:Action Method=DeleteSite}"/>
                 </ContextMenu>
-            </DataGrid.ContextMenu>
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="网站名称" Binding="{Binding Path=Name}" IsReadOnly="True" Width="*" TextBlock.TextAlignment="Center"/>
-                <DataGridTextColumn Header="地址" Binding="{Binding Path=URL}" IsReadOnly="True" Width="3*" TextBlock.TextAlignment="Center"/>
-            </DataGrid.Columns>
-        </DataGrid>
+            </telerik:RadGridView.ContextMenu>
+            <telerik:RadGridView.Columns>
+                <telerik:GridViewDataColumn Header="网站名称" DataMemberBinding="{Binding Path=Name}" IsReadOnly="True" Width="*" TextBlock.TextAlignment="Center"/>
+                <telerik:GridViewDataColumn Header="地址" DataMemberBinding="{Binding Path=URL}" IsReadOnly="True" Width="3*" TextBlock.TextAlignment="Center"/>
+            </telerik:RadGridView.Columns>
+        </telerik:RadGridView>
     </DockPanel>
-</Controls:CustomDialog>
+</telerik:RadWindow>

@@ -1,81 +1,123 @@
-﻿<Controls:CustomDialog x:Class="Book.Pages.SiteDetailView"
-                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                       xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
-                       xmlns:local="clr-namespace:Book.Pages"
-                       xmlns:s="https://github.com/canton7/Stylet"
-                       mc:Ignorable="d"
-                       Background="Transparent"
-                       d:DataContext="{d:DesignData local:SiteDetailViewModel}"
-                       d:DesignHeight="450" d:DesignWidth="800">
+﻿<telerik:RadWindow x:Class="Book.Pages.SiteDetailView"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                   xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+                   xmlns:local="clr-namespace:Book.Pages"
+                   xmlns:s="https://github.com/canton7/Stylet"
+                   mc:Ignorable="d"
+                   WindowStartupLocation="CenterOwner"
+                   ResizeMode="NoResize"
+                   CanClose="False"
+                   CanMove="False"
+                   Style="{StaticResource RadWindowStyle}"
+                   Header="站点详情" Height="400" Width="600"
+                   d:DataContext="{d:DesignData local:SiteDetailViewModel}"
+                   d:DesignHeight="450" d:DesignWidth="800">
     <DockPanel Background="White" Margin="10">
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Bottom">
-            <Button Content="保存" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10" Command="{s:Action Method=SaveChange}"/>
-            <Button Content="取消" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10" Command="{s:Action Method=CancelChange}"/>
+            <telerik:RadButton Content="保存" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10" Command="{s:Action Method=SaveChange}"/>
+            <telerik:RadButton Content="取消" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10" Command="{s:Action Method=CancelChange}"/>
         </StackPanel>
         <ScrollViewer>
             <StackPanel>
-                <TextBox Text="{Binding Path=Name,UpdateSourceTrigger=PropertyChanged}"
-                     Controls:TextBoxHelper.Watermark="站点名称"
-                     Controls:TextBoxHelper.UseFloatingWatermark="True"
-                     Margin="10" VerticalAlignment="Center"/>
-                <TextBox Text="{Binding Path=URL,UpdateSourceTrigger=PropertyChanged}"
-                     Controls:TextBoxHelper.Watermark="站点主页地址"
-                     Controls:TextBoxHelper.UseFloatingWatermark="True"
-                     Margin="10" VerticalAlignment="Center"/>
                 <DockPanel Margin="10">
-                    <TextBox DockPanel.Dock="Right" Text="{Binding Path=SearchSize,UpdateSourceTrigger=PropertyChanged}"
-                         Controls:TextBoxHelper.Watermark="搜索页容量"
-                         Controls:TextBoxHelper.UseFloatingWatermark="True"
-                         VerticalAlignment="Center" Margin="5,0,0,0"/>
-                    <TextBox Text="{Binding Path=SearchURL,UpdateSourceTrigger=PropertyChanged}"
-                     Controls:TextBoxHelper.Watermark="[s]表示搜索关键字参数,[p]表示页码参数"
-                     Controls:TextBoxHelper.UseFloatingWatermark="True"
-                     VerticalAlignment="Center"/>
+                    <TextBlock Text="站点名称:" DockPanel.Dock="Left" VerticalAlignment="Center" Width="110"/>
+                    <telerik:RadWatermarkTextBox Text="{Binding Path=Name,UpdateSourceTrigger=PropertyChanged}"
+                                                 WatermarkContent="站点名称"
+                                                 ToolTip="{Binding RelativeSource={RelativeSource Mode=Self},Path=WatermarkContent}" VerticalAlignment="Center"/>
                 </DockPanel>
-                <TextBox Text="{Binding Path=BookResultsNode,UpdateSourceTrigger=PropertyChanged}"
-                     Controls:TextBoxHelper.Watermark="搜索结果节点信息"
-                     Controls:TextBoxHelper.UseFloatingWatermark="True"
-                     Margin="10" VerticalAlignment="Center"/>
-                <TextBox Text="{Binding Path=BookNameNode,UpdateSourceTrigger=PropertyChanged}"
-                     Controls:TextBoxHelper.Watermark="书籍名称节点信息"
-                     Controls:TextBoxHelper.UseFloatingWatermark="True"
-                     Margin="10" VerticalAlignment="Center"/>
-                <TextBox Text="{Binding Path=AuthorNode,UpdateSourceTrigger=PropertyChanged}"
-                     Controls:TextBoxHelper.Watermark="作者节点信息"
-                     Controls:TextBoxHelper.UseFloatingWatermark="True"
-                     Margin="10" VerticalAlignment="Center"/>
-                <TextBox Text="{Binding Path=DescriptionNode,UpdateSourceTrigger=PropertyChanged}"
-                     Controls:TextBoxHelper.Watermark="简介节点信息"
-                     Controls:TextBoxHelper.UseFloatingWatermark="True"
-                     Margin="10" VerticalAlignment="Center"/>
-                <TextBox Text="{Binding Path=UpdateNode,UpdateSourceTrigger=PropertyChanged}"
-                     Controls:TextBoxHelper.Watermark="最新章节节点信息"
-                     Controls:TextBoxHelper.UseFloatingWatermark="True"
-                     Margin="10" VerticalAlignment="Center"/>
-                <TextBox Text="{Binding Path=BookURLNode,UpdateSourceTrigger=PropertyChanged}"
-                     Controls:TextBoxHelper.Watermark="书籍地址节点信息"
-                     Controls:TextBoxHelper.UseFloatingWatermark="True"
-                     Margin="10" VerticalAlignment="Center"/>
-                <TextBox Text="{Binding Path=BookURLNode,UpdateSourceTrigger=PropertyChanged}"
-                     Controls:TextBoxHelper.Watermark="章节节点信息"
-                     Controls:TextBoxHelper.UseFloatingWatermark="True"
-                     Margin="10" VerticalAlignment="Center"/>
-                <TextBox Text="{Binding Path=BookURLNode,UpdateSourceTrigger=PropertyChanged}"
-                     Controls:TextBoxHelper.Watermark="章节名称节点信息"
-                     Controls:TextBoxHelper.UseFloatingWatermark="True"
-                     Margin="10" VerticalAlignment="Center"/>
-                <TextBox Text="{Binding Path=BookURLNode,UpdateSourceTrigger=PropertyChanged}"
-                     Controls:TextBoxHelper.Watermark="章节地址节点信息"
-                     Controls:TextBoxHelper.UseFloatingWatermark="True"
-                     Margin="10" VerticalAlignment="Center"/>
-                <TextBox Text="{Binding Path=BookURLNode,UpdateSourceTrigger=PropertyChanged}"
-                     Controls:TextBoxHelper.Watermark="章节内容节点信息"
-                     Controls:TextBoxHelper.UseFloatingWatermark="True"
-                     Margin="10" VerticalAlignment="Center"/>
+                <DockPanel Margin="10">
+                    <TextBlock Text="站点主页地址:" DockPanel.Dock="Left" VerticalAlignment="Center" Width="110"/>
+                    <telerik:RadWatermarkTextBox Text="{Binding Path=URL,UpdateSourceTrigger=PropertyChanged}"
+                                                 WatermarkContent="站点主页地址"
+                                                 ToolTip="{Binding RelativeSource={RelativeSource Mode=Self},Path=WatermarkContent}"
+                                                 VerticalAlignment="Center"/>
+                </DockPanel>
+                <DockPanel Margin="10">
+                    <telerik:RadWatermarkTextBox DockPanel.Dock="Right" Text="{Binding Path=SearchSize,UpdateSourceTrigger=PropertyChanged}"
+                                                 WatermarkContent="搜索页容量"
+                                                 ToolTip="{Binding RelativeSource={RelativeSource Mode=Self},Path=WatermarkContent}"
+                                                 VerticalAlignment="Center"/>
+                    <TextBlock Text="容量:" DockPanel.Dock="Right" Margin="5,0,0,0" VerticalAlignment="Center" Width="40"/>
+                    <TextBlock Text="搜索地址:" DockPanel.Dock="Left" VerticalAlignment="Center" Width="110"/>
+                    <telerik:RadWatermarkTextBox Text="{Binding Path=SearchURL,UpdateSourceTrigger=PropertyChanged}"
+                                                 WatermarkContent="[s]表示搜索关键字参数,[p]表示页码参数"
+                                                 ToolTip="{Binding RelativeSource={RelativeSource Mode=Self},Path=WatermarkContent}"
+                                                 VerticalAlignment="Center"/>
+                </DockPanel>
+                <DockPanel Margin="10">
+                    <TextBlock Text="搜索结果节点信息:" DockPanel.Dock="Left" VerticalAlignment="Center" Width="110"/>
+                    <telerik:RadWatermarkTextBox Text="{Binding Path=BookResultsNode,UpdateSourceTrigger=PropertyChanged}"
+                                                 WatermarkContent="搜索结果节点信息"
+                                                 ToolTip="{Binding RelativeSource={RelativeSource Mode=Self},Path=WatermarkContent}"
+                                                 VerticalAlignment="Center"/>
+                </DockPanel>
+                <DockPanel Margin="10">
+                    <TextBlock Text="书籍名称节点信息:" DockPanel.Dock="Left" VerticalAlignment="Center" Width="110"/>
+                    <telerik:RadWatermarkTextBox Text="{Binding Path=BookNameNode,UpdateSourceTrigger=PropertyChanged}"
+                                                 WatermarkContent="书籍名称节点信息"
+                                                 ToolTip="{Binding RelativeSource={RelativeSource Mode=Self},Path=WatermarkContent}"
+                                                 VerticalAlignment="Center"/>
+                </DockPanel>
+                <DockPanel Margin="10">
+                    <TextBlock Text="作者节点信息:" DockPanel.Dock="Left" VerticalAlignment="Center" Width="110"/>
+                    <telerik:RadWatermarkTextBox Text="{Binding Path=AuthorNode,UpdateSourceTrigger=PropertyChanged}"
+                                                 WatermarkContent="作者节点信息"
+                                                 ToolTip="{Binding RelativeSource={RelativeSource Mode=Self},Path=WatermarkContent}"
+                                                 VerticalAlignment="Center"/>
+                </DockPanel>
+                <DockPanel Margin="10">
+                    <TextBlock Text="简介节点信息:" DockPanel.Dock="Left" VerticalAlignment="Center" Width="110"/>
+                    <telerik:RadWatermarkTextBox Text="{Binding Path=DescriptionNode,UpdateSourceTrigger=PropertyChanged}"
+                                                 WatermarkContent="简介节点信息"
+                                                 ToolTip="{Binding RelativeSource={RelativeSource Mode=Self},Path=WatermarkContent}"
+                                                 VerticalAlignment="Center"/>
+                </DockPanel>
+                <DockPanel Margin="10">
+                    <TextBlock Text="最新章节节点信息:" DockPanel.Dock="Left" VerticalAlignment="Center" Width="110"/>
+                    <telerik:RadWatermarkTextBox Text="{Binding Path=UpdateNode,UpdateSourceTrigger=PropertyChanged}"
+                                                 WatermarkContent="最新章节节点信息"
+                                                 ToolTip="{Binding RelativeSource={RelativeSource Mode=Self},Path=WatermarkContent}"
+                                                 VerticalAlignment="Center"/>
+                </DockPanel>
+                <DockPanel Margin="10">
+                    <TextBlock Text="书籍地址节点信息:" DockPanel.Dock="Left" VerticalAlignment="Center" Width="110"/>
+                    <telerik:RadWatermarkTextBox Text="{Binding Path=BookURLNode,UpdateSourceTrigger=PropertyChanged}"
+                                                 WatermarkContent="书籍地址节点信息"
+                                                 ToolTip="{Binding RelativeSource={RelativeSource Mode=Self},Path=WatermarkContent}"
+                                                 VerticalAlignment="Center"/>
+                </DockPanel>
+                <DockPanel Margin="10">
+                    <TextBlock Text="章节节点信息:" DockPanel.Dock="Left" VerticalAlignment="Center" Width="110"/>
+                    <telerik:RadWatermarkTextBox Text="{Binding Path=BookURLNode,UpdateSourceTrigger=PropertyChanged}"
+                                                 WatermarkContent="章节节点信息"
+                                                 ToolTip="{Binding RelativeSource={RelativeSource Mode=Self},Path=WatermarkContent}"
+                                                 VerticalAlignment="Center"/>
+                </DockPanel>
+                <DockPanel Margin="10">
+                    <TextBlock Text="章节名称节点信息:" DockPanel.Dock="Left" VerticalAlignment="Center" Width="110"/>
+                    <telerik:RadWatermarkTextBox Text="{Binding Path=BookURLNode,UpdateSourceTrigger=PropertyChanged}"
+                                                 WatermarkContent="章节名称节点信息"
+                                                 ToolTip="{Binding RelativeSource={RelativeSource Mode=Self},Path=WatermarkContent}"
+                                                 VerticalAlignment="Center"/>
+                </DockPanel>
+                <DockPanel Margin="10">
+                    <TextBlock Text="章节地址节点信息:" DockPanel.Dock="Left" VerticalAlignment="Center" Width="110"/>
+                    <telerik:RadWatermarkTextBox Text="{Binding Path=BookURLNode,UpdateSourceTrigger=PropertyChanged}"
+                                                 WatermarkContent="章节地址节点信息"
+                                                 ToolTip="{Binding RelativeSource={RelativeSource Mode=Self},Path=WatermarkContent}"
+                                                 VerticalAlignment="Center"/>
+                </DockPanel>
+                <DockPanel Margin="10">
+                    <TextBlock Text="章节内容节点信息:" DockPanel.Dock="Left" VerticalAlignment="Center" Width="110"/>
+                    <telerik:RadWatermarkTextBox Text="{Binding Path=BookURLNode,UpdateSourceTrigger=PropertyChanged}"
+                                                 WatermarkContent="章节内容节点信息"
+                                                 ToolTip="{Binding RelativeSource={RelativeSource Mode=Self},Path=WatermarkContent}"
+                                                 VerticalAlignment="Center"/>
+                </DockPanel>
             </StackPanel>
         </ScrollViewer>
     </DockPanel>
-</Controls:CustomDialog>
+</telerik:RadWindow>
