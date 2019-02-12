@@ -44,6 +44,9 @@
     <Reference Include="ControlzEx, Version=4.0.0.0, Culture=neutral, PublicKeyToken=69f1c32f803d307e, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.4.0.0-alpha0222\lib\net45\ControlzEx.dll</HintPath>
     </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.8.14.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.8.14\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=2.0.0.0, Culture=neutral, PublicKeyToken=51482d6f650b2b3f, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.2.0.0-alpha0212\lib\net46\MahApps.Metro.dll</HintPath>
     </Reference>
@@ -95,8 +98,8 @@
   <ItemGroup>
     <Compile Include="Command.cs" />
     <Compile Include="Common\ExtensionMethods.cs" />
-    <Compile Include="Converters\ActionJsonConverter.cs" />
     <Compile Include="Converters\VisbilityToBooleanConverter.cs" />
+    <Compile Include="Models\BookSearchResult.cs" />
     <Compile Include="Models\SiteInfo.cs" />
     <Compile Include="Pages\SearchView.xaml.cs">
       <DependentUpon>SearchView.xaml</DependentUpon>

@@ -24,11 +24,7 @@
     </Controls:CustomDialog.Resources>
     <DockPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Bottom">
-            <Button Content="确定" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10" Command="{s:Action Method=CloseWindow}"/>
-        </StackPanel>
-        <StackPanel DockPanel.Dock="Right" Margin="0,30">
-            <Button Content="新增" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5" Command="{s:Action Method=AddSite}"/>
-            <Button Content="删除" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5" Command="{s:Action Method=DeleteSite}"/>
+            <Button Content="确定" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10" Command="{s:Action Method=CloseDialog}"/>
         </StackPanel>
         <DataGrid IsReadOnly="True"
                   CanUserResizeColumns="False"
@@ -36,21 +32,25 @@
                   CanUserSortColumns="False"
                   SelectionMode="Single"
                   MinHeight="100"
+                  BorderThickness="1"
+                  Margin="0,10,0,0"
                   AutoGenerateColumns="False"
+                  SelectionUnit="FullRow"
                   MouseDoubleClick="{s:Action Method=SitesGridDoubleClick}"
+                  MouseRightButtonDown="{s:Action Method=SitesGridRightButtonDown}"
                   SelectedItem="{Binding Path=SelectedSite,UpdateSourceTrigger=PropertyChanged}"
                   ItemsSource="{Binding Path=Sites,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
                   AreRowDetailsFrozen="True">
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="新建站点" Command="{s:Action Method=AddSite}"/>
+                    <MenuItem Header="删除站点" Command="{s:Action Method=DeleteSite}"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
             <DataGrid.Columns>
-                <!--<DataGridTemplateColumn Header="" CellTemplate="{StaticResource ExpandDetails}" Width="30" />-->
                 <DataGridTextColumn Header="网站名称" Binding="{Binding Path=Name}" IsReadOnly="True" Width="*" TextBlock.TextAlignment="Center"/>
                 <DataGridTextColumn Header="地址" Binding="{Binding Path=URL}" IsReadOnly="True" Width="3*" TextBlock.TextAlignment="Center"/>
             </DataGrid.Columns>
-            <!--<DataGrid.RowDetailsTemplate>
-                <DataTemplate>
-                    <ContentControl s:View.Model="{Binding DataContext.SiteDetailViewModel, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:SitesSettingView}}}"/>
-                </DataTemplate>
-            </DataGrid.RowDetailsTemplate>-->
         </DataGrid>
     </DockPanel>
 </Controls:CustomDialog>

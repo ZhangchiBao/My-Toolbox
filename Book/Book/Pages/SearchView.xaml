@@ -7,18 +7,28 @@
                        xmlns:local="clr-namespace:Book.Pages"
                        xmlns:s="https://github.com/canton7/Stylet"
                        mc:Ignorable="d"
-                       Title="在线搜索"
-                       d:DataContext="{d:DesignData local:SearchViewModel}"
+                       Background="Transparent"
+                       d:DataContext="{d:DesignData local:SearchViewModel}" Padding="0"
                        d:DesignHeight="450" d:DesignWidth="800">
-    <DockPanel>
+    <DockPanel Background="White" Margin="10">
         <DockPanel DockPanel.Dock="Top">
-            <Button Content="搜索" DockPanel.Dock="Right"/>
+            <Button Content="搜索" DockPanel.Dock="Right" Command="{s:Action Method=DoSearch}"/>
             <TextBox Controls:TextBoxHelper.Watermark="请输入搜索关键字" Text="{Binding Path=SearchKeyword,UpdateSourceTrigger=PropertyChanged}"/>
         </DockPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Bottom">
             <Button Content="确定" VerticalAlignment="Center" Margin="5"/>
             <Button Content="关闭" VerticalAlignment="Center" Margin="5" Command="{s:Action Method=CloseWindow}" IsCancel="True"/>
         </StackPanel>
-        <DataGrid/>
+        <DataGrid ItemsSource="{Binding Path=BookSearchResults}"
+                  CanUserSortColumns="False"
+                  AutoGenerateColumns="False" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="书名" Binding="{Binding Path=BookName}" MaxWidth="200"/>
+                <DataGridTextColumn Header="作者" Binding="{Binding Path=Author}" MaxWidth="200"/>
+                <DataGridTextColumn Header="简介" Binding="{Binding Path=Description}" Width="*"/>
+                <DataGridTextColumn Header="最新章节" Binding="{Binding Path=Update}" MaxWidth="300"/>
+                <DataGridTextColumn Header="来源" Binding="{Binding Path=Source}" MaxWidth="150" MinWidth="150"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </DockPanel>
 </Controls:CustomDialog>

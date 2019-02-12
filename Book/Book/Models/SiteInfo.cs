@@ -26,6 +26,18 @@ namespace Book.Models
         public string BookURLNode { get; set; }
 
         [DataMember]
-        public string SearchURL { get; internal set; }
+        public string SearchURL { get; set; }
+
+        [DataMember]
+        public uint? SearchSize { get; set; }
+
+        [DataMember]
+        public string BookResultsNode { get; set; }
+
+        [DataMember]
+        public string DescriptionNode { get; set; }
+
+        [DataMember]
+        public string UpdateNode { get; set; }
     }
 }

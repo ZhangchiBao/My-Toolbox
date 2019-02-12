@@ -1,50 +1,81 @@
 ﻿<Controls:CustomDialog x:Class="Book.Pages.SiteDetailView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:local="clr-namespace:Book.Pages"
+                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                       xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+                       xmlns:local="clr-namespace:Book.Pages"
                        xmlns:s="https://github.com/canton7/Stylet"
-             mc:Ignorable="d" 
-             d:DataContext="{d:DesignData local:SiteDetailViewModel}"
-             d:DesignHeight="450" d:DesignWidth="800">
-    <DockPanel>
+                       mc:Ignorable="d"
+                       Background="Transparent"
+                       d:DataContext="{d:DesignData local:SiteDetailViewModel}"
+                       d:DesignHeight="450" d:DesignWidth="800">
+    <DockPanel Background="White" Margin="10">
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Bottom">
             <Button Content="保存" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10" Command="{s:Action Method=SaveChange}"/>
             <Button Content="取消" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10" Command="{s:Action Method=CancelChange}"/>
         </StackPanel>
-        <StackPanel>
-            <TextBox Text="{Binding Path=Name,UpdateSourceTrigger=PropertyChanged}"
+        <ScrollViewer>
+            <StackPanel>
+                <TextBox Text="{Binding Path=Name,UpdateSourceTrigger=PropertyChanged}"
                      Controls:TextBoxHelper.Watermark="站点名称"
                      Controls:TextBoxHelper.UseFloatingWatermark="True"
                      Margin="10" VerticalAlignment="Center"/>
-            <TextBox Text="{Binding Path=URL,UpdateSourceTrigger=PropertyChanged}"
+                <TextBox Text="{Binding Path=URL,UpdateSourceTrigger=PropertyChanged}"
                      Controls:TextBoxHelper.Watermark="站点主页地址"
                      Controls:TextBoxHelper.UseFloatingWatermark="True"
                      Margin="10" VerticalAlignment="Center"/>
-            <DockPanel Margin="10">
-                <TextBox DockPanel.Dock="Right" Text="{Binding Path=SearchSize,UpdateSourceTrigger=PropertyChanged}"
+                <DockPanel Margin="10">
+                    <TextBox DockPanel.Dock="Right" Text="{Binding Path=SearchSize,UpdateSourceTrigger=PropertyChanged}"
                          Controls:TextBoxHelper.Watermark="搜索页容量"
                          Controls:TextBoxHelper.UseFloatingWatermark="True"
                          VerticalAlignment="Center" Margin="5,0,0,0"/>
-                <TextBox Text="{Binding Path=SearchURL,UpdateSourceTrigger=PropertyChanged}"
+                    <TextBox Text="{Binding Path=SearchURL,UpdateSourceTrigger=PropertyChanged}"
                      Controls:TextBoxHelper.Watermark="[s]表示搜索关键字参数,[p]表示页码参数"
                      Controls:TextBoxHelper.UseFloatingWatermark="True"
                      VerticalAlignment="Center"/>
-            </DockPanel>
-            <TextBox Text="{Binding Path=BookNameNode,UpdateSourceTrigger=PropertyChanged}"
+                </DockPanel>
+                <TextBox Text="{Binding Path=BookResultsNode,UpdateSourceTrigger=PropertyChanged}"
+                     Controls:TextBoxHelper.Watermark="搜索结果节点信息"
+                     Controls:TextBoxHelper.UseFloatingWatermark="True"
+                     Margin="10" VerticalAlignment="Center"/>
+                <TextBox Text="{Binding Path=BookNameNode,UpdateSourceTrigger=PropertyChanged}"
                      Controls:TextBoxHelper.Watermark="书籍名称节点信息"
                      Controls:TextBoxHelper.UseFloatingWatermark="True"
                      Margin="10" VerticalAlignment="Center"/>
-            <TextBox Text="{Binding Path=AuthorNode,UpdateSourceTrigger=PropertyChanged}"
+                <TextBox Text="{Binding Path=AuthorNode,UpdateSourceTrigger=PropertyChanged}"
                      Controls:TextBoxHelper.Watermark="作者节点信息"
                      Controls:TextBoxHelper.UseFloatingWatermark="True"
                      Margin="10" VerticalAlignment="Center"/>
-            <TextBox Text="{Binding Path=BookURLNode,UpdateSourceTrigger=PropertyChanged}"
+                <TextBox Text="{Binding Path=DescriptionNode,UpdateSourceTrigger=PropertyChanged}"
+                     Controls:TextBoxHelper.Watermark="简介节点信息"
+                     Controls:TextBoxHelper.UseFloatingWatermark="True"
+                     Margin="10" VerticalAlignment="Center"/>
+                <TextBox Text="{Binding Path=UpdateNode,UpdateSourceTrigger=PropertyChanged}"
+                     Controls:TextBoxHelper.Watermark="最新章节节点信息"
+                     Controls:TextBoxHelper.UseFloatingWatermark="True"
+                     Margin="10" VerticalAlignment="Center"/>
+                <TextBox Text="{Binding Path=BookURLNode,UpdateSourceTrigger=PropertyChanged}"
                      Controls:TextBoxHelper.Watermark="书籍地址节点信息"
                      Controls:TextBoxHelper.UseFloatingWatermark="True"
                      Margin="10" VerticalAlignment="Center"/>
-        </StackPanel>
+                <TextBox Text="{Binding Path=BookURLNode,UpdateSourceTrigger=PropertyChanged}"
+                     Controls:TextBoxHelper.Watermark="章节节点信息"
+                     Controls:TextBoxHelper.UseFloatingWatermark="True"
+                     Margin="10" VerticalAlignment="Center"/>
+                <TextBox Text="{Binding Path=BookURLNode,UpdateSourceTrigger=PropertyChanged}"
+                     Controls:TextBoxHelper.Watermark="章节名称节点信息"
+                     Controls:TextBoxHelper.UseFloatingWatermark="True"
+                     Margin="10" VerticalAlignment="Center"/>
+                <TextBox Text="{Binding Path=BookURLNode,UpdateSourceTrigger=PropertyChanged}"
+                     Controls:TextBoxHelper.Watermark="章节地址节点信息"
+                     Controls:TextBoxHelper.UseFloatingWatermark="True"
+                     Margin="10" VerticalAlignment="Center"/>
+                <TextBox Text="{Binding Path=BookURLNode,UpdateSourceTrigger=PropertyChanged}"
+                     Controls:TextBoxHelper.Watermark="章节内容节点信息"
+                     Controls:TextBoxHelper.UseFloatingWatermark="True"
+                     Margin="10" VerticalAlignment="Center"/>
+            </StackPanel>
+        </ScrollViewer>
     </DockPanel>
 </Controls:CustomDialog>

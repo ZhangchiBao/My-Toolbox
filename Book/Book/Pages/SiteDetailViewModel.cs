@@ -24,29 +24,53 @@ namespace Book.Pages
         public SiteInfo Site { get; set; }
 
         /// <summary>
-        /// Site name
+        /// 站点名称
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Site index url
+        /// 站点主页
         /// </summary>
         public string URL { get; set; }
 
         /// <summary>
-        /// url for search book
+        /// 站点搜索链接
         /// </summary>
         public string SearchURL { get; set; }
 
-        public uint SearchSize { get; set; }
+        /// <summary>
+        /// 搜索结果页容量
+        /// </summary>
+        public uint? SearchSize { get; set; }
 
         /// <summary>
-        /// book name node
+        /// 书籍搜索结果节点
+        /// </summary>
+        public string BookResultsNode { get; set; }
+
+        /// <summary>
+        /// 书名节点
         /// </summary>
         public string BookNameNode { get; set; }
 
+        /// <summary>
+        /// 作者节点
+        /// </summary>
         public string AuthorNode { get; set; }
 
+        /// <summary>
+        /// 最新章节节点
+        /// </summary>
+        public string UpdateNode { get; set; }
+
+        /// <summary>
+        /// 简介节点
+        /// </summary>
+        public string DescriptionNode { get; set; }
+
+        /// <summary>
+        /// 书地址节点
+        /// </summary>
         public string BookURLNode { get; set; }
 
         public bool CanSaveChange => !string.IsNullOrEmpty(Name);
@@ -65,6 +89,9 @@ namespace Book.Pages
             }
         }
 
+        /// <summary>
+        /// 保存修改
+        /// </summary>
         public void SaveChange()
         {
             PropertiesToObj();
@@ -73,7 +100,7 @@ namespace Book.Pages
         }
 
         /// <summary>
-        /// Save all sites to local
+        /// 保存所有站点信息
         /// </summary>
         private void SaveSites()
         {
@@ -93,12 +120,11 @@ namespace Book.Pages
             {
                 xElement.Add(JsonConvert.DeserializeXNode(JsonConvert.SerializeObject(site), "Site").Root);
             }
-            //= JsonConvert.DeserializeXNode(JsonConvert.SerializeObject(sitesSettingViewModel.Sites, new ActionJsonConverter())).Parent;
             xElement.Save("sites.xml");
         }
 
         /// <summary>
-        /// Cancel all change
+        /// 取消所有修改
         /// </summary>
         public void CancelChange()
         {
@@ -107,7 +133,7 @@ namespace Book.Pages
         }
 
         /// <summary>
-        /// Close dialog
+        /// 关闭对话框
         /// </summary>
         private async void CloseDialog()
         {
@@ -123,6 +149,10 @@ namespace Book.Pages
             AuthorNode = Site?.AuthorNode;
             BookURLNode = Site?.BookURLNode;
             SearchURL = Site?.SearchURL;
+            SearchSize = Site?.SearchSize;
+            BookResultsNode = Site?.BookResultsNode;
+            DescriptionNode = Site?.DescriptionNode;
+            UpdateNode = Site?.UpdateNode;
         }
 
         private void PropertiesToObj()
@@ -133,6 +163,10 @@ namespace Book.Pages
             Site.BookURLNode = BookURLNode;
             Site.AuthorNode = AuthorNode;
             Site.SearchURL = SearchURL;
+            Site.SearchSize = SearchSize;
+            Site.BookResultsNode = BookResultsNode;
+            Site.DescriptionNode = DescriptionNode;
+            Site.UpdateNode = UpdateNode;
         }
     }
 }

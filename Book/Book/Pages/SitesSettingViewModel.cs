@@ -4,6 +4,7 @@ using MahApps.Metro.Controls.Dialogs;
 using Stylet;
 using StyletIoC;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 
@@ -18,17 +19,26 @@ namespace Book.Pages
         {
             this.viewManager = viewManager;
             this.container = container;
-            SiteDetailViewModel = container.Get<SiteDetailViewModel>();
         }
 
+        /// <summary>
+        /// 站点清单
+        /// </summary>
         public ObservableCollection<SiteInfo> Sites { get; set; } = new ObservableCollection<SiteInfo>();
 
+        /// <summary>
+        /// 当前选中站点
+        /// </summary>
         public SiteInfo SelectedSite { get; set; }
 
-        public SiteDetailViewModel SiteDetailViewModel { get; set; }
-
+        /// <summary>
+        /// 能删除站点
+        /// </summary>
         public bool CanDeleteSite => SelectedSite != null;
 
+        /// <summary>
+        /// 添加站点
+        /// </summary>
         public async void AddSite()
         {
             var site = new SiteInfo();
@@ -38,11 +48,19 @@ namespace Book.Pages
             await ((MetroWindow)viewManager.CreateAndBindViewForModelIfNecessary(container.Get<ShellViewModel>())).ShowMetroDialogAsync(siteDetailView);
         }
 
+        /// <summary>
+        /// 删除站点
+        /// </summary>
         public void DeleteSite()
         {
             Sites.Remove(SelectedSite);
         }
 
+        /// <summary>
+        /// 站点列表被双击
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public async void SitesGridDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (((FrameworkElement)e.OriginalSource).DataContext is SiteInfo site)
@@ -54,7 +72,18 @@ namespace Book.Pages
             }
         }
 
-        public async void CloseWindow()
+        public void SitesGridRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (!(((FrameworkElement)e.OriginalSource).DataContext is SiteInfo))
+            {
+                SelectedSite = null;
+            }
+        }
+
+        /// <summary>
+        /// 关闭对话框
+        /// </summary>
+        public async void CloseDialog()
         {
             var dialog = (CustomDialog)View;
             await ((MetroWindow)viewManager.CreateAndBindViewForModelIfNecessary(container.Get<ShellViewModel>())).HideMetroDialogAsync(dialog);
@@ -66,8 +95,6 @@ namespace Book.Pages
             switch (propertyName)
             {
                 case nameof(SelectedSite):
-                    SiteDetailViewModel.Site = SelectedSite;
-                    NotifyOfPropertyChange(nameof(SiteDetailViewModel));
                     NotifyOfPropertyChange(nameof(CanDeleteSite));
                     break;
             }
