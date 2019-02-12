@@ -26,12 +26,24 @@ namespace Book.Pages
             sitesSettingViewModel.Sites = new ObservableCollection<SiteInfo>();
         }
 
+        /// <summary>
+        /// 搜索关键字
+        /// </summary>
         public string SearchKeyword { get; set; }
 
+        /// <summary>
+        /// 搜索结果
+        /// </summary>
         public ObservableCollection<BookSearchResult> BookSearchResults { get; set; }
 
+        /// <summary>
+        /// 能否执行搜索
+        /// </summary>
         public bool CanDoSearch => !string.IsNullOrEmpty(SearchKeyword);
 
+        /// <summary>
+        /// 关闭弹窗
+        /// </summary>
         public void CloseWindow()
         {
             var dialog = (RadWindow)View;
@@ -39,9 +51,12 @@ namespace Book.Pages
             dialog.Close();
         }
 
+        /// <summary>
+        /// 执行搜索
+        /// </summary>
         public void DoSearch()
         {
-            isOpen = true;
+            isOpen = false;
             BookSearchResults = new ObservableCollection<BookSearchResult>();
             XElement xElement = XElement.Load("sites.xml");
             var nodes = xElement.Nodes();
@@ -91,6 +106,7 @@ namespace Book.Pages
                     index++;
                 } while (resultNodes != null && resultNodes.Count >= site.SearchSize && isOpen);
             })).ToList();
+            isOpen = true;
             tasks.ForEach(task => task.Start());
         }
     }
