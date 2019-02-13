@@ -16,8 +16,8 @@
                    d:DataContext="{d:DesignData local:SitesSettingViewModel}"
                    d:DesignHeight="450" d:DesignWidth="600">
     <DockPanel>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Bottom">
-            <telerik:RadButton Content="确定" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10" Command="{s:Action Method=CloseDialog}"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Bottom" Margin="5">
+            <telerik:RadButton Content="确定" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5" Command="{s:Action Method=CloseDialog}"/>
         </StackPanel>
         <telerik:RadGridView
             AutoGenerateColumns="False"
@@ -25,6 +25,10 @@
             RowIndicatorVisibility="Collapsed"
             MouseDoubleClick="{s:Action Method=SitesGridDoubleClick}"
             IsFilteringAllowed="False"
+            CanUserResizeColumns="False"
+            CanUserSelectColumns="False"
+            CanUserReorderColumns="False"
+            CanUserSortColumns="False" Margin="5"
             MouseRightButtonDown="{s:Action Method=SitesGridRightButtonDown}"
             SelectedItem="{Binding Path=SelectedSite,UpdateSourceTrigger=PropertyChanged}"
             ItemsSource="{Binding Path=Sites,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}">
