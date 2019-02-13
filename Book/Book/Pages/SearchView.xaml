@@ -21,14 +21,16 @@
             <telerik:RadWatermarkTextBox WatermarkContent="请输入搜索关键字" Text="{Binding Path=SearchKeyword,UpdateSourceTrigger=PropertyChanged}"/>
         </DockPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Bottom">
-            <telerik:RadButton Content="确定" VerticalAlignment="Center" Margin="5"/>
-            <telerik:RadButton Content="关闭" VerticalAlignment="Center" Margin="5" Command="{s:Action Method=CloseWindow}" IsCancel="True"/>
+            <telerik:RadButton Content="确定" VerticalAlignment="Center" Margin="5" Command="{s:Action Method=ConfirmSelect}"/>
+            <telerik:RadButton Content="关闭" VerticalAlignment="Center" Margin="5" Command="{s:Action Method=CloseDialog}" IsCancel="True"/>
         </StackPanel>
         <telerik:RadGridView ItemsSource="{Binding Path=BookSearchResults,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}"
+                             SelectedItem="{Binding Path=SelectedBookSearchResult,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
                              CanUserSortColumns="False"
                              IsFilteringAllowed="False"
                              ShowGroupPanel="False"
                              ColumnsSelectionButtonVisibility="Collapsed"
+                             MouseDoubleClick="{s:Action Method=SearchResultsViewDoubleClick}"
                              RowIndicatorVisibility="Collapsed"
                              AutoGenerateColumns="False" IsReadOnly="True">
             <telerik:RadGridView.Columns>

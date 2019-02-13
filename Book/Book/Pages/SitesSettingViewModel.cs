@@ -1,7 +1,9 @@
-﻿using Book.Models;
+﻿using AutoMapper;
+using Book.Models;
 using Stylet;
 using StyletIoC;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Telerik.Windows.Controls;
@@ -12,11 +14,13 @@ namespace Book.Pages
     {
         private readonly IViewManager viewManager;
         private readonly IContainer container;
+        private readonly DBContext db;
 
-        public SitesSettingViewModel(IViewManager viewManager, IContainer container)
+        public SitesSettingViewModel(IViewManager viewManager, IContainer container, DBContext db)
         {
             this.viewManager = viewManager;
             this.container = container;
+            this.db = db;
         }
 
         /// <summary>
@@ -40,9 +44,8 @@ namespace Book.Pages
         public void AddSite()
         {
             var site = new SiteInfo();
-            var siteDetailViewModel = container.Get<SiteDetailViewModel>();
-            siteDetailViewModel.Site = site;
-            var siteDetailView = (RadWindow)viewManager.CreateAndBindViewForModelIfNecessary(siteDetailViewModel);
+            container.Get<SiteDetailViewModel>().Site = site;
+            var siteDetailView = (RadWindow)viewManager.CreateAndBindViewForModelIfNecessary(container.Get<SiteDetailViewModel>());
             siteDetailView.Owner = (Window)viewManager.CreateAndBindViewForModelIfNecessary(container.Get<ShellViewModel>());
             siteDetailView.ShowDialog();
         }
@@ -64,9 +67,8 @@ namespace Book.Pages
         {
             if (((FrameworkElement)e.OriginalSource).DataContext is SiteInfo site)
             {
-                var siteDetailViewModel = container.Get<SiteDetailViewModel>();
-                siteDetailViewModel.Site = site;
-                var siteDetailView = (RadWindow)viewManager.CreateAndBindViewForModelIfNecessary(siteDetailViewModel);
+                container.Get<SiteDetailViewModel>().Site = site;
+                var siteDetailView = (RadWindow)viewManager.CreateAndBindViewForModelIfNecessary(container.Get<SiteDetailViewModel>());
                 siteDetailView.Owner = (Window)viewManager.CreateAndBindViewForModelIfNecessary(container.Get<ShellViewModel>());
                 siteDetailView.ShowDialog();
             }
@@ -87,6 +89,11 @@ namespace Book.Pages
         {
             var dialog = (RadWindow)View;
             dialog.Close();
+        }
+
+        public void LoadSites()
+        {
+            Sites = new ObservableCollection<SiteInfo>(db.Sites.Select(a => Mapper.Map<SiteInfo>(a)));
         }
 
         protected override void OnPropertyChanged(string propertyName)

@@ -1,12 +1,15 @@
-﻿using Book.Models;
+﻿using AutoMapper;
+using Book.Common;
+using Book.Models;
 using HtmlAgilityPack;
-using Newtonsoft.Json;
 using Stylet;
 using StyletIoC;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Xml.Linq;
+using System.Windows;
+using System.Windows.Input;
 using Telerik.Windows.Controls;
 
 namespace Book.Pages
@@ -15,21 +18,22 @@ namespace Book.Pages
     {
         private readonly IViewManager viewManager;
         private readonly IContainer container;
-        private readonly SitesSettingViewModel sitesSettingViewModel;
+        private readonly DBContext db;
         private bool isOpen;
 
-        public SearchViewModel(IViewManager viewManager, IContainer container)
+        public SearchViewModel(IViewManager viewManager, IContainer container, DBContext db)
         {
             this.viewManager = viewManager;
             this.container = container;
-            sitesSettingViewModel = container.Get<SitesSettingViewModel>();
-            sitesSettingViewModel.Sites = new ObservableCollection<SiteInfo>();
+            this.db = db;
         }
 
         /// <summary>
         /// 搜索关键字
         /// </summary>
         public string SearchKeyword { get; set; }
+
+        public BookSearchResult SelectedBookSearchResult { get; set; }
 
         /// <summary>
         /// 搜索结果
@@ -44,7 +48,7 @@ namespace Book.Pages
         /// <summary>
         /// 关闭弹窗
         /// </summary>
-        public void CloseWindow()
+        public void CloseDialog()
         {
             var dialog = (RadWindow)View;
             isOpen = false;
@@ -58,9 +62,7 @@ namespace Book.Pages
         {
             isOpen = false;
             BookSearchResults = new ObservableCollection<BookSearchResult>();
-            XElement xElement = XElement.Load("sites.xml");
-            var nodes = xElement.Nodes();
-            var sites = nodes.Select(xNode => JsonConvert.DeserializeObject<SiteInfo>(JsonConvert.SerializeXNode(xNode, Formatting.None, true))).ToList();
+            var sites = db.Sites.Select(a => Mapper.Map<SiteInfo>(a)).ToList();
             var tasks = sites.Select(site => new Task(() =>
             {
                 HtmlNodeCollection resultNodes = null;
@@ -78,6 +80,10 @@ namespace Book.Pages
                             var bookName = resultNode.SelectSingleNode(site.BookNameNode).InnerText;
                             var author = resultNode.SelectSingleNode(site.AuthorNode)?.InnerText;
                             var href = resultNode.SelectSingleNode(site.BookURLNode).GetAttributeValue("href", string.Empty);
+                            if (new Uri(url).Host.Contains("qidian.com"))
+                            {
+                                href += "#Catalog";
+                            }
                             string update = string.Empty;
                             if (!string.IsNullOrEmpty(site.UpdateNode))
                             {
@@ -89,7 +95,7 @@ namespace Book.Pages
                                 description = resultNode.SelectSingleNode(site.DescriptionNode)?.InnerText;
                             }
 
-                            System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                            Application.Current.Dispatcher.Invoke(() =>
                             {
                                 BookSearchResults.Add(new BookSearchResult
                                 {
@@ -97,8 +103,9 @@ namespace Book.Pages
                                     Author = author?.Trim('\r')?.Trim('\n')?.Trim(),
                                     Description = description?.Trim('\r')?.Trim('\n')?.Trim(),
                                     Update = update?.Trim('\r')?.Trim('\n')?.Trim(),
-                                    SRC = href,
-                                    Source = site.Name?.Trim('\r')?.Trim('\n')?.Trim()
+                                    SRC = WebHelper.Combine(new Uri(url), href),
+                                    Source = site.Name?.Trim('\r')?.Trim('\n')?.Trim(),
+                                    SiteID = site.ID
                                 });
                             });
                         }
@@ -108,6 +115,70 @@ namespace Book.Pages
             })).ToList();
             isOpen = true;
             tasks.ForEach(task => task.Start());
+        }
+
+        public void ConfirmSelect()
+        {
+            if (SelectedBookSearchResult != null)
+            {
+                RadWindow.Confirm(new DialogParameters
+                {
+                    Header = "提示",
+                    Content = $"确定要添加《{SelectedBookSearchResult.BookName}》到书架么？",
+                    OkButtonContent = "确定",
+                    CancelButtonContent = "取消",
+                    Closed = (o, arg) =>
+                    {
+                        if (arg.DialogResult ?? false)
+                        {
+                            SaveToShelf(SelectedBookSearchResult);
+                        }
+                    }
+                });
+            }
+        }
+
+        private void SaveToShelf(BookSearchResult bookSearchResult)
+        {
+            var book = db.Books.SingleOrDefault(a => a.Name == bookSearchResult.BookName);
+            if (book == null)
+            {
+                book = new TB_Book
+                {
+                    Name = bookSearchResult.BookName,
+                    Author = bookSearchResult.Author,
+                    Description = bookSearchResult.Description,
+                    Type = string.Empty
+                };
+                db.Books.Add(book);
+                db.SaveChanges();
+            }
+            book.CurrentSource = bookSearchResult.SRC;
+            book.CurrentSiteID = bookSearchResult.SiteID;
+            db.SaveChanges();
+            container.Get<ShellViewModel>().LoadShelf();
+            CloseDialog();
+        }
+
+        public void SearchResultsViewDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (((FrameworkElement)e.OriginalSource).DataContext is BookSearchResult bookSearchResult)
+            {
+                RadWindow.Confirm(new DialogParameters
+                {
+                    Header = "提示",
+                    Content = $"确定要添加《{bookSearchResult.BookName}》到书架么？",
+                    OkButtonContent = "确定",
+                    CancelButtonContent = "取消",
+                    Closed = (o, arg) =>
+                    {
+                        if (arg.DialogResult ?? false)
+                        {
+                            SaveToShelf(bookSearchResult);
+                        }
+                    }
+                });
+            }
         }
     }
 }

@@ -8,5 +8,6 @@
         public string Update { get; internal set; }
         public string SRC { get; internal set; }
         public string Source { get; internal set; }
+        public int SiteID { get; set; }
     }
 }

@@ -8,7 +8,7 @@ namespace Book.Models
     public class SiteInfo : PropertyChangedBase
     {
         [DataMember]
-        public Guid ID { get; set; }
+        public int ID { get; set; }
 
         /// <summary>
         /// 站点名称
@@ -69,5 +69,20 @@ namespace Book.Models
         /// </summary>
         [DataMember]
         public string UpdateNode { get; set; }
+
+        /// <summary>
+        /// 章节节点
+        /// </summary>
+        [DataMember]
+        public string ChapterNode { get; set; }
+
+        [DataMember]
+        public string ChapterNameNode { get; set; }
+
+        [DataMember]
+        public string ChapterUrlNode { get; set; }
+
+        [DataMember]
+        public string ContentNode { get; set; }
     }
 }

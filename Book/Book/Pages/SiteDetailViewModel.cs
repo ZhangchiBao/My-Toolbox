@@ -1,10 +1,9 @@
-﻿using Book.Models;
+﻿using AutoMapper;
+using Book.Models;
 using Newtonsoft.Json;
 using Stylet;
 using StyletIoC;
-using System;
 using System.Linq;
-using System.Xml.Linq;
 using Telerik.Windows.Controls;
 
 namespace Book.Pages
@@ -13,66 +12,20 @@ namespace Book.Pages
     {
         private readonly IContainer container;
         private readonly IViewManager viewManager;
+        private readonly DBContext db;
 
-        public SiteDetailViewModel(IContainer container, IViewManager viewManager)
+        public SiteDetailViewModel(IContainer container, IViewManager viewManager, DBContext db)
         {
             this.container = container;
             this.viewManager = viewManager;
+            this.db = db;
         }
 
         public SiteInfo Site { get; set; }
 
-        /// <summary>
-        /// 站点名称
-        /// </summary>
-        public string Name { get; set; }
+        public SiteInfo ShowSite { get; set; }
 
-        /// <summary>
-        /// 站点主页
-        /// </summary>
-        public string URL { get; set; }
-
-        /// <summary>
-        /// 站点搜索链接
-        /// </summary>
-        public string SearchURL { get; set; }
-
-        /// <summary>
-        /// 搜索结果页容量
-        /// </summary>
-        public uint? SearchSize { get; set; }
-
-        /// <summary>
-        /// 书籍搜索结果节点
-        /// </summary>
-        public string BookResultsNode { get; set; }
-
-        /// <summary>
-        /// 书名节点
-        /// </summary>
-        public string BookNameNode { get; set; }
-
-        /// <summary>
-        /// 作者节点
-        /// </summary>
-        public string AuthorNode { get; set; }
-
-        /// <summary>
-        /// 最新章节节点
-        /// </summary>
-        public string UpdateNode { get; set; }
-
-        /// <summary>
-        /// 简介节点
-        /// </summary>
-        public string DescriptionNode { get; set; }
-
-        /// <summary>
-        /// 书地址节点
-        /// </summary>
-        public string BookURLNode { get; set; }
-
-        public bool CanSaveChange => !string.IsNullOrEmpty(Name);
+        public bool CanSaveChange => ShowSite != null && !string.IsNullOrEmpty(ShowSite.Name);
 
         protected override void OnPropertyChanged(string propertyName)
         {
@@ -82,7 +35,7 @@ namespace Book.Pages
                 case nameof(Site):
                     ObjToProperties();
                     break;
-                case nameof(Name):
+                case "Name":
                     NotifyOfPropertyChange(nameof(CanSaveChange));
                     break;
             }
@@ -103,23 +56,17 @@ namespace Book.Pages
         /// </summary>
         private void SaveSites()
         {
-            var sitesSettingViewModel = container.Get<SitesSettingViewModel>();
-            if (Site.ID == Guid.Empty)
+            if (Site.ID == 0)
             {
-                Site.ID = Guid.NewGuid();
-                sitesSettingViewModel.Sites.Add(Site);
+                db.Sites.Add(Mapper.Map<TB_Site>(Site));
             }
             else
             {
-                var site = sitesSettingViewModel.Sites.Single(a => a.ID == Site.ID);
-                site.Update(Site, nameof(site.ID));
+                var site = db.Sites.Single(a => a.ID == Site.ID);
+                site.Update(Mapper.Map<TB_Site>(Site), nameof(site.ID));
             }
-            XElement xElement = new XElement("Sites");
-            foreach (var site in sitesSettingViewModel.Sites)
-            {
-                xElement.Add(JsonConvert.DeserializeXNode(JsonConvert.SerializeObject(site), "Site").Root);
-            }
-            xElement.Save("sites.xml");
+            db.SaveChanges();
+            container.Get<SitesSettingViewModel>().LoadSites();
         }
 
         /// <summary>
@@ -138,34 +85,26 @@ namespace Book.Pages
         {
             var dialog = (RadWindow)View;
             dialog.Close();
+            Site = null;
         }
 
         private void ObjToProperties()
         {
-            Name = Site?.Name;
-            URL = Site?.URL;
-            BookNameNode = Site?.BookNameNode;
-            AuthorNode = Site?.AuthorNode;
-            BookURLNode = Site?.BookURLNode;
-            SearchURL = Site?.SearchURL;
-            SearchSize = Site?.SearchSize;
-            BookResultsNode = Site?.BookResultsNode;
-            DescriptionNode = Site?.DescriptionNode;
-            UpdateNode = Site?.UpdateNode;
+            ShowSite = JsonConvert.DeserializeObject<SiteInfo>(JsonConvert.SerializeObject(Site));
+            if (ShowSite != null)
+            {
+                ShowSite.PropertyChanged += (s, e) =>
+                {
+                    OnPropertyChanged(e.PropertyName);
+                };
+            }
+
+            NotifyOfPropertyChange(nameof(CanSaveChange));
         }
 
         private void PropertiesToObj()
         {
-            Site.Name = Name;
-            Site.URL = URL;
-            Site.BookNameNode = BookNameNode;
-            Site.BookURLNode = BookURLNode;
-            Site.AuthorNode = AuthorNode;
-            Site.SearchURL = SearchURL;
-            Site.SearchSize = SearchSize;
-            Site.BookResultsNode = BookResultsNode;
-            Site.DescriptionNode = DescriptionNode;
-            Site.UpdateNode = UpdateNode;
+            Site = JsonConvert.DeserializeObject<SiteInfo>(JsonConvert.SerializeObject(ShowSite));
         }
     }
 }
