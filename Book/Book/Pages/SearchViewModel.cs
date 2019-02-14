@@ -18,10 +18,10 @@ namespace Book.Pages
     {
         private readonly IViewManager viewManager;
         private readonly IContainer container;
-        private readonly DBContext db;
+        private readonly SitesDBContext db;
         private bool isOpen;
 
-        public SearchViewModel(IViewManager viewManager, IContainer container, DBContext db)
+        public SearchViewModel(IViewManager viewManager, IContainer container, SitesDBContext db)
         {
             this.viewManager = viewManager;
             this.container = container;
@@ -33,6 +33,9 @@ namespace Book.Pages
         /// </summary>
         public string SearchKeyword { get; set; }
 
+        /// <summary>
+        /// 选中搜索结果
+        /// </summary>
         public BookSearchResult SelectedBookSearchResult { get; set; }
 
         /// <summary>
@@ -117,6 +120,9 @@ namespace Book.Pages
             tasks.ForEach(task => task.Start());
         }
 
+        /// <summary>
+        /// 确认选择
+        /// </summary>
         public void ConfirmSelect()
         {
             if (SelectedBookSearchResult != null)
@@ -138,28 +144,40 @@ namespace Book.Pages
             }
         }
 
+        /// <summary>
+        /// 保存到书架
+        /// </summary>
+        /// <param name="bookSearchResult"></param>
         private void SaveToShelf(BookSearchResult bookSearchResult)
         {
-            var book = db.Books.SingleOrDefault(a => a.Name == bookSearchResult.BookName);
-            if (book == null)
+            using (var bookDB = new BookDBContext(bookSearchResult.BookName))
             {
-                book = new TB_Book
+                var book = db.Books.SingleOrDefault(a => a.Name == bookSearchResult.BookName);
+                if (book == null)
                 {
-                    Name = bookSearchResult.BookName,
-                    Author = bookSearchResult.Author,
-                    Description = bookSearchResult.Description,
-                    Type = string.Empty
-                };
-                db.Books.Add(book);
+                    book = new TB_Book
+                    {
+                        Name = bookSearchResult.BookName,
+                        Author = bookSearchResult.Author,
+                        Description = bookSearchResult.Description,
+                        Type = string.Empty
+                    };
+                    db.Books.Add(book);
+                    db.SaveChanges();
+                }
+                book.CurrentSource = bookSearchResult.SRC;
+                book.CurrentSiteID = bookSearchResult.SiteID;
                 db.SaveChanges();
             }
-            book.CurrentSource = bookSearchResult.SRC;
-            book.CurrentSiteID = bookSearchResult.SiteID;
-            db.SaveChanges();
-            container.Get<ShellViewModel>().LoadShelf();
+            container.Get<ShellViewModel>().RefreshShelf();
             CloseDialog();
         }
 
+        /// <summary>
+        /// 搜索结果列表双击
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void SearchResultsViewDoubleClick(object sender, MouseEventArgs e)
         {
             if (((FrameworkElement)e.OriginalSource).DataContext is BookSearchResult bookSearchResult)

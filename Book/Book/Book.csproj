@@ -372,17 +372,25 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BookDBContext.cs" />
     <Compile Include="Bootstrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Command.cs" />
     <Compile Include="Common\ExtensionMethods.cs" />
     <Compile Include="Common\WebHelper.cs" />
+    <Compile Include="Converters\ChapterWidthConverter.cs" />
     <Compile Include="Converters\VisbilityToBooleanConverter.cs" />
-    <Compile Include="DBContext.cs" />
+    <Compile Include="SitesDBContext.cs" />
     <Compile Include="Models\BookInfo.cs" />
     <Compile Include="Models\BookSearchResult.cs" />
+    <Compile Include="Models\ChapterInfo.cs" />
+    <Compile Include="Models\ShowBook.cs" />
     <Compile Include="Models\SiteInfo.cs" />
+    <Compile Include="Pages\BookShowView.xaml.cs">
+      <DependentUpon>BookShowView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\BookShowViewModel.cs" />
     <Compile Include="Pages\SearchView.xaml.cs">
       <DependentUpon>SearchView.xaml</DependentUpon>
     </Compile>
@@ -431,6 +439,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Pages\BookShowView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\SearchView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

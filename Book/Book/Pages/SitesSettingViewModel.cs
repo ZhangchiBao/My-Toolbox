@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Telerik.Windows.Controls;
+using Telerik.Windows.Controls.GridView;
 
 namespace Book.Pages
 {
@@ -14,9 +15,9 @@ namespace Book.Pages
     {
         private readonly IViewManager viewManager;
         private readonly IContainer container;
-        private readonly DBContext db;
+        private readonly SitesDBContext db;
 
-        public SitesSettingViewModel(IViewManager viewManager, IContainer container, DBContext db)
+        public SitesSettingViewModel(IViewManager viewManager, IContainer container, SitesDBContext db)
         {
             this.viewManager = viewManager;
             this.container = container;
@@ -38,6 +39,8 @@ namespace Book.Pages
         /// </summary>
         public bool CanDeleteSite => SelectedSite != null;
 
+        public bool CanUpdateSite => SelectedSite != null;
+
         /// <summary>
         /// 添加站点
         /// </summary>
@@ -45,6 +48,17 @@ namespace Book.Pages
         {
             var site = new SiteInfo();
             container.Get<SiteDetailViewModel>().Site = site;
+            var siteDetailView = (RadWindow)viewManager.CreateAndBindViewForModelIfNecessary(container.Get<SiteDetailViewModel>());
+            siteDetailView.Owner = (Window)viewManager.CreateAndBindViewForModelIfNecessary(container.Get<ShellViewModel>());
+            siteDetailView.ShowDialog();
+        }
+
+        /// <summary>
+        /// 编辑站点
+        /// </summary>
+        public void UpdateSite()
+        {
+            container.Get<SiteDetailViewModel>().Site = SelectedSite;
             var siteDetailView = (RadWindow)viewManager.CreateAndBindViewForModelIfNecessary(container.Get<SiteDetailViewModel>());
             siteDetailView.Owner = (Window)viewManager.CreateAndBindViewForModelIfNecessary(container.Get<ShellViewModel>());
             siteDetailView.ShowDialog();
@@ -74,11 +88,19 @@ namespace Book.Pages
             }
         }
 
-        public void SitesGridRightButtonDown(object sender, MouseButtonEventArgs e)
+        public void SitesViewContextMenuOpened(object sender, RoutedEventArgs e)
         {
-            if (!(((FrameworkElement)e.OriginalSource).DataContext is SiteInfo))
+            if (sender is RadContextMenu menu)
             {
-                SelectedSite = null;
+                GridViewCell clickedItemContainer = menu.GetClickedElement<GridViewCell>();
+                if (clickedItemContainer != null)
+                {
+                    SelectedSite = clickedItemContainer.DataContext as SiteInfo;
+                }
+                else
+                {
+                    SelectedSite = null;
+                }
             }
         }
 
@@ -103,6 +125,7 @@ namespace Book.Pages
             {
                 case nameof(SelectedSite):
                     NotifyOfPropertyChange(nameof(CanDeleteSite));
+                    NotifyOfPropertyChange(nameof(CanUpdateSite));
                     break;
             }
         }

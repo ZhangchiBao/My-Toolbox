@@ -25,15 +25,16 @@
             RowIndicatorVisibility="Collapsed"
             MouseDoubleClick="{s:Action Method=SitesGridDoubleClick}"
             IsFilteringAllowed="False"
-            MouseRightButtonDown="{s:Action Method=SitesGridRightButtonDown}"
             SelectedItem="{Binding Path=SelectedSite,UpdateSourceTrigger=PropertyChanged}"
             ItemsSource="{Binding Path=Sites,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}">
-            <telerik:RadGridView.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="新建站点" Command="{s:Action Method=AddSite}"/>
-                    <MenuItem Header="删除站点" Command="{s:Action Method=DeleteSite}"/>
-                </ContextMenu>
-            </telerik:RadGridView.ContextMenu>
+            <telerik:RadContextMenu.ContextMenu>
+                <telerik:RadContextMenu x:Name="radContextMenu"
+                                        Opened="{s:Action Method=SitesViewContextMenuOpened}">
+                    <telerik:RadMenuItem Header="新建站点" Command="{s:Action Method=AddSite}" IconColumnWidth="0"/>
+                    <telerik:RadMenuItem Header="编辑站点" Command="{s:Action Method=UpdateSite}" IconColumnWidth="0"/>
+                    <telerik:RadMenuItem Header="删除站点" Command="{s:Action Method=DeleteSite}" IconColumnWidth="0"/>
+                </telerik:RadContextMenu>
+            </telerik:RadContextMenu.ContextMenu>
             <telerik:RadGridView.Columns>
                 <telerik:GridViewDataColumn Header="网站名称" DataMemberBinding="{Binding Path=Name}" IsReadOnly="True" Width="*" TextBlock.TextAlignment="Center"/>
                 <telerik:GridViewDataColumn Header="地址" DataMemberBinding="{Binding Path=URL}" IsReadOnly="True" Width="3*" TextBlock.TextAlignment="Center"/>

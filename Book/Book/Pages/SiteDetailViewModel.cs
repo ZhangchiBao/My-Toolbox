@@ -12,9 +12,9 @@ namespace Book.Pages
     {
         private readonly IContainer container;
         private readonly IViewManager viewManager;
-        private readonly DBContext db;
+        private readonly SitesDBContext db;
 
-        public SiteDetailViewModel(IContainer container, IViewManager viewManager, DBContext db)
+        public SiteDetailViewModel(IContainer container, IViewManager viewManager, SitesDBContext db)
         {
             this.container = container;
             this.viewManager = viewManager;
