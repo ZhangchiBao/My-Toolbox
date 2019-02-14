@@ -357,7 +357,6 @@
     </Reference>
     <Reference Include="Telerik.Windows.Themes.Fluent">
       <HintPath>..\lib\RCWPF\2018.3.1016.45.NoXaml\Telerik.Windows.Themes.Fluent.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />

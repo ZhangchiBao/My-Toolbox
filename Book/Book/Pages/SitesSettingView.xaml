@@ -22,6 +22,9 @@
         <telerik:RadGridView
             AutoGenerateColumns="False"
             ShowGroupPanel="False"
+            CanUserSortColumns="False"
+            CanUserReorderColumns="False"
+            CanUserResizeColumns="False"
             RowIndicatorVisibility="Collapsed"
             MouseDoubleClick="{s:Action Method=SitesGridDoubleClick}"
             IsFilteringAllowed="False"

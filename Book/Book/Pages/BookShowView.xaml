@@ -17,7 +17,7 @@
     <Grid Margin="5">
         <DockPanel x:Name="CatalogView" Visibility="{Binding Path=CatalogVisibility}">
             <DockPanel DockPanel.Dock="Top">
-                <Image Width="120" DockPanel.Dock="Left"/>
+                <!--<Image Width="120" DockPanel.Dock="Left"/>-->
                 <StackPanel x:Name="BookIntroductionView">
                     <StackPanel Orientation="Horizontal" Margin="5">
                         <TextBlock Text="{Binding CurrentBook.Name}" FontSize="24" VerticalAlignment="Bottom"/>
