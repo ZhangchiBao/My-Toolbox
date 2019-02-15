@@ -148,20 +148,14 @@ namespace Book.Pages
         /// 保存到书架
         /// </summary>
         /// <param name="bookSearchResult"></param>
-        private void SaveToShelf(BookSearchResult bookSearchResult)
+        private async void SaveToShelf(BookSearchResult bookSearchResult)
         {
             using (var bookDB = new BookDBContext(bookSearchResult.BookName))
             {
                 var book = db.Books.SingleOrDefault(a => a.Name == bookSearchResult.BookName);
                 if (book == null)
                 {
-                    book = new TB_Book
-                    {
-                        Name = bookSearchResult.BookName,
-                        Author = bookSearchResult.Author,
-                        Description = bookSearchResult.Description,
-                        Type = string.Empty
-                    };
+                    book = Mapper.Map<TB_Book>(bookSearchResult);
                     db.Books.Add(book);
                     db.SaveChanges();
                 }
@@ -169,8 +163,14 @@ namespace Book.Pages
                 book.CurrentSiteID = bookSearchResult.SiteID;
                 db.SaveChanges();
             }
-            container.Get<ShellViewModel>().RefreshShelf();
             CloseDialog();
+            ShellViewModel shellViewModel = container.Get<ShellViewModel>();
+            await shellViewModel.RefreshShelf();
+            shellViewModel.SelectedBook = shellViewModel.LocalBooks.SingleOrDefault(a => a.Name == bookSearchResult.BookName);
+            if (shellViewModel.CanUpdateBook)
+            {
+                shellViewModel.UpdateBook();  
+            }
         }
 
         /// <summary>

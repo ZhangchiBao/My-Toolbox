@@ -69,5 +69,19 @@ namespace Book
 
             return value;
         }
+
+        public static string TrimAll(this string source, params char[] args)
+        {
+            string temp = string.Empty;
+            do
+            {
+                temp = source;
+                foreach (var arg in args)
+                {
+                    source = source.Trim(arg);
+                }
+            } while (temp.Length != source.Length);
+            return temp;
+        }
     }
 }

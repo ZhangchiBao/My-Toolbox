@@ -53,7 +53,7 @@
             <TextBlock DockPanel.Dock="Top" Text="{Binding Path=CurrentChapter.Title}" FontSize="20" HorizontalAlignment="Center" Margin="5"/>
             <Grid DockPanel.Dock="Bottom">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <telerik:RadButton Content="上一章" Margin="5" VerticalAlignment="Center" Focusable="False"/>
+                    <telerik:RadButton Content="上一章" Margin="5" VerticalAlignment="Center" Focusable="False" Command="{s:Action Method=GotoPreviousChapter}"/>
                     <telerik:RadButton Content="目录" Margin="5" VerticalAlignment="Center" Focusable="False" Command="{s:Action Method=GotoCatalog}"/>
                     <telerik:RadButton Content="下一章" Margin="5" VerticalAlignment="Center" Focusable="False" Command="{s:Action Method=GotoNextChapter}"/>
                 </StackPanel>
