@@ -11,7 +11,7 @@
                    WindowStartupLocation="CenterOwner"
                    ResizeMode="NoResize"
                    CanMove="False"
-                   CanClose="True"
+                   CanClose="False"
                    Style="{StaticResource RadWindowStyle}"
                    d:DataContext="{d:DesignData local:ExportViewModel}"
                    SizeToContent="True"
@@ -22,31 +22,36 @@
         </system:Boolean>
     </telerik:RadWindow.Resources>
     <Grid>
-        <StackPanel Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="5">
-                <TextBlock Text="小说名称：" Width="90" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
-                <TextBlock Text="{Binding Path=CurrentBook.Name}" VerticalAlignment="Center"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="5">
-                <TextBlock Text="作者：" Width="90" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
-                <TextBlock Text="{Binding Path=CurrentBook.Author}" VerticalAlignment="Center"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="5">
-                <TextBlock Text="导出类型：" Width="90" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
-                <telerik:RadComboBox VerticalAlignment="Center" Width="100"
+        <telerik:RadBusyIndicator IsBusy="{Binding IsBusy}" IsIndeterminate="True">
+            <telerik:RadBusyIndicator.BusyContent>
+                <TextBlock Text="{Binding Path=BusyContent}" FontSize="20"/>
+            </telerik:RadBusyIndicator.BusyContent>
+            <StackPanel Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="5">
+                    <TextBlock Text="小说名称：" Width="90" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding Path=CurrentBook.Name}" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="5">
+                    <TextBlock Text="作者：" Width="90" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding Path=CurrentBook.Author}" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="5">
+                    <TextBlock Text="导出类型：" Width="90" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
+                    <telerik:RadComboBox VerticalAlignment="Center" Width="100"
                                      ItemsSource="{Binding Path=Exports}"
                                      Focusable="False" SelectedItem="{Binding Path=SelectedExport,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
                                      DisplayMemberPath="Title"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="5">
+                    <TextBlock Text="保存路径：" Width="90" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
+                    <TextBox Width="200" VerticalAlignment="Center" IsReadOnly="True" Focusable="False" Text="{Binding Path=ExportFileName}"/>
+                    <telerik:RadButton Content="···" VerticalAlignment="Center" Margin="5" Focusable="False" Command="{s:Action Method=SelectExportPath}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <telerik:RadButton Content="导出" Margin="5" VerticalAlignment="Center" Focusable="False" Command="{s:Action Method=DoExport}"/>
+                    <telerik:RadButton Content="取消" Margin="5" VerticalAlignment="Center" Focusable="False" Command="{s:Action Method=CloseDialog}"/>
+                </StackPanel>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="5">
-                <TextBlock Text="保存路径：" Width="90" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
-                <TextBox Width="200" VerticalAlignment="Center" IsReadOnly="True" Focusable="False" Text="{Binding Path=ExportFileName}"/>
-                <telerik:RadButton Content="···" VerticalAlignment="Center" Margin="5" Focusable="False" Command="{s:Action Method=SelectExportPath}"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <telerik:RadButton Content="导出" Margin="5" VerticalAlignment="Center" Focusable="False" Command="{s:Action Method=DoExport}"/>
-                <telerik:RadButton Content="取消" Margin="5" VerticalAlignment="Center" Focusable="False" Command="{s:Action Method=CloseDialog}"/>
-            </StackPanel>
-        </StackPanel>
+        </telerik:RadBusyIndicator>
     </Grid>
 </telerik:RadWindow>

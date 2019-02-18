@@ -51,6 +51,8 @@ namespace Book.Pages
         /// </summary>
         public string ExportFileName { get; set; }
 
+        public bool IsBusy { get; set; }
+
         /// <summary>
         /// 关闭窗口
         /// </summary>
@@ -60,7 +62,22 @@ namespace Book.Pages
             SelectedExport = Exports.First();
             ExportFileName = string.Empty;
             SelectFolder = string.Empty;
-            ((RadWindow)View).Close();
+            IsBusy = false;
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                ((RadWindow)View).WindowState = System.Windows.WindowState.Normal;
+                ((RadWindow)View).Close();
+            });
+        }
+
+        public void SelectExportPath()
+        {
+            var dialog = new RadOpenFolderDialog();
+            dialog.Multiselect = false;
+            if (dialog.ShowDialog() ?? false)
+            {
+                SelectFolder = dialog.FileName;
+            }
         }
 
         /// <summary>
@@ -82,7 +99,7 @@ namespace Book.Pages
                         {
                             if (e.DialogResult ?? false)
                             {
-                                await container.Get<ShellViewModel>().StartBusy(() =>
+                                await container.Get<ShellViewModel>().SetBusy(() =>
                                 {
                                     HtmlWeb web = new HtmlWeb();
                                     var site = db.Sites.Single(a => a.ID == CurrentBook.CurrentSiteID);
@@ -130,32 +147,51 @@ namespace Book.Pages
         /// <summary>
         /// 执行导出
         /// </summary>
-        private void ExecuteExport()
+        private async void ExecuteExport()
         {
             using (var bookDB = new BookDBContext(CurrentBook.Name))
             {
+                if (File.Exists(ExportFileName))
+                {
+                    File.Delete(ExportFileName);
+                }
                 var chapterList = bookDB.Chapters.ToList().Select(a => Mapper.Map<ChapterInfo>(a)).ToList();
-                if (SelectedExport.Export(ExportFileName, CurrentBook, chapterList))
+                await container.Get<ShellViewModel>().SetBusy(() =>
                 {
-                    RadWindow.Alert(new DialogParameters
+                    App.Current.Dispatcher.Invoke(() =>
                     {
-                        Header = "提示",
-                        Content = "生成电子书成功！",
-                        OkButtonContent = "确定",
-                        Owner = container.Get<ShellView>()
+                        ((RadWindow)View).Close();
                     });
-                }
-                else
+                    if (SelectedExport.Export(ExportFileName, CurrentBook, chapterList))
+                    {
+                        App.Current.Dispatcher.Invoke(() =>
+                        {
+                            RadWindow.Alert(new DialogParameters
+                            {
+                                Header = "提示",
+                                Content = "生成电子书成功！",
+                                OkButtonContent = "确定",
+                                Owner = container.Get<ShellView>()
+                            });
+                        });
+                    }
+                    else
+                    {
+                        App.Current.Dispatcher.Invoke(() =>
+                        {
+                            RadWindow.Alert(new DialogParameters
+                            {
+                                Header = "提示",
+                                Content = "生成电子书失败！",
+                                OkButtonContent = "确定",
+                                Owner = container.Get<ShellView>()
+                            });
+                        });
+                    }
+                }, "正在生成电子书").ContinueWith(task =>
                 {
-                    RadWindow.Alert(new DialogParameters
-                    {
-                        Header = "提示",
-                        Content = "生成电子书失败！",
-                        OkButtonContent = "确定",
-                        Owner = container.Get<ShellView>()
-                    });
-                }
-                CloseDialog();
+                    CloseDialog();
+                });
             }
         }
 

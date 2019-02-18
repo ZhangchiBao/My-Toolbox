@@ -76,6 +76,16 @@ namespace Book.Properties {
         }
         
         /// <summary>
+        ///   查找 System.Byte[] 类型的本地化资源。
+        /// </summary>
+        internal static byte[] kindlegen {
+            get {
+                object obj = ResourceManager.GetObject("kindlegen", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 body {
         ///font-family: sans-serif;
         ///}

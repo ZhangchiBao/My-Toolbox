@@ -86,7 +86,7 @@ namespace Book.Pages
         /// <param name="chapterInfo"></param>
         public async void GotoChapter(ChapterInfo chapterInfo)
         {
-            await container.Get<ShellViewModel>().StartBusy(() =>
+            await container.Get<ShellViewModel>().SetBusy(() =>
             {
                 using (var bookDB = new BookDBContext(CurrentBook.Name))
                 {
@@ -140,7 +140,7 @@ namespace Book.Pages
         /// </summary>
         public async void RefreshChapterList()
         {
-            await container.Get<ShellViewModel>().StartBusy(() =>
+            await container.Get<ShellViewModel>().SetBusy(() =>
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {

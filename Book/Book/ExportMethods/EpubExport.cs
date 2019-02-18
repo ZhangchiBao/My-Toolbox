@@ -128,15 +128,13 @@ namespace Book.ExportMethods
 
                 File.WriteAllText(Path.Combine(oebpsDirectory, "style.css"), Properties.Resources.style);
                 ZipHelper.ZipDirectory(tempDirectory, fileName, false);
+                Directory.Delete(tempDirectory, true);
                 return true;
             }
             catch (Exception)
             {
-                return false;
-            }
-            finally
-            {
                 Directory.Delete(tempDirectory, true);
+                return false;
             }
         }
     }

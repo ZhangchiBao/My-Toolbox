@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using System;
+using System.IO;
+using System.Reflection;
+using System.Windows;
 
 namespace Book
 {
@@ -11,5 +14,31 @@ namespace Book
         /// 书架目录名
         /// </summary>
         public const string SHELF_DIRECTORY = "shelf";
+        private readonly string baseDirectory;
+
+        public App()
+        {
+            //AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+            baseDirectory = Path.Combine(Environment.CurrentDirectory, "bin");
+            if (!Directory.Exists(baseDirectory))
+            {
+                Directory.CreateDirectory(baseDirectory);
+            }
+            var dlls = Directory.GetFiles(Environment.CurrentDirectory, "*.dll", SearchOption.TopDirectoryOnly);
+            foreach (var dll in dlls)
+            {
+                if (File.Exists(Path.Combine(baseDirectory, new FileInfo(dll).Name)))
+                {
+                    File.Delete(Path.Combine(baseDirectory, new FileInfo(dll).Name));
+                }
+                File.Move(dll, Path.Combine(baseDirectory, new FileInfo(dll).Name));
+            }
+        }
+
+        private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            AssemblyName assemblyName = new AssemblyName(args.Name);
+            return Assembly.LoadFrom(baseDirectory);
+        }
     }
 }
