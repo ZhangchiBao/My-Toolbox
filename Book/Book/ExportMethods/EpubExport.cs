@@ -12,7 +12,7 @@ namespace Book.ExportMethods
     {
         public string Extension => ".epub";
 
-        public string Title => "EPUB";
+        public string Title => "EPUB文件";
 
         public bool Export(string fileName, BookInfo book, IList<ChapterInfo> chapters)
         {

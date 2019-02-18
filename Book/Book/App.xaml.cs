@@ -2,6 +2,7 @@
 using System.IO;
 using System.Reflection;
 using System.Windows;
+using Telerik.Windows.Controls;
 
 namespace Book
 {
@@ -18,7 +19,7 @@ namespace Book
 
         public App()
         {
-            //AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+            LocalizationManager.Manager = new ChineseLocalizationManager();
             baseDirectory = Path.Combine(Environment.CurrentDirectory, "bin");
             if (!Directory.Exists(baseDirectory))
             {

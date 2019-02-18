@@ -11,7 +11,7 @@
                    WindowStartupLocation="CenterOwner"
                    ResizeMode="NoResize"
                    CanMove="False"
-                   CanClose="False"
+                   CanClose="True"
                    Style="{StaticResource RadWindowStyle}"
                    d:DataContext="{d:DesignData local:ExportViewModel}"
                    SizeToContent="True"
