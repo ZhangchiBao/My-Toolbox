@@ -1,6 +1,5 @@
 ﻿using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -9,7 +8,7 @@ namespace Book
     public class SitesDBContext : DbContext
     {
         public SitesDBContext()
-        {            
+        {
             Database.EnsureCreated();
         }
 
@@ -55,12 +54,14 @@ namespace Book
         /// 章节节点
         /// </summary>
         public string ChapterNode { get; set; }
-        
+
         public string ChapterNameNode { get; set; }
-        
+
         public string ChapterUrlNode { get; set; }
 
         public string ContentNode { get; set; }
+
+        public bool IsReadOnly { get; set; }
     }
 
     [Table("Books")]

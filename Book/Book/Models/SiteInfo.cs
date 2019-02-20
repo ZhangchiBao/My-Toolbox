@@ -84,5 +84,8 @@ namespace Book.Models
 
         [DataMember]
         public string ContentNode { get; set; }
+
+        [DataMember]
+        public bool IsReadOnly { get; set; }
     }
 }
