@@ -1,0 +1,38 @@
+﻿<Page
+    x:Class="Book.App.View.MainView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Book.App.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:Book.App.ViewModel"
+    xmlns:model="using:Book.App.Model"
+    mc:Ignorable="d"
+    d:DataContext="{d:DesignData vm:MainViewModel}"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.DataContext>
+        <Binding Source="{StaticResource Locator}" Path="Main"/>
+    </Page.DataContext>
+    <Grid>
+        <NavigationView x:Name="NVView"
+                        IsBackButtonVisible="Collapsed"
+                        AlwaysShowHeader="True"
+                        IsSettingsVisible="True"
+                        SelectedItem="{Binding Path=SelectedNavigationItem,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                        MenuItemsSource="{Binding Path=NavigationItemList}">
+            <NavigationView.AutoSuggestBox>
+                <AutoSuggestBox Visibility="Visible" PlaceholderText="请输入搜索关键字" QueryIcon="Find" Text="{Binding Path=Keyword}" QuerySubmitted="AutoSuggestBox_QuerySubmitted"/>
+            </NavigationView.AutoSuggestBox>
+            <NavigationView.MenuItemTemplate>
+                <DataTemplate x:DataType="model:NavigationItemModel">
+                    <NavigationViewItem Content="{x:Bind Path=Title}" Tag="{x:Bind Path=Tag}">
+                        <NavigationViewItem.Icon>
+                            <SymbolIcon Symbol="{x:Bind Path=Icon}"/>
+                        </NavigationViewItem.Icon>
+                    </NavigationViewItem>
+                </DataTemplate>
+            </NavigationView.MenuItemTemplate>
+            <Frame x:Name="NVContent"/>
+        </NavigationView>
+    </Grid>
+</Page>
