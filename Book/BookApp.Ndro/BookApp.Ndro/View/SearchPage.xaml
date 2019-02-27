@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="在线搜索"
+             x:Class="BookApp.Ndro.View.SearchPage">
+    <NavigationPage.TitleView>
+        <StackLayout Orientation="Horizontal">
+            <Entry HorizontalOptions="FillAndExpand" Text="{Binding Path=Keyword}" HorizontalTextAlignment="Start" Placeholder="请输入搜索关键字" VerticalOptions="Center"/>
+            <Button HorizontalOptions="End" Text="搜索" VerticalOptions="Center" BackgroundColor="Transparent" BorderColor="Transparent" Padding="0"/>
+        </StackLayout>
+    </NavigationPage.TitleView>
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="在线搜索"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

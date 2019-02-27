@@ -70,6 +70,9 @@ namespace Book.Pages
             });
         }
 
+        /// <summary>
+        /// 选择导出路径
+        /// </summary>
         public void SelectExportPath()
         {
             var dialog = new RadOpenFolderDialog();
