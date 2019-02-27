@@ -4,10 +4,15 @@
              Title="在线搜索"
              x:Class="BookApp.Ndro.View.SearchPage">
     <NavigationPage.TitleView>
-        <StackLayout Orientation="Horizontal">
-            <Entry HorizontalOptions="FillAndExpand" Text="{Binding Path=Keyword}" HorizontalTextAlignment="Start" Placeholder="请输入搜索关键字" VerticalOptions="Center"/>
-            <Button HorizontalOptions="End" Text="搜索" VerticalOptions="Center" BackgroundColor="Transparent" BorderColor="Transparent" Padding="0"/>
-        </StackLayout>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <!--<Entry HorizontalOptions="FillAndExpand" Text="{Binding Path=Keyword}" HorizontalTextAlignment="Start" Placeholder="请输入搜索关键字" VerticalOptions="Center"/>-->
+            <SearchBar HorizontalOptions="FillAndExpand" Grid.Column="0" Text="{Binding Path=Keyword}" HorizontalTextAlignment="Start" Placeholder="请输入搜索关键字" VerticalOptions="Center" SearchCommand="{Binding Path=SearchCommand}"/>
+            <!--<Button HorizontalOptions="FillAndExpand" Grid.Column="1" Text="搜索" VerticalOptions="Center" BackgroundColor="Transparent" BorderColor="Transparent" Padding="0" Command="{Binding Path=SearchCommand}"/>-->
+        </Grid>
     </NavigationPage.TitleView>
     <ContentPage.Content>
         <StackLayout>

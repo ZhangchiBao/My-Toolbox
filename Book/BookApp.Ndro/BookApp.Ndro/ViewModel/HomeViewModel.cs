@@ -1,11 +1,12 @@
-﻿using BookApp.Ndro.View;
+﻿using BookApp.Ndro.Common;
+using BookApp.Ndro.View;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Xamarin.Forms;
-using BookApp.Ndro.Common;
 
 namespace BookApp.Ndro.ViewModel
 {
+    [View(typeof(HomePage))]
     public class HomeViewModel : BaseViewModel
     {
         private ObservableCollection<Page> _tabPages = new ObservableCollection<Page>();
@@ -14,6 +15,7 @@ namespace BookApp.Ndro.ViewModel
         public HomeViewModel()
         {
             TabPages.Add(ViewManager.CreateView<LocalShelfPage>());
+            TabPages.Add(ViewManager.CreateView<SettingPage>());
             CurrentTabPage = TabPages.First();
         }
 

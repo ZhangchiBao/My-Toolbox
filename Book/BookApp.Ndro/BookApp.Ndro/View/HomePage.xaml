@@ -5,13 +5,13 @@
              x:Class="BookApp.Ndro.View.HomePage" ItemsSource="{Binding Path=TabPages}" SelectedItem="{Binding Path=CurrentTabPage}">
     <NavigationPage.TitleView>
         <Grid>
-            <Label HorizontalOptions="FillAndExpand" Text="{Binding Path=CurrentTabPage.Title}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="Center"/>
+            <Label HorizontalOptions="CenterAndExpand" Text="{Binding Path=CurrentTabPage.Title}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="Medium" FontAttributes="Bold" VerticalOptions="Center"/>
             <Button HorizontalOptions="End" Text="搜索" VerticalOptions="Center" Clicked="Button_ClickedAsync" BackgroundColor="Transparent" BorderColor="Transparent"/>
         </Grid>
     </NavigationPage.TitleView>
     <TabbedPage.ItemTemplate>
         <DataTemplate>
-            <ContentPage Title="{Binding Path=Title}" Content="{Binding Path=Content}"/>
+            <ContentPage Title="{Binding Path=Title}" Icon="{Binding Path=Icon}" Content="{Binding Path=Content}"/>
         </DataTemplate>
     </TabbedPage.ItemTemplate>
     <!--Pages can be added as references or inline-->

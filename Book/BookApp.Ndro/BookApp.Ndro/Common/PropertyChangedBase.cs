@@ -28,11 +28,11 @@ namespace BookApp.Ndro.Common
             if (field == null || value == null || !field.Equals(value))
             {
                 field = value;
-                NotifyOfPropertyChange(propertyName);
+                NotifyPropertyChange(propertyName);
             }
         }
 
-        protected void NotifyOfPropertyChange([CallerMemberName]string propertyName = null)
+        protected void NotifyPropertyChange([CallerMemberName]string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

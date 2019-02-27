@@ -3,8 +3,8 @@ using BookApp.Ndro.View;
 
 namespace BookApp.Ndro.ViewModel
 {
-    [View(typeof(LocalShelfPage))]
-    public class LocalShelfViewModel : BaseViewModel
+    [View(typeof(SettingPage))]
+    public class SettingViewModel : BaseViewModel
     {
     }
 }

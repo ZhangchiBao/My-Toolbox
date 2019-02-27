@@ -21,14 +21,21 @@ namespace BookApp.Ndro
                 if (typeof(Page).IsAssignableFrom(type) || typeof(BaseViewModel).IsAssignableFrom(type))
                 {
                     IOC.Registe(type);
+                    if (typeof(BaseViewModel).IsAssignableFrom(type))
+                    {
+                        var viewType = type.GetCustomAttribute<ViewAttribute>();
+                        if (viewType != null)
+                        {
+                            ViewManager.RegisterView(viewType.ViewType, type);
+                        }
+                    }
                 }
             });
-            ViewManager.RegisterView<HomePage, HomeViewModel>();
-            ViewManager.RegisterView<LocalShelfPage, LocalShelfViewModel>();
-            ViewManager.RegisterView<SearchPage, SearchViewModel>();
             IOC.Build();
-            var page = ViewManager.CreateView<HomePage>();
-            MainPage = new NavigationPage(page);
+            var homePage = ViewManager.CreateView<HomePage>();
+            var mainPage = new NavigationPage(homePage);
+            mainPage.HeightRequest = 20;
+            MainPage = mainPage;
         }
 
         protected override void OnStart()
