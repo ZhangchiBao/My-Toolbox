@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              Title="设置"
+             xmlns:vm="clr-namespace:BookApp.Ndro.ViewModel"
              x:Class="BookApp.Ndro.View.SettingPage">
     <ContentPage.Content>
         <StackLayout>

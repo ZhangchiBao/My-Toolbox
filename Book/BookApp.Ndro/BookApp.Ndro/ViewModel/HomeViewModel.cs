@@ -22,5 +22,14 @@ namespace BookApp.Ndro.ViewModel
         public ObservableCollection<Page> TabPages { get => _tabPages; set => Set(ref _tabPages, value); }
 
         public Page CurrentTabPage { get => _currentTabPage; set => Set(ref _currentTabPage, value); }
+
+        public Command SearchCommand => new Command(GotoSearchViewAsync);
+
+        private async void GotoSearchViewAsync()
+        {
+            var searchViewModel = IOC.Get<SearchViewModel>();
+            searchViewModel.Keyword = "诛仙";
+            await View.Navigation.PushAsync(ViewManager.CreateView<SearchPage>());
+        }
     }
 }

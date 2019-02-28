@@ -2,23 +2,36 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              Title="在线搜索"
+             xmlns:m="clr-namespace:BookApp.Ndro.Model"
+             xmlns:c="clr-namespace:BookApp.Ndro.Control"
+             xmlns:vm="clr-namespace:BookApp.Ndro.ViewModel"
              x:Class="BookApp.Ndro.View.SearchPage">
     <NavigationPage.TitleView>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <!--<Entry HorizontalOptions="FillAndExpand" Text="{Binding Path=Keyword}" HorizontalTextAlignment="Start" Placeholder="请输入搜索关键字" VerticalOptions="Center"/>-->
-            <SearchBar HorizontalOptions="FillAndExpand" Grid.Column="0" Text="{Binding Path=Keyword}" HorizontalTextAlignment="Start" Placeholder="请输入搜索关键字" VerticalOptions="Center" SearchCommand="{Binding Path=SearchCommand}"/>
-            <!--<Button HorizontalOptions="FillAndExpand" Grid.Column="1" Text="搜索" VerticalOptions="Center" BackgroundColor="Transparent" BorderColor="Transparent" Padding="0" Command="{Binding Path=SearchCommand}"/>-->
-        </Grid>
+        <SearchBar HorizontalOptions="FillAndExpand" Grid.Column="0" Text="{Binding Path=Keyword}" HorizontalTextAlignment="Start" Placeholder="请输入搜索关键字" VerticalOptions="Center" SearchCommand="{Binding Path=SearchCommand}"/>
     </NavigationPage.TitleView>
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="在线搜索"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <c:LoadMoreListView ItemsSource="{Binding Path=Data}" RowHeight="120"
+                                SelectionMode="None"
+                                LoadMoreCommand="{Binding Path=LoadNextPageCommand}">
+                <c:LoadMoreListView.ItemTemplate>
+                    <DataTemplate x:DataType="m:BookSearchResultModel">
+                        <ViewCell>
+                            <StackLayout HorizontalOptions="Fill" VerticalOptions="CenterAndExpand" Orientation="Horizontal" Margin="0,5">
+                                <Image Source="{Binding Path=CoverURL}" HorizontalOptions="Start" VerticalOptions="FillAndExpand" WidthRequest="70" />
+                                <StackLayout HorizontalOptions="FillAndExpand">
+                                    <StackLayout Orientation="Horizontal" HorizontalOptions="Start" VerticalOptions="Start">
+                                        <Label Text="{Binding Path=Name}" HorizontalOptions="Start" FontAttributes="Bold" VerticalOptions="End" FontSize="Medium"/>
+                                        <Label Text="{Binding Path=Author}" HorizontalOptions="Start" VerticalOptions="End" Margin="10,0,0,0"/>
+                                    </StackLayout>
+                                    <Label Text="{Binding Path=Intro}" VerticalOptions="Center" HeightRequest="50"/>
+                                    <Label Text="{Binding Path=UpdateTitle}" VerticalOptions="Start" HorizontalOptions="Start"/>
+                                </StackLayout>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </c:LoadMoreListView.ItemTemplate>
+            </c:LoadMoreListView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

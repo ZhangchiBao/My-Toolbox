@@ -1,10 +1,9 @@
-﻿using BookApp.Ndro.View;
-using BookApp.Ndro.ViewModel;
+﻿using BookApp.Ndro.Common;
+using BookApp.Ndro.View;
 using System.Linq;
 using System.Reflection;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using BookApp.Ndro.Common;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace BookApp.Ndro
@@ -33,8 +32,7 @@ namespace BookApp.Ndro
             });
             IOC.Build();
             var homePage = ViewManager.CreateView<HomePage>();
-            var mainPage = new NavigationPage(homePage);
-            mainPage.HeightRequest = 20;
+            var mainPage = ViewManager.CreateView<MainPage>();
             MainPage = mainPage;
         }
 

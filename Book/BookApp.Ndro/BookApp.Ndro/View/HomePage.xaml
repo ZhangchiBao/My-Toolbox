@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-            
-             x:Class="BookApp.Ndro.View.HomePage" ItemsSource="{Binding Path=TabPages}" SelectedItem="{Binding Path=CurrentTabPage}">
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:vm="clr-namespace:BookApp.Ndro.ViewModel"
+            x:Class="BookApp.Ndro.View.HomePage" ItemsSource="{Binding Path=TabPages}" SelectedItem="{Binding Path=CurrentTabPage}">
     <NavigationPage.TitleView>
         <Grid>
             <Label HorizontalOptions="CenterAndExpand" Text="{Binding Path=CurrentTabPage.Title}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="Medium" FontAttributes="Bold" VerticalOptions="Center"/>
-            <Button HorizontalOptions="End" Text="搜索" VerticalOptions="Center" Clicked="Button_ClickedAsync" BackgroundColor="Transparent" BorderColor="Transparent"/>
+            <Button HorizontalOptions="End" Text="搜索" VerticalOptions="Center" Command="{Binding Path=SearchCommand}" BackgroundColor="Transparent" BorderColor="Transparent"/>
         </Grid>
     </NavigationPage.TitleView>
     <TabbedPage.ItemTemplate>
