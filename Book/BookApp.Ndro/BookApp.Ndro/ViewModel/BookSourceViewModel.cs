@@ -12,11 +12,11 @@ namespace BookApp.Ndro.ViewModel
     [View(typeof(BookSourcePage))]
     public class BookSourceViewModel : BaseViewModel
     {
-        private SearchBookResponse _book;
+        private BookModel _book;
         private ObservableCollection<BookSource> _bookSourceList;
         private LoadMoreStatus _loadStatus;
 
-        public SearchBookResponse Book { get => _book; internal set => Set(ref _book, value); }
+        public BookModel Book { get => _book; internal set => Set(ref _book, value); }
 
         public ObservableCollection<BookSource> BookSourceList { get => _bookSourceList; set => Set(ref _bookSourceList, value); }
 

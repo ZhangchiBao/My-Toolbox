@@ -4,4 +4,8 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>D:\Source\MyShelf\My-Toolbox\Book\BookAPP.Entity\BookAPP.Entity.xml</DocumentationFile>
+  </PropertyGroup>
+
 </Project>

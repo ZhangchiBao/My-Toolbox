@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BookAPP.Entity</name>
+    </assembly>
+    <members>
+        <member name="T:BookAPP.Entity.SearchBookResponse">
+            <summary>
+            按关键字搜索小说响应信息实体
+            </summary>
+        </member>
+        <member name="P:BookAPP.Entity.BookModel.CoverURL">
+            <summary>
+            封面地址
+            </summary>
+        </member>
+        <member name="P:BookAPP.Entity.BookModel.Name">
+            <summary>
+            小说名称
+            </summary>
+        </member>
+        <member name="P:BookAPP.Entity.BookModel.Author">
+            <summary>
+            作者
+            </summary>
+        </member>
+        <member name="P:BookAPP.Entity.BookModel.Intro">
+            <summary>
+            简介
+            </summary>
+        </member>
+        <member name="P:BookAPP.Entity.BookModel.UpdateTitle">
+            <summary>
+            最后更新标题
+            </summary>
+        </member>
+        <member name="P:BookAPP.Entity.BookModel.UpdateTime">
+            <summary>
+            最后更新时间
+            </summary>
+        </member>
+        <member name="T:BookAPP.Entity.SearchBookSourceResponse">
+            <summary>
+            搜索书源响应实体类
+            </summary>
+        </member>
+        <member name="P:BookAPP.Entity.SearchBookSourceResponse.IsLastSite">
+            <summary>
+            是否最后一个站点
+            </summary>
+        </member>
+        <member name="T:BookAPP.Entity.BookSource">
+            <summary>
+            书源信息
+            </summary>
+        </member>
+        <member name="P:BookAPP.Entity.BookSource.URL">
+            <summary>
+            地址
+            </summary>
+        </member>
+        <member name="P:BookAPP.Entity.BookSource.SiteName">
+            <summary>
+            站点名称
+            </summary>
+        </member>
+        <member name="P:BookAPP.Entity.BookSource.SiteID">
+            <summary>
+            站点ID
+            </summary>
+        </member>
+        <member name="P:BookAPP.Entity.BookSource.Update">
+            <summary>
+            最后更新
+            </summary>
+        </member>
+    </members>
+</doc>

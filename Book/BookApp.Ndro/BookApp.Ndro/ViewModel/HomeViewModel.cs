@@ -30,7 +30,7 @@ namespace BookApp.Ndro.ViewModel
         {
             var searchViewModel = IOC.Get<SearchViewModel>();
             searchViewModel.Keyword = "诛仙";
-            searchViewModel.Data = new ObservableCollection<SearchBookResponse>();
+            searchViewModel.Data = new ObservableCollection<BookModel>();
             searchViewModel.LoadStatus = Control.LoadMoreStatus.StatusDefault;
             await View.Navigation.PushAsync(ViewManager.CreateView<SearchPage>());
         }

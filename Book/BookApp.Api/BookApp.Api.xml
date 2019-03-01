@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BookApp.Api</name>
+    </assembly>
+    <members>
+        <member name="T:BookApp.Api.Controllers.BookController">
+            <summary>
+            小说相关接口
+            </summary>
+        </member>
+        <member name="M:BookApp.Api.Controllers.BookController.SearchByKeyword(System.String,System.Int32)">
+            <summary>
+            按关键字搜索小说
+            </summary>
+            <param name="keyword">关键字</param>
+            <param name="pageIndex">页码</param>
+            <returns></returns>
+        </member>
+        <member name="M:BookApp.Api.Controllers.BookController.SearchBookSource(System.String,System.String,System.Int32)">
+            <summary>
+            搜索书源
+            </summary>
+            <param name="name">书名</param>
+            <param name="author">作者</param>
+            <param name="index">序号</param>
+            <returns></returns>
+        </member>
+        <member name="M:BookApp.Api.Controllers.BookController.GetChapters(System.String,System.Int32)">
+            <summary>
+            按当前源获取章节信息
+            </summary>
+            <param name="url"></param>
+            <param name="siteId"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

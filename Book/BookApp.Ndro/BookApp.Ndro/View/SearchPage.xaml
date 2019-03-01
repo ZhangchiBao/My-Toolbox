@@ -18,7 +18,7 @@
                                 LoadStatus="{Binding Path=LoadStatus}"
                                 LoadMoreCommand="{Binding Path=LoadNextPageCommand}">
                 <c:LoadMoreListView.ItemTemplate>
-                    <DataTemplate x:DataType="e:SearchBookResponse">
+                    <DataTemplate x:DataType="e:BookModel">
                         <ViewCell>
                             <StackLayout HorizontalOptions="Fill" VerticalOptions="CenterAndExpand" Orientation="Horizontal" Margin="0,5">
                                 <Image Source="{Binding Path=CoverURL}" HorizontalOptions="Start" VerticalOptions="FillAndExpand" WidthRequest="70" />

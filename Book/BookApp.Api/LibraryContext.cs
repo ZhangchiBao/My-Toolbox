@@ -46,19 +46,16 @@ namespace BookApp.Api
 
         public string BookResultsNode { get; set; }
 
-        public string DescriptionNode { get; set; }
-
         public string UpdateNode { get; set; }
 
-        /// <summary>
-        /// 章节节点
-        /// </summary>
         public string ChapterNode { get; set; }
 
         public string ChapterNameNode { get; set; }
 
         public string ChapterUrlNode { get; set; }
 
-        public string ContentNode { get; set; }
+        public string ChapterTitleNode { get; set; }
+
+        public string ChapterParagraphNode { get; set; }
     }
 }

@@ -3,7 +3,6 @@ using BookApp.Ndro.Control;
 using BookApp.Ndro.View;
 using BookAPP.Entity;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Http;
 using Xamarin.Forms;
@@ -15,7 +14,7 @@ namespace BookApp.Ndro.ViewModel
     {
         private string _keyword;
         private int pageIndex;
-        private ObservableCollection<SearchBookResponse> _data;
+        private ObservableCollection<BookModel> _data;
         private LoadMoreStatus _loadStatus;
 
         public SearchViewModel()
@@ -25,7 +24,7 @@ namespace BookApp.Ndro.ViewModel
 
         public string Keyword { get => _keyword; set => Set(ref _keyword, value); }
 
-        public ObservableCollection<SearchBookResponse> Data { get => _data; set => Set(ref _data, value); }
+        public ObservableCollection<BookModel> Data { get => _data; set => Set(ref _data, value); }
 
         public LoadMoreStatus LoadStatus { get => _loadStatus; set => Set(ref _loadStatus, value); }
 
@@ -43,7 +42,7 @@ namespace BookApp.Ndro.ViewModel
 
         public Command ItemTappedCommand => new Command(async o =>
         {
-            if (o is SearchBookResponse book)
+            if (o is BookModel book)
             {
                 var booksourceViewModel = IOC.Get<BookSourceViewModel>();
                 booksourceViewModel.BookSourceList = new ObservableCollection<BookSource>();
@@ -60,26 +59,32 @@ namespace BookApp.Ndro.ViewModel
             {
                 var response = await client.GetAsync(url);
                 var content = await response.Content.ReadAsStringAsync();
-                var data = JsonConvert.DeserializeObject<List<SearchBookResponse>>(content);
-                if (data == null || data.Count == 0)
+                var data = JsonConvert.DeserializeObject<SearchBookResponse>(content);
+                if (data.IsSuccess)
                 {
-                    LoadStatus = LoadMoreStatus.StatusNoData;
-                }
-                else
-                {
-                    LoadStatus = LoadMoreStatus.StatusHasData;
-                }
-
-                if (Data == null)
-                {
-                    Data = new ObservableCollection<SearchBookResponse>(data);
-                }
-                else
-                {
-                    foreach (var item in data)
+                    if (data.Data == null || data.Data.Count == 0)
                     {
-                        Data.Add(item);
+                        LoadStatus = LoadMoreStatus.StatusNoData;
                     }
+                    else
+                    {
+                        LoadStatus = LoadMoreStatus.StatusHasData;
+                    }
+                    if (Data == null)
+                    {
+                        Data = new ObservableCollection<BookModel>(data.Data);
+                    }
+                    else
+                    {
+                        foreach (var item in data.Data)
+                        {
+                            Data.Add(item);
+                        }
+                    }
+                }
+                else
+                {
+                    await View.DisplayAlert("错误", data.Message, "关闭");
                 }
             }
         }
