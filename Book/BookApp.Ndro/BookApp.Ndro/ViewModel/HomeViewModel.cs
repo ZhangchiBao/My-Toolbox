@@ -1,5 +1,6 @@
 ﻿using BookApp.Ndro.Common;
 using BookApp.Ndro.View;
+using BookAPP.Entity;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Xamarin.Forms;
@@ -29,6 +30,8 @@ namespace BookApp.Ndro.ViewModel
         {
             var searchViewModel = IOC.Get<SearchViewModel>();
             searchViewModel.Keyword = "诛仙";
+            searchViewModel.Data = new ObservableCollection<SearchBookResponse>();
+            searchViewModel.LoadStatus = Control.LoadMoreStatus.StatusDefault;
             await View.Navigation.PushAsync(ViewManager.CreateView<SearchPage>());
         }
     }

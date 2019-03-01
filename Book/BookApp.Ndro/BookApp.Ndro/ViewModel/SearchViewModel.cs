@@ -1,6 +1,7 @@
 ﻿using BookApp.Ndro.Common;
-using BookApp.Ndro.Model;
+using BookApp.Ndro.Control;
 using BookApp.Ndro.View;
+using BookAPP.Entity;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,7 +15,8 @@ namespace BookApp.Ndro.ViewModel
     {
         private string _keyword;
         private int pageIndex;
-        private ObservableCollection<BookSearchResultModel> _data;
+        private ObservableCollection<SearchBookResponse> _data;
+        private LoadMoreStatus _loadStatus;
 
         public SearchViewModel()
         {
@@ -23,7 +25,9 @@ namespace BookApp.Ndro.ViewModel
 
         public string Keyword { get => _keyword; set => Set(ref _keyword, value); }
 
-        public ObservableCollection<BookSearchResultModel> Data { get => _data; set => Set(ref _data, value); }
+        public ObservableCollection<SearchBookResponse> Data { get => _data; set => Set(ref _data, value); }
+
+        public LoadMoreStatus LoadStatus { get => _loadStatus; set => Set(ref _loadStatus, value); }
 
         public Command SearchCommand => new Command(() =>
         {
@@ -37,19 +41,38 @@ namespace BookApp.Ndro.ViewModel
             DoSearch();
         });
 
+        public Command ItemTappedCommand => new Command(async o =>
+        {
+            if (o is SearchBookResponse book)
+            {
+                var booksourceViewModel = IOC.Get<BookSourceViewModel>();
+                booksourceViewModel.BookSourceList = new ObservableCollection<BookSource>();
+                await View.Navigation.PushAsync(ViewManager.CreateView<BookSourcePage>());
+                booksourceViewModel.Book = book;
+            }
+        });
+
         private async void DoSearch()
         {
-            var mainView = ViewManager.CreateView<MainPage>();
-            mainView.IsBusy = true;
+            LoadStatus = LoadMoreStatus.StatusLoading;
             var url = $"http://144.34.221.50:64445/api/book/search/{Keyword}/{pageIndex}";
             using (var client = new HttpClient())
             {
                 var response = await client.GetAsync(url);
                 var content = await response.Content.ReadAsStringAsync();
-                var data = JsonConvert.DeserializeObject<List<BookSearchResultModel>>(content);
+                var data = JsonConvert.DeserializeObject<List<SearchBookResponse>>(content);
+                if (data == null || data.Count == 0)
+                {
+                    LoadStatus = LoadMoreStatus.StatusNoData;
+                }
+                else
+                {
+                    LoadStatus = LoadMoreStatus.StatusHasData;
+                }
+
                 if (Data == null)
                 {
-                    Data = new ObservableCollection<BookSearchResultModel>(data);
+                    Data = new ObservableCollection<SearchBookResponse>(data);
                 }
                 else
                 {
@@ -59,7 +82,6 @@ namespace BookApp.Ndro.ViewModel
                     }
                 }
             }
-            mainView.IsBusy = false;
         }
 
         protected override void OnPropertyChanged(string propertyName)
