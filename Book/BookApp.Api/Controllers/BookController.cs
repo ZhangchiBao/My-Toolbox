@@ -183,6 +183,12 @@ namespace BookApp.Api.Controllers
             return response;
         }
 
+        /// <summary>
+        /// 获取章节内容
+        /// </summary>
+        /// <param name="url">章节地址</param>
+        /// <param name="siteId">小说站点</param>
+        /// <returns></returns>
         [HttpGet("getChapterContent/{siteId}")]
         public GetChapterContentResponse GetChapterContent(string url, int siteId)
         {

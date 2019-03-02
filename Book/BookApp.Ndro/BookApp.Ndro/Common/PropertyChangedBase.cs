@@ -8,7 +8,7 @@ namespace BookApp.Ndro.Common
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public PropertyChangedBase()
+        protected PropertyChangedBase()
         {
             PropertyChanged += PropertyChangedBase_PropertyChanged;
         }

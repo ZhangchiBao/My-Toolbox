@@ -13,7 +13,7 @@ namespace BookApp.Ndro.ViewModel
         private ObservableCollection<Page> _tabPages = new ObservableCollection<Page>();
         private Page _currentTabPage;
 
-        public HomeViewModel()
+        public HomeViewModel() : base()
         {
             TabPages.Add(ViewManager.CreateView<LocalShelfPage>());
             TabPages.Add(ViewManager.CreateView<SettingPage>());

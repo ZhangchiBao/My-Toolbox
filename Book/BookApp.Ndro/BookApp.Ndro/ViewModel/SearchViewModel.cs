@@ -30,6 +30,7 @@ namespace BookApp.Ndro.ViewModel
 
         public Command SearchCommand => new Command(() =>
         {
+            Data.Clear();
             pageIndex = 1;
             DoSearch();
         });
@@ -70,15 +71,18 @@ namespace BookApp.Ndro.ViewModel
                     {
                         LoadStatus = LoadMoreStatus.StatusHasData;
                     }
-                    if (Data == null)
+                    if (data.Data != null && data.Data.Count > 0)
                     {
-                        Data = new ObservableCollection<BookModel>(data.Data);
-                    }
-                    else
-                    {
-                        foreach (var item in data.Data)
+                        if (Data == null || Data.Count == 0)
                         {
-                            Data.Add(item);
+                            Data = new ObservableCollection<BookModel>(data.Data);
+                        }
+                        else
+                        {
+                            foreach (var item in data.Data)
+                            {
+                                Data.Add(item);
+                            }
                         }
                     }
                 }

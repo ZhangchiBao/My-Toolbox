@@ -8,4 +8,12 @@
     <DocumentationFile>D:\Source\MyShelf\My-Toolbox\Book\BookAPP.Entity\BookAPP.Entity.xml</DocumentationFile>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>D:\Source\Repos\ZhangchiBao\My-Toolbox\Book\BookAPP.Entity\BookAPP.Entity.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="BookAPP.Entity.xml" />
+  </ItemGroup>
+
 </Project>

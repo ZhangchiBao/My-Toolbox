@@ -14,13 +14,13 @@ namespace BookApp.Ndro
         public App()
         {
             InitializeComponent();
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            assembly.ExportedTypes.ToList().ForEach(type =>
+            var types = Assembly.GetExecutingAssembly().ExportedTypes;
+            types.ToList().ForEach(type =>
             {
                 if (typeof(Page).IsAssignableFrom(type) || typeof(BaseViewModel).IsAssignableFrom(type))
                 {
                     IOC.Registe(type);
-                    if (typeof(BaseViewModel).IsAssignableFrom(type))
+                    if (typeof(BaseViewModel).IsAssignableFrom(type) && type != typeof(BaseViewModel))
                     {
                         var viewType = type.GetCustomAttribute<ViewAttribute>();
                         if (viewType != null)
@@ -30,6 +30,7 @@ namespace BookApp.Ndro
                     }
                 }
             });
+
             IOC.Build();
             var homePage = ViewManager.CreateView<HomePage>();
             var mainPage = ViewManager.CreateView<MainPage>();
