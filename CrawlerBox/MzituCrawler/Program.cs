@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Xml.Linq;
@@ -39,13 +40,23 @@ namespace MzituCrawler
             }
             historyUrl.OnCollectionChanged += o => SaveHistory();
             var baseUrl = $"https://www.mzitu.com";
+            while (!CheckUrl(baseUrl))
+            {
+                Thread.Sleep(0x3C * 0x3C * 0x3E8);
+            }
             HtmlWeb web = new HtmlWeb();
+            WriteLog(message: "开始抓取数据");
             var indexDoc = web.Load(baseUrl);
             var pageNode = indexDoc.DocumentNode.SelectNodes("/html/body/div[@class='main']/div[@class='main-content']/div[@class='postlist']/nav/div/a").Last(a => a.GetAttributeValue("class", string.Empty) == "page-numbers");
             var pageCount = int.Parse(pageNode.InnerText);
             for (int pageIndex = 1; pageIndex <= pageCount; pageIndex++)
             {
                 var url = new Uri(new Uri(baseUrl), $"/page/{pageIndex}/").ToString();
+                while (!CheckUrl(url))
+                {
+                    Thread.Sleep(0x3C * 0x3C * 0x3E8);
+                }
+                WriteLog(message: $"开始抓取链接：{url} 的数据");
                 var doc = web.Load(url);
                 var nodes = doc.DocumentNode.SelectNodes("//*[@id='pins']/li/a");
                 if (nodes.Count > 0x0)
@@ -60,11 +71,42 @@ namespace MzituCrawler
                     }
                     Thread.Sleep(new Random(Guid.NewGuid().GetHashCode()).Next(MINVALUE, MAXVALUE));
                 }
-                else
+                WriteLog(message: $"完成抓取链接：{url} 的数据");
+            }
+            WriteLog(message: "结束抓取数据");
+        }
+
+        private static void WriteLog(string message)
+        {
+            File.AppendAllText(logFilePath, $"{DateTime.Now}\t{message}");
+            File.AppendAllText(logFilePath, System.Environment.NewLine);
+        }
+
+        private static bool CheckUrl(string url)
+        {
+            HttpWebRequest req = null;
+            bool result = true;
+            try
+            {
+                req = (HttpWebRequest)WebRequest.CreateDefault(new Uri(url));
+                req.Method = "HEAD";  //这是关键        
+                req.Timeout = 0xABC;
+                HttpWebResponse res = (HttpWebResponse)req.GetResponse();
+                result = res.StatusCode == HttpStatusCode.OK;
+            }
+            catch (Exception ex)
+            {
+                result = false;
+            }
+            finally
+            {
+                if (req != null)
                 {
-                    return;
+                    req.Abort();
+                    req = null;
                 }
             }
+            return result;
         }
 
         /// <summary>
@@ -87,6 +129,11 @@ namespace MzituCrawler
                 Directory.CreateDirectory(downloadFolder);
             }
             HtmlWeb web = new HtmlWeb();
+            while (!CheckUrl(url))
+            {
+                Thread.Sleep(0x3C * 0x3C * 0x3E8);
+            }
+            WriteLog(message: $"开始抓取链接：{url} 的数据");
             var indexDoc = web.Load(url);
             var pageNode = indexDoc.DocumentNode.SelectNodes("/html/body/div[@class='main']/div[@class='content']/div[@class='pagenavi']/a").Reverse().Skip(1).First();
             var pageCount = pageNode == null ? 1 : int.Parse(pageNode.InnerText);
@@ -102,6 +149,7 @@ namespace MzituCrawler
                     {
                         continue;
                     }
+                    WriteLog(message: $"开始下载图片：{imageUrl}");
                     using (var client = new HttpClient())
                     {
                         client.DefaultRequestHeaders.Host = "i.meizitu.net";
@@ -118,9 +166,11 @@ namespace MzituCrawler
                         File.WriteAllBytes(Path.Combine(downloadFolder, fileName), buffer);
                         historyUrl.Add(imageUrl);
                     }
+                    WriteLog(message: $"完成下载图片：{imageUrl}");
                     Thread.Sleep(new Random(Guid.NewGuid().GetHashCode()).Next(MINVALUE, MAXVALUE));
                 }
             }
+            WriteLog(message: $"完成抓取链接：{url} 的数据");
             historyUrl.Add(url);
         }
     }
