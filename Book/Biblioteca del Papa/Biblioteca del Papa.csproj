@@ -63,6 +63,9 @@
     <Reference Include="HtmlAgilityPack, Version=1.11.4.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>..\packages\HtmlAgilityPack.1.11.4\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PropertyChanged, Version=2.6.1.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
       <HintPath>..\packages\PropertyChanged.Fody.2.6.1\lib\net452\PropertyChanged.dll</HintPath>
     </Reference>
@@ -103,9 +106,11 @@
     <Compile Include="Controls\BottomBtnGroup.cs" />
     <Compile Include="DAL\DBContext.cs" />
     <Compile Include="Entities\BookInfo.cs" />
+    <Compile Include="Entities\Bookrack.cs" />
     <Compile Include="Entities\ITabItem.cs" />
     <Compile Include="Entities\SearchBookByKeywordResult.cs" />
     <Compile Include="Finders\IFinder.cs" />
+    <Compile Include="Finders\LewenFinder.cs" />
     <Compile Include="Finders\QidianFinder.cs" />
     <Compile Include="Finders\UCTextFinder.cs" />
     <Compile Include="Pages\BibliotecaView.xaml.cs">
@@ -116,6 +121,10 @@
       <DependentUpon>BookSearchView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\BookSearchViewModel.cs" />
+    <Compile Include="Pages\BookSourceSelectView.xaml.cs">
+      <DependentUpon>BookSourceSelectView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\BookSourceSelectViewModel.cs" />
     <Compile Include="Pages\SettingView.xaml.cs">
       <DependentUpon>SettingView.xaml</DependentUpon>
     </Compile>
@@ -156,6 +165,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\BookSearchView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\BookSourceSelectView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

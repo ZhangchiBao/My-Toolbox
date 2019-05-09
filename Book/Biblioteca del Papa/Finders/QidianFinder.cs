@@ -1,9 +1,8 @@
 ﻿using Biblioteca_del_Papa.Entities;
+using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace Biblioteca_del_Papa.Finders
 {
@@ -15,7 +14,33 @@ namespace Biblioteca_del_Papa.Finders
 
         public IList<BookInfo> SearchByKeyword(string keyword)
         {
-            return new List<BookInfo>();
+            var data = new List<BookInfo>();
+            HtmlWeb web = new HtmlWeb();
+            HtmlNodeCollection nodes = null;
+            int pageIndex = 1;
+            do
+            {
+                var url = $"https://www.qidian.com/search?kw={keyword}&page={pageIndex}";
+                var doc = web.Load(url);
+                nodes = doc.DocumentNode.SelectNodes("//*[@id='result-list']/div/ul/li");
+                pageIndex++;
+                foreach (var node in nodes)
+                {
+                    var item = new BookInfo(this)
+                    {
+                        Author = node.SelectSingleNode("div[2]/p[1]/a[1]").InnerText,
+                        BookName = node.SelectSingleNode("div[2]/h4/a").InnerText,
+                        Category = node.SelectSingleNode("div[2]/p[1]/a[2]").InnerText,
+                        URL = new Uri(new Uri(url), node.SelectSingleNode("div[2]/h4/a").GetAttributeValue("href", string.Empty)).ToString(),
+                        Cover = new Uri(new Uri(url), node.SelectSingleNode("div[1]/a/img").GetAttributeValue("src", string.Empty)).ToString(),
+                        Description = node.SelectSingleNode("div[2]/p[2]").InnerText.Replace("\r", ""),
+                        Latestchapters = node.SelectSingleNode("div[2]/p[3]/a").InnerText.Replace("最新更新  ", "")
+                    };
+                    item.Description = new Regex("[ ]+").Replace(item.Description, string.Empty);
+                    data.Add(item);
+                }
+            } while (nodes != null && nodes.Count > 0 && pageIndex <= 2);
+            return data;
         }
     }
 }

@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Biblioteca_del_Papa.Pages"
              xmlns:controls="clr-namespace:Biblioteca_del_Papa.Controls"
+             xmlns:entities="clr-namespace:Biblioteca_del_Papa.Entities"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              xmlns:s="https://github.com/canton7/Stylet"
@@ -13,7 +14,13 @@
         <DockPanel>
             <DockPanel DockPanel.Dock="Left" Width="200">
                 <controls:BottomBtnGroup DockPanel.Dock="Bottom" BorderBrush="Gainsboro" BorderThickness="1" CancelButtonContent="删除" ConfirmButtonContent="新增" ConfirmCommand="{s:Action Method=AddBook}" FontSize="14"/>
-                <TreeView/>
+                <TreeView ItemsSource="{Binding Path=BookrackData}">
+                    <TreeView.ItemTemplate>
+                        <HierarchicalDataTemplate DataType="{x:Type entities:Bookrack}" ItemsSource="{Binding Path=Books}">
+                            <TextBlock Text="{Binding Path=CategoryName}"/>
+                        </HierarchicalDataTemplate>
+                    </TreeView.ItemTemplate>
+                </TreeView>
             </DockPanel>
             <ContentControl/>
         </DockPanel>

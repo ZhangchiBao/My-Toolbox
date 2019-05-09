@@ -6,19 +6,41 @@
         xmlns:local="clr-namespace:Biblioteca_del_Papa.Pages"
         xmlns:s="https://github.com/canton7/Stylet"
         xmlns:controls="clr-namespace:Biblioteca_del_Papa.Controls"
+        xmlns:entities="clr-namespace:Biblioteca_del_Papa.Entities"
         mc:Ignorable="d"
         Title="在线搜索"
         ShowInTaskbar="False"
+        ResizeMode="NoResize"
         d:DataContext="{d:DesignInstance local:BookSearchViewModel}"
-        WindowStyle="ToolWindow" Height="350" Width="600">
+        Height="350" Width="600">
     <Grid>
         <DockPanel Margin="5">
             <DockPanel DockPanel.Dock="Top" Margin="0,5">
                 <Button Content="搜索" DockPanel.Dock="Right" Command="{s:Action Method=DoSearch}" Margin="5"/>
-                <TextBox Text="{Binding Path=Keyword,UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
+                <TextBox Text="{Binding Path=Keyword,UpdateSourceTrigger=PropertyChanged}" Margin="5" KeyDown="{s:Action Method=InputKeydown}"/>
             </DockPanel>
-            <controls:BottomBtnGroup Margin="0,5" DockPanel.Dock="Bottom" BorderBrush="Gainsboro" BorderThickness="1" CancelCommand="{s:Action Method=Cancel}" ConfirmCommand="{s:Action Method=Determine}"/>
-            <ListBox/>
+            <!--<controls:BottomBtnGroup Margin="0,5" DockPanel.Dock="Bottom" BorderBrush="Gainsboro" BorderThickness="1" CancelCommand="{s:Action Method=Cancel}" ConfirmCommand="{s:Action Method=Determine}"/>-->
+            <ListBox ItemsSource="{Binding Path=SearchResults}"
+                     HorizontalContentAlignment="Stretch"
+                     MouseDoubleClick="{s:Action Method=ListDoubleClick}"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type entities:SearchBookByKeywordResult}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="{Binding Path=BookName}" Margin="5"/>
+                            <TextBlock Grid.Column="1" Text="{Binding Path=Author,StringFormat={}({0})}" VerticalAlignment="Center" Margin="5"/>
+                            <Grid Grid.Column="2">
+                                <TextBlock Text="{Binding Path=Source}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5"/>
+                            </Grid>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </DockPanel>
     </Grid>
 </Window>

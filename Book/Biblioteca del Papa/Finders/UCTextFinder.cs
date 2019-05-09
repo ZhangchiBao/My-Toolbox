@@ -2,9 +2,7 @@
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Biblioteca_del_Papa.Finders
 {
@@ -19,13 +17,18 @@ namespace Biblioteca_del_Papa.Finders
             var data = new List<BookInfo>();
             var url = $"http://www.uctxt.com/modules/article/search.php?searchkey={System.Web.HttpUtility.UrlEncode(keyword, Encoding.GetEncoding("GBK"))}";
             HtmlWeb web = new HtmlWeb();
+            web.OverrideEncoding = Encoding.GetEncoding("GBK");
             var doc = web.Load(url);
             var nodes = doc.DocumentNode.SelectNodes("//*[@id='main']/section/div[2]/ul/li");
             foreach (var node in nodes)
             {
-                data.Add(new BookInfo
+                data.Add(new BookInfo(this)
                 {
-                    BookName = node.SelectSingleNode("span[2]/a").InnerText
+                    BookName = node.SelectSingleNode("span[2]/a").InnerText,
+                    Category = node.SelectSingleNode("span[1]").InnerText.Trim('[', ']'),
+                    Author = node.SelectSingleNode("span[3]/text()").InnerText,
+                    URL = new Uri(new Uri(url), node.SelectSingleNode("span[2]/a").GetAttributeValue("href", string.Empty)).ToString(),
+                    Latestchapters = node.SelectSingleNode("span[2]/small/a").InnerText
                 });
             }
             return data;
