@@ -65,7 +65,7 @@ namespace Biblioteca_del_Papa.Controls
 
         // Using a DependencyProperty as the backing store for CancelButtonContent.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty CancelButtonContentProperty =
-            DependencyProperty.Register("CancelButtonContent", typeof(object), typeof(BottomBtnGroup), new PropertyMetadata("取消"));
+            DependencyProperty.Register("CancelButtonContent", typeof(object), typeof(BottomBtnGroup));
 
         /// <summary>
         /// 确定按钮内容
@@ -79,7 +79,7 @@ namespace Biblioteca_del_Papa.Controls
 
         // Using a DependencyProperty as the backing store for ConfirmButtonContent.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ConfirmButtonContentProperty =
-            DependencyProperty.Register("ConfirmButtonContent", typeof(object), typeof(BottomBtnGroup), new PropertyMetadata("确定"));
+            DependencyProperty.Register("ConfirmButtonContent", typeof(object), typeof(BottomBtnGroup));
 
         /// <summary>
         /// 按钮间距
@@ -93,6 +93,19 @@ namespace Biblioteca_del_Papa.Controls
 
         // Using a DependencyProperty as the backing store for ButtonMargin.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ButtonMarginProperty =
-            DependencyProperty.Register("ButtonMargin", typeof(Thickness), typeof(BottomBtnGroup), new PropertyMetadata(new Thickness(10, 5, 10, 5)));
+            DependencyProperty.Register("ButtonMargin", typeof(Thickness), typeof(BottomBtnGroup), new PropertyMetadata(new Thickness(5, 5, 5, 5)));
+
+        [Description("按钮样式")]
+        public Style ButtonStyle
+        {
+            get { return (Style)GetValue(ButtonStyleProperty); }
+            set { SetValue(ButtonStyleProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ButtonStyle.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ButtonStyleProperty =
+            DependencyProperty.Register("ButtonStyle", typeof(Style), typeof(BottomBtnGroup));
+
+
     }
 }

@@ -11,5 +11,7 @@ namespace Biblioteca_del_Papa.Finders
         Guid FinderKey { get; }
 
         IList<BookInfo> SearchByKeyword(string keyword);
+
+        IList<ChapterInfo> GetChapters(string url);
     }
 }

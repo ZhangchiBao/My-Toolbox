@@ -12,6 +12,23 @@ namespace Biblioteca_del_Papa.Finders
 
         public Guid FinderKey => new Guid("5AF2D68B-C36F-48EA-8009-0EF650CBAF0E");
 
+        public IList<ChapterInfo> GetChapters(string url)
+        {
+            var data = new List<ChapterInfo>();
+            HtmlWeb web = new HtmlWeb();
+            var doc = web.Load(url);
+            var nodes = doc.DocumentNode.SelectNodes("//*[@id='j-catalogWrap']/div[2]/div/ul/li/a");
+            foreach (var node in nodes)
+            {
+                data.Add(new ChapterInfo(this)
+                {
+                    Title = node.InnerText,
+                    URL = new Uri(new Uri(url), node.GetAttributeValue("href", string.Empty)).ToString()
+                });
+            }
+            return data;
+        }
+
         public IList<BookInfo> SearchByKeyword(string keyword)
         {
             var data = new List<BookInfo>();
@@ -31,7 +48,7 @@ namespace Biblioteca_del_Papa.Finders
                         Author = node.SelectSingleNode("div[2]/p[1]/a[1]").InnerText,
                         BookName = node.SelectSingleNode("div[2]/h4/a").InnerText,
                         Category = node.SelectSingleNode("div[2]/p[1]/a[2]").InnerText,
-                        URL = new Uri(new Uri(url), node.SelectSingleNode("div[2]/h4/a").GetAttributeValue("href", string.Empty)).ToString(),
+                        URL = new Uri(new Uri(url), node.SelectSingleNode("div[2]/h4/a").GetAttributeValue("href", string.Empty) + "#Catalog").ToString(),
                         Cover = new Uri(new Uri(url), node.SelectSingleNode("div[1]/a/img").GetAttributeValue("src", string.Empty)).ToString(),
                         Description = node.SelectSingleNode("div[2]/p[2]").InnerText.Replace("\r", ""),
                         Latestchapters = node.SelectSingleNode("div[2]/p[3]/a").InnerText.Replace("最新更新  ", "")

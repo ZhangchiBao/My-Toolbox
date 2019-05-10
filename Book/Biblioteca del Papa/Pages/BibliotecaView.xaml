@@ -13,16 +13,29 @@
     <Grid>
         <DockPanel>
             <DockPanel DockPanel.Dock="Left" Width="200">
-                <controls:BottomBtnGroup DockPanel.Dock="Bottom" BorderBrush="Gainsboro" BorderThickness="1" CancelButtonContent="删除" ConfirmButtonContent="新增" ConfirmCommand="{s:Action Method=AddBook}" FontSize="14"/>
-                <TreeView ItemsSource="{Binding Path=BookrackData}">
+                <controls:BottomBtnGroup DockPanel.Dock="Bottom" BorderBrush="Gainsboro" BorderThickness="1" CancelButtonContent="删除" ConfirmButtonContent="新增" ConfirmCommand="{s:Action Method=AddBook}" FontSize="14" ButtonStyle="{StaticResource ButtonRevealStyle}"/>
+                <TreeView x:Name="Bookrack" ItemsSource="{Binding Path=CategoryShowEntityCollection}" SelectedItemChanged="{s:Action Method=TreeView_SelectedItemChanged}">
                     <TreeView.ItemTemplate>
-                        <HierarchicalDataTemplate DataType="{x:Type entities:Bookrack}" ItemsSource="{Binding Path=Books}">
+                        <HierarchicalDataTemplate DataType="{x:Type entities:CategoryShowEntity}" ItemsSource="{Binding Path=Books}">
                             <TextBlock Text="{Binding Path=CategoryName}"/>
+                            <HierarchicalDataTemplate.ItemTemplate>
+                                <DataTemplate DataType="{x:Type entities:BookShowEntity}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <StackPanel.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem Header="更新" Command="{Binding Path=RenewCommand}" CommandParameter="{Binding}"/>
+                                            </ContextMenu>
+                                        </StackPanel.ContextMenu>
+                                        <TextBlock Text="{Binding Path=BookName}"/>
+                                        <TextBlock Text="{Binding Path=Author,StringFormat={}({0})}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </HierarchicalDataTemplate.ItemTemplate>
                         </HierarchicalDataTemplate>
                     </TreeView.ItemTemplate>
                 </TreeView>
             </DockPanel>
-            <ContentControl/>
+            <ContentControl s:View.Model="{Binding Path=MainContentViewModel}"/>
         </DockPanel>
     </Grid>
 </UserControl>

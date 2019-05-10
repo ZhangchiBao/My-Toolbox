@@ -60,6 +60,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="FluentWPF, Version=0.6.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentWPF.0.6.1\lib\net45\FluentWPF.dll</HintPath>
+    </Reference>
     <Reference Include="HtmlAgilityPack, Version=1.11.4.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>..\packages\HtmlAgilityPack.1.11.4\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
@@ -103,16 +106,24 @@
     <Compile Include="Bootstrapper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Command.cs" />
     <Compile Include="Controls\BottomBtnGroup.cs" />
     <Compile Include="DAL\DBContext.cs" />
     <Compile Include="Entities\BookInfo.cs" />
-    <Compile Include="Entities\Bookrack.cs" />
+    <Compile Include="Entities\BookShowEntity.cs" />
+    <Compile Include="Entities\CategoryShowEntity.cs" />
+    <Compile Include="Entities\ChapterInfo.cs" />
     <Compile Include="Entities\ITabItem.cs" />
     <Compile Include="Entities\SearchBookByKeywordResult.cs" />
     <Compile Include="Finders\IFinder.cs" />
     <Compile Include="Finders\LewenFinder.cs" />
     <Compile Include="Finders\QidianFinder.cs" />
     <Compile Include="Finders\UCTextFinder.cs" />
+    <Compile Include="Migrations\201905101037175_InitialCreate.cs" />
+    <Compile Include="Migrations\201905101037175_InitialCreate.Designer.cs">
+      <DependentUpon>201905101037175_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Pages\BibliotecaView.xaml.cs">
       <DependentUpon>BibliotecaView.xaml</DependentUpon>
     </Compile>
@@ -125,6 +136,10 @@
       <DependentUpon>BookSourceSelectView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\BookSourceSelectViewModel.cs" />
+    <Compile Include="Pages\CatalogViewModel.cs" />
+    <Compile Include="Pages\CatalogView.xaml.cs">
+      <DependentUpon>CatalogView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\SettingView.xaml.cs">
       <DependentUpon>SettingView.xaml</DependentUpon>
     </Compile>
@@ -146,6 +161,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Migrations\201905101037175_InitialCreate.resx">
+      <DependentUpon>201905101037175_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -169,6 +187,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\BookSourceSelectView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\CatalogView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

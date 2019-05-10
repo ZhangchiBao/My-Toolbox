@@ -15,6 +15,13 @@ namespace Biblioteca_del_Papa.Finders
 
         public Guid FinderKey => new Guid("A2D54805-86D4-4729-91B5-29CCFAF2B579");
 
+        public IList<ChapterInfo> GetChapters(string url)
+        {
+            var data = new List<ChapterInfo>();
+
+            return data;
+        }
+
         public IList<BookInfo> SearchByKeyword(string keyword)
         {
             var data = new List<BookInfo>();

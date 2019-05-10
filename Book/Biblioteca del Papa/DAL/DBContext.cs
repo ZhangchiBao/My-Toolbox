@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Data.Common;
 using System.Data.Entity;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,11 +17,10 @@ namespace Biblioteca_del_Papa.DAL
         {
             ConnectionString = new SqlConnectionStringBuilder()
             {
-                ConnectionString = $"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"{System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bdp.mdf")}\";Integrated Security=True;Connect Timeout=30"
+                ConnectionString = $"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Biblioteca del Papa", "bdp.mdf")}\";Integrated Security=True;Connect Timeout=30"
             }.ConnectionString
         }, true)
         {
-
             if (Database.CreateIfNotExists())
             {
                 Categories.Add(new Category { CategoryName = "玄幻奇幻", Alias = new List<CategoryAlias> { new CategoryAlias { AliasName = "玄幻" }, new CategoryAlias { AliasName = "奇幻" }, new CategoryAlias { AliasName = "玄幻奇幻" } } });
@@ -41,6 +41,8 @@ namespace Biblioteca_del_Papa.DAL
         public DbSet<CategoryAlias> CategoryAliases { get; set; }
 
         public DbSet<Book> Books { get; set; }
+
+        public DbSet<Chapter> Chapters { get; set; }
     }
 
     public class Book
@@ -54,8 +56,29 @@ namespace Biblioteca_del_Papa.DAL
 
         public string Author { get; set; }
 
-        public int CurrentFinderID { get; set; }
-        public string CurrentURL { get; set; }
+        public int FinderID { get; set; }
+
+        public Finder Finder { get; set; }
+
+        public string URL { get; set; }
+
+        public List<Chapter> Chapters { get; set; }
+    }
+
+    public class Chapter
+    {
+        [Key]
+        public int ID { get; set; }
+
+        public int BookID { get; set; }
+
+        public string Title { get; set; }
+
+        public string Content { get; set; }
+
+        public int FinderID { get; set; }
+
+        public string URL { get; set; }
     }
 
     public class CategoryAlias

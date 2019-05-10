@@ -62,8 +62,8 @@ namespace Biblioteca_del_Papa.Pages
                         CategoryID = category.ID,
                         BookName = SelectedSource.BookName,
                         Author = SelectedSource.Author,
-                        CurrentFinderID = finder.ID,
-                        CurrentURL = SelectedSource.URL
+                        Finder = finder,
+                        URL = SelectedSource.URL
                     });
                     db.SaveChanges();
                 }
