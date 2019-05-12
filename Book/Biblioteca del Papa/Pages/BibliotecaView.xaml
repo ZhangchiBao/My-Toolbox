@@ -14,7 +14,9 @@
         <DockPanel>
             <DockPanel DockPanel.Dock="Left" Width="200">
                 <controls:BottomBtnGroup DockPanel.Dock="Bottom" BorderBrush="Gainsboro" BorderThickness="1" CancelButtonContent="删除" ConfirmButtonContent="新增" ConfirmCommand="{s:Action Method=AddBook}" FontSize="14"/>
-                <TreeView x:Name="Bookrack" ItemsSource="{Binding Path=CategoryShowEntityCollection}" SelectedItemChanged="{s:Action Method=TreeView_SelectedItemChanged}">
+                <TreeView x:Name="Bookrack"
+                          ItemsSource="{Binding Path=CategoryShowEntityCollection}"
+                          MouseDoubleClick="{s:Action Method=TreeView_MouseDoubleClick}">
                     <TreeView.ItemTemplate>
                         <HierarchicalDataTemplate DataType="{x:Type entities:CategoryShowEntity}" ItemsSource="{Binding Path=Books}">
                             <TextBlock Text="{Binding Path=CategoryName}"/>

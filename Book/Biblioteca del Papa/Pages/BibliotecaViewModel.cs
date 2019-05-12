@@ -105,9 +105,9 @@ namespace Biblioteca_del_Papa.Pages
             }
         }
 
-        public void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        public void TreeView_MouseDoubleClick(object sender,MouseButtonEventArgs e)
         {
-            if (e.NewValue is BookShowEntity book)
+            if(e.OriginalSource is System.Windows.FrameworkElement element&&element.DataContext is BookShowEntity book)
             {
                 var viewModel = container.Get<CatalogViewModel>();
                 viewModel.Book = book;
