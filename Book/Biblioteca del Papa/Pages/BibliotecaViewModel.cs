@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -21,15 +22,12 @@ namespace Biblioteca_del_Papa.Pages
         {
             this.container = container;
             this.windowManager = windowManager;
-            RenewCommand = new Command<BookShowEntity>(Renew);
             LoadBookrack();
         }
 
         public string TabTitle => "书库";
 
         public int TabIndex => 0;
-
-        public ICommand RenewCommand { get; set; }
 
         /// <summary>
         /// 书架分类
@@ -66,7 +64,7 @@ namespace Biblioteca_del_Papa.Pages
                     {
                         CategoryID = a.ID,
                         CategoryName = a.CategoryName,
-                        Books = a.Books.Select(b => new BookShowEntity(Renew)
+                        Books = a.Books.Select(b => new BookShowEntity(RenewAsync)
                         {
                             Author = b.Author,
                             BookName = b.BookName,
@@ -85,33 +83,40 @@ namespace Biblioteca_del_Papa.Pages
             }
         }
 
-        public void Renew(BookShowEntity book)
+        public async Task RenewAsync(BookShowEntity book)
         {
-            using (var db = container.Get<DBContext>())
-            {
-                IList<ChapterInfo> chapters = book.Finder.GetChapters(book.URL);
-                var finder = db.Finders.Single(a => a.Key == book.Finder.FinderKey);
-                var existChapterNames = book.Chapters.Select(a => a.Title).ToList();
-                var notExistChapters = chapters.Where(c => !existChapterNames.Contains(c.Title)).ToList();
-                db.Chapters.AddRange(notExistChapters.Select(a => new Chapter
-                {
-                    Title = a.Title,
-                    BookID = book.ID,
-                    URL = a.URL,
-                    FinderID = finder.ID,
-                    Content = a.Content
-                }));
-                db.SaveChanges();
-            }
+            await Task.Run(() =>
+             {
+                 using (var db = container.Get<DBContext>())
+                 {
+                     IList<ChapterInfo> chapters = book.Finder.GetChapters(book.URL);
+                     var finder = db.Finders.Single(a => a.Key == book.Finder.FinderKey);
+                     var existChapterNames = book.Chapters.Select(a => a.Title).ToList();
+                     var notExistChapters = chapters.Where(c => !existChapterNames.Contains(c.Title)).ToList();
+                     db.Chapters.AddRange(notExistChapters.Select(a => new Chapter
+                     {
+                         Title = a.Title,
+                         BookID = book.ID,
+                         URL = a.URL,
+                         FinderID = finder.ID,
+                         Content = a.Content
+                     }));
+                     db.SaveChanges();
+                 }
+             });
         }
 
-        public void TreeView_MouseDoubleClick(object sender,MouseButtonEventArgs e)
+        public void TreeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if(e.OriginalSource is System.Windows.FrameworkElement element&&element.DataContext is BookShowEntity book)
+            if (e.OriginalSource is System.Windows.FrameworkElement element && element.DataContext is BookShowEntity book)
             {
                 var viewModel = container.Get<CatalogViewModel>();
                 viewModel.Book = book;
                 MainContentViewModel = viewModel;
+            }
+            else
+            {
+                MainContentViewModel = null;
             }
         }
     }

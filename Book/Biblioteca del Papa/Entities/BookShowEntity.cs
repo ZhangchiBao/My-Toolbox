@@ -2,8 +2,6 @@
 using Stylet;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -11,9 +9,19 @@ namespace Biblioteca_del_Papa.Entities
 {
     public class BookShowEntity : PropertyChangedBase
     {
-        public BookShowEntity(Action<BookShowEntity> renew)
+        public BookShowEntity(Func<BookShowEntity, Task> renew)
         {
-            RenewCommand = new Command(() => { renew(this); });
+            RenewCommand = new Command(() =>
+            {
+                Renewing = true;
+                renew(this).ContinueWith(task =>
+                {
+                    App.Current.Dispatcher.Invoke(() =>
+                    {
+                        Renewing = false;
+                    });
+                });
+            });
         }
 
         public int ID { get; set; }
@@ -29,5 +37,7 @@ namespace Biblioteca_del_Papa.Entities
         public ICommand RenewCommand { get; set; }
 
         public List<ChapterInfo> Chapters { get; set; }
+
+        public bool Renewing { get; private set; }
     }
 }
