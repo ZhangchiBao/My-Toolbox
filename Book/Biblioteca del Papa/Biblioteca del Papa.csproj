@@ -104,6 +104,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="TemplateSelectors\BookShowTemplateSelector.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Command.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="Entities\BookShowEntity.cs" />
     <Compile Include="Entities\CategoryShowEntity.cs" />
     <Compile Include="Entities\ChapterInfo.cs" />
+    <Compile Include="Entities\ChapterShowEntity.cs" />
     <Compile Include="Entities\ITabItem.cs" />
     <Compile Include="Entities\SearchBookByKeywordResult.cs" />
     <Compile Include="Finders\IFinder.cs" />
@@ -136,10 +138,14 @@
       <DependentUpon>BookSourceSelectView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\BookSourceSelectViewModel.cs" />
-    <Compile Include="Pages\CatalogViewModel.cs" />
     <Compile Include="Pages\CatalogView.xaml.cs">
       <DependentUpon>CatalogView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\CatalogViewModel.cs" />
+    <Compile Include="Pages\ChapterView.xaml.cs">
+      <DependentUpon>ChapterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ChapterViewModel.cs" />
     <Compile Include="Pages\SettingView.xaml.cs">
       <DependentUpon>SettingView.xaml</DependentUpon>
     </Compile>
@@ -191,6 +197,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\CatalogView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\ChapterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -203,6 +213,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Styles\ResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Styles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

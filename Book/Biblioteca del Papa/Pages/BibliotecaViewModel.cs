@@ -3,6 +3,7 @@ using Biblioteca_del_Papa.Entities;
 using Biblioteca_del_Papa.Finders;
 using Stylet;
 using StyletIoC;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
@@ -29,6 +30,8 @@ namespace Biblioteca_del_Papa.Pages
 
         public int TabIndex => 0;
 
+        public BookShowEntity CurrentBook { get; set; }
+
         /// <summary>
         /// 书架分类
         /// </summary>
@@ -37,7 +40,7 @@ namespace Biblioteca_del_Papa.Pages
         /// <summary>
         /// 主内容ViewModel
         /// </summary>
-        public Screen MainContentViewModel { get; set; }
+        public object MainContentViewModel { get; set; }
 
         /// <summary>
         /// 新增书本
@@ -71,7 +74,7 @@ namespace Biblioteca_del_Papa.Pages
                             Finder = finders.Single(f => f.FinderKey == b.Finder.Key),
                             URL = b.URL,
                             ID = b.ID,
-                            Chapters = b.Chapters.Select(c => new ChapterInfo(finders.Single(f => f.FinderKey == b.Finder.Key))
+                            Chapters = b.Chapters.Select(c => new ChapterShowEntity(finders.Single(f => f.FinderKey == b.Finder.Key), ShowChapterAsync)
                             {
                                 Title = c.Title,
                                 Content = c.Content,
@@ -83,7 +86,20 @@ namespace Biblioteca_del_Papa.Pages
             }
         }
 
-        public async Task RenewAsync(BookShowEntity book)
+        private async Task ShowChapterAsync(ChapterShowEntity chapter)
+        {
+            await Task.Run(() =>
+            {
+                MainContentViewModel = chapter;
+            });
+        }
+
+        /// <summary>
+        /// 更新
+        /// </summary>
+        /// <param name="book"></param>
+        /// <returns></returns>
+        private async Task RenewAsync(BookShowEntity book)
         {
             await Task.Run(() =>
              {
@@ -110,9 +126,10 @@ namespace Biblioteca_del_Papa.Pages
         {
             if (e.OriginalSource is System.Windows.FrameworkElement element && element.DataContext is BookShowEntity book)
             {
-                var viewModel = container.Get<CatalogViewModel>();
-                viewModel.Book = book;
-                MainContentViewModel = viewModel;
+                CurrentBook = book;
+                //var viewModel = container.Get<CatalogViewModel>();
+                //viewModel.Book = CurrentBook;
+                MainContentViewModel = CurrentBook;
             }
             else
             {

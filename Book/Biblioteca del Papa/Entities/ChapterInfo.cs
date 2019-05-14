@@ -14,6 +14,7 @@ namespace Biblioteca_del_Papa.Entities
         public string Title { get; set; }
 
         public string Content { get; set; }
-        public string URL { get; internal set; }
+
+        public string URL { get; set; }
     }
 }

@@ -9,14 +9,14 @@ namespace Biblioteca_del_Papa.Entities
 {
     public class BookShowEntity : PropertyChangedBase
     {
-        public BookShowEntity(Func<BookShowEntity, Task> renew)
+        public BookShowEntity(Func<BookShowEntity, Task> renewFunc)
         {
             RenewCommand = new Command(() =>
             {
                 Renewing = true;
-                renew(this).ContinueWith(task =>
+                renewFunc(this).ContinueWith(task =>
                 {
-                    App.Current.Dispatcher.Invoke(() =>
+                    System.Windows.Application.Current.Dispatcher.Invoke(() =>
                     {
                         Renewing = false;
                     });
@@ -36,7 +36,7 @@ namespace Biblioteca_del_Papa.Entities
 
         public ICommand RenewCommand { get; set; }
 
-        public List<ChapterInfo> Chapters { get; set; }
+        public List<ChapterShowEntity> Chapters { get; set; }
 
         public bool Renewing { get; private set; }
     }

@@ -1,0 +1,9 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Biblioteca_del_Papa.Styles">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="TreeViewStyle.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    <Style TargetType="{x:Type TreeView}" BasedOn="{StaticResource BaseTreeViewStyle}"/>
+    <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource BaseTreeViewItemStyle}"/>
+</ResourceDictionary>

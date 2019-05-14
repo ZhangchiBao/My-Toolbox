@@ -22,7 +22,7 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="{x:Type entities:ChapterInfo}">
-                            <Button Content="{Binding Path=Title}" Focusable="False" ToolTip="{Binding Path=Title}" Margin="10,5" Width="200" BorderBrush="Transparent" BorderThickness="0"/>
+                            <Button Content="{Binding Path=Title}" Focusable="False" ToolTip="{Binding Path=Title}" Margin="10,5" Width="200" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Command="{Binding Path=ShowChapterCommand}" CommandParameter="{Binding}"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
