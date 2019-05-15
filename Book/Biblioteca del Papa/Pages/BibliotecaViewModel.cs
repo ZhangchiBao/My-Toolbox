@@ -74,7 +74,7 @@ namespace Biblioteca_del_Papa.Pages
                             Finder = finders.Single(f => f.FinderKey == b.Finder.Key),
                             URL = b.URL,
                             ID = b.ID,
-                            Chapters = b.Chapters.Select(c => new ChapterShowEntity(finders.Single(f => f.FinderKey == b.Finder.Key), ShowChapterAsync)
+                            Chapters = b.Chapters.Select((c, index) => new ChapterShowEntity(finder: finders.Single(f => f.FinderKey == b.Finder.Key), index: index, maxIndex: b.Chapters.Count - 1, gotoChapter: GotoChapterAsync, gotoCatelog: GotoCatelogAsync)
                             {
                                 Title = c.Title,
                                 Content = c.Content,
@@ -86,11 +86,19 @@ namespace Biblioteca_del_Papa.Pages
             }
         }
 
-        private async Task ShowChapterAsync(ChapterShowEntity chapter)
+        private async Task GotoCatelogAsync()
         {
             await Task.Run(() =>
             {
-                MainContentViewModel = chapter;
+                MainContentViewModel = CurrentBook;
+            });
+        }
+
+        private async Task GotoChapterAsync(int index)
+        {
+            await Task.Run(() =>
+            {
+                MainContentViewModel = CurrentBook.Chapters[index];
             });
         }
 
@@ -127,8 +135,6 @@ namespace Biblioteca_del_Papa.Pages
             if (e.OriginalSource is System.Windows.FrameworkElement element && element.DataContext is BookShowEntity book)
             {
                 CurrentBook = book;
-                //var viewModel = container.Get<CatalogViewModel>();
-                //viewModel.Book = CurrentBook;
                 MainContentViewModel = CurrentBook;
             }
             else

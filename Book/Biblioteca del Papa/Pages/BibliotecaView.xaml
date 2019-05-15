@@ -16,12 +16,13 @@
         <ts:BookShowTemplateSelector x:Key="BookShowTemplateSelector">
             <ts:BookShowTemplateSelector.CatalogTemplate>
                 <DataTemplate DataType="{x:Type entities:BookShowEntity}">
+                    <!--<TextBlock Text="目录"/>-->
                     <DockPanel>
-                        <TextBlock Text="{Binding Path=Book.BookName}" FontSize="18" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
-                        <TextBlock Text="{Binding Path=Book.Author}" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
-                        <TextBlock Text="{Binding Path=Book.BookName}" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
+                        <TextBlock Text="{Binding Path=BookName}" FontSize="18" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
+                        <TextBlock Text="{Binding Path=Author}" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
+                        <TextBlock Text="{Binding Path=BookName}" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
                         <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden" Focusable="False">
-                            <ItemsControl ItemsSource="{Binding Path=Book.Chapters}" HorizontalContentAlignment="Center" HorizontalAlignment="Center">
+                            <ItemsControl ItemsSource="{Binding Path=Chapters}" HorizontalContentAlignment="Center" HorizontalAlignment="Center">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <WrapPanel/>
@@ -39,7 +40,14 @@
             </ts:BookShowTemplateSelector.CatalogTemplate>
             <ts:BookShowTemplateSelector.ChapterTemplate>
                 <DataTemplate DataType="{x:Type entities:ChapterShowEntity}">
-                    <TextBlock Text="{Binding}"/>
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Bottom">
+                            <Button Content="上一章" Command="{Binding Path=ShowLastChapterCommand}"/>
+                            <Button Content="目录" Command="{Binding Path=ShowCatalogCommand}"/>
+                            <Button Content="下一章" Command="{Binding Path=ShowNextChapterCommand}"/>
+                        </StackPanel>
+                        <TextBlock Text="{Binding Path=Title}" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
+                    </DockPanel>
                 </DataTemplate>
             </ts:BookShowTemplateSelector.ChapterTemplate>
         </ts:BookShowTemplateSelector>

@@ -7,12 +7,30 @@ namespace Biblioteca_del_Papa.Entities
 {
     public class ChapterShowEntity
     {
-        public ChapterShowEntity(IFinder finder, Func<ChapterShowEntity, Task> showChapter)
+        public ChapterShowEntity(IFinder finder, int index, int maxIndex, Func<int, Task> gotoChapter, Func<Task> gotoCatelog)
         {
             this.Finder = finder;
             ShowChapterCommand = new Command(() =>
             {
-                showChapter(this);
+                gotoChapter(index);
+            });
+            ShowLastChapterCommand = new Command(() =>
+            {
+                gotoChapter(index - 1);
+            }, () =>
+            {
+                return index - 1 >= 0;
+            });
+            ShowNextChapterCommand = new Command(() =>
+            {
+                gotoChapter(index + 1);
+            }, () =>
+            {
+                return index + 1 <= maxIndex;
+            });
+            ShowCatalogCommand = new Command(() =>
+            {
+                gotoCatelog();
             });
         }
 
@@ -23,6 +41,12 @@ namespace Biblioteca_del_Papa.Entities
         public string URL { get; set; }
         public IFinder Finder { get; private set; }
 
-        public ICommand ShowChapterCommand { get; set; }
+        public ICommand ShowChapterCommand { get; private set; }
+
+        public ICommand ShowLastChapterCommand { get; private set; }
+
+        public ICommand ShowNextChapterCommand { get; private set; }
+
+        public ICommand ShowCatalogCommand { get; private set; }
     }
 }
