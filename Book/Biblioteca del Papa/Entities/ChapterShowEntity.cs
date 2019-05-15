@@ -48,5 +48,6 @@ namespace Biblioteca_del_Papa.Entities
         public ICommand ShowNextChapterCommand { get; private set; }
 
         public ICommand ShowCatalogCommand { get; private set; }
+        public int ID { get; set; }
     }
 }

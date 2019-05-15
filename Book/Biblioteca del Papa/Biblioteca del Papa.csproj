@@ -138,14 +138,6 @@
       <DependentUpon>BookSourceSelectView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\BookSourceSelectViewModel.cs" />
-    <Compile Include="Pages\CatalogView.xaml.cs">
-      <DependentUpon>CatalogView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\CatalogViewModel.cs" />
-    <Compile Include="Pages\ChapterView.xaml.cs">
-      <DependentUpon>ChapterView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\ChapterViewModel.cs" />
     <Compile Include="Pages\SettingView.xaml.cs">
       <DependentUpon>SettingView.xaml</DependentUpon>
     </Compile>
@@ -193,14 +185,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\BookSourceSelectView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\CatalogView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\ChapterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -16,7 +16,6 @@
         <ts:BookShowTemplateSelector x:Key="BookShowTemplateSelector">
             <ts:BookShowTemplateSelector.CatalogTemplate>
                 <DataTemplate DataType="{x:Type entities:BookShowEntity}">
-                    <!--<TextBlock Text="目录"/>-->
                     <DockPanel>
                         <TextBlock Text="{Binding Path=BookName}" FontSize="18" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
                         <TextBlock Text="{Binding Path=Author}" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
@@ -41,12 +40,19 @@
             <ts:BookShowTemplateSelector.ChapterTemplate>
                 <DataTemplate DataType="{x:Type entities:ChapterShowEntity}">
                     <DockPanel>
+                        <DockPanel.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="重新下载章节内容"/>
+                                <MenuItem Header="换源下载章节内容"/>
+                            </ContextMenu>
+                        </DockPanel.ContextMenu>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Bottom">
                             <Button Content="上一章" Command="{Binding Path=ShowLastChapterCommand}"/>
-                            <Button Content="目录" Command="{Binding Path=ShowCatalogCommand}"/>
+                            <Button Content="目录" Command="{Binding Path=ShowCatalogCommand}" Margin="5,0"/>
                             <Button Content="下一章" Command="{Binding Path=ShowNextChapterCommand}"/>
                         </StackPanel>
                         <TextBlock Text="{Binding Path=Title}" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
+                        <TextBlock Text="{Binding Path=Content}"/>
                     </DockPanel>
                 </DataTemplate>
             </ts:BookShowTemplateSelector.ChapterTemplate>

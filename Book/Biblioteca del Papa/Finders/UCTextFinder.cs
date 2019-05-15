@@ -17,6 +17,11 @@ namespace Biblioteca_del_Papa.Finders
             throw new NotImplementedException();
         }
 
+        public string GetContent(string url)
+        {
+            throw new NotImplementedException();
+        }
+
         public IList<BookInfo> SearchByKeyword(string keyword)
         {
             var data = new List<BookInfo>();

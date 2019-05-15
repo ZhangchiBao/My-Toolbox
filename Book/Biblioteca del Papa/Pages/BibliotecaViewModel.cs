@@ -76,6 +76,7 @@ namespace Biblioteca_del_Papa.Pages
                             ID = b.ID,
                             Chapters = b.Chapters.Select((c, index) => new ChapterShowEntity(finder: finders.Single(f => f.FinderKey == b.Finder.Key), index: index, maxIndex: b.Chapters.Count - 1, gotoChapter: GotoChapterAsync, gotoCatelog: GotoCatelogAsync)
                             {
+                                ID = c.ID,
                                 Title = c.Title,
                                 Content = c.Content,
                                 URL = c.URL
@@ -98,6 +99,18 @@ namespace Biblioteca_del_Papa.Pages
         {
             await Task.Run(() =>
             {
+                var chapter = CurrentBook.Chapters[index];
+                if (string.IsNullOrWhiteSpace(chapter.Content))
+                {
+                    using (var db = container.Get<DBContext>())
+                    {
+                        chapter.Content = chapter.Finder.GetContent(chapter.URL);
+                        var dbChapter = db.Chapters.Single(a => a.ID == chapter.ID);
+                        dbChapter.Content = chapter.Content;
+                        db.Entry(dbChapter).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                }
                 MainContentViewModel = CurrentBook.Chapters[index];
             });
         }

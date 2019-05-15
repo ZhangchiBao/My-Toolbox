@@ -2,10 +2,8 @@
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Biblioteca_del_Papa.Finders
 {
@@ -20,6 +18,11 @@ namespace Biblioteca_del_Papa.Finders
             var data = new List<ChapterInfo>();
 
             return data;
+        }
+
+        public string GetContent(string url)
+        {
+            throw new NotImplementedException();
         }
 
         public IList<BookInfo> SearchByKeyword(string keyword)
