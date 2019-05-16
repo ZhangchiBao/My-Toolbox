@@ -52,7 +52,9 @@
                             <Button Content="下一章" Command="{Binding Path=ShowNextChapterCommand}"/>
                         </StackPanel>
                         <TextBlock Text="{Binding Path=Title}" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
-                        <TextBlock Text="{Binding Path=Content}"/>
+                        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden" Margin="10">
+                            <TextBlock Text="{Binding Path=Content}" LineHeight="20" TextWrapping="WrapWithOverflow"/>
+                        </ScrollViewer>
                     </DockPanel>
                 </DataTemplate>
             </ts:BookShowTemplateSelector.ChapterTemplate>
@@ -74,6 +76,7 @@
                                         <StackPanel.ContextMenu>
                                             <ContextMenu>
                                                 <MenuItem Header="更新" Command="{Binding Path=RenewCommand}" CommandParameter="{Binding}"/>
+                                                <MenuItem Header="下载所有空白章节"/>
                                             </ContextMenu>
                                         </StackPanel.ContextMenu>
                                         <TextBlock Text="{Binding Path=BookName}" x:Name="bookName"/>

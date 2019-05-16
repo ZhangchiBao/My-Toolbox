@@ -13,6 +13,7 @@ namespace Biblioteca_del_Papa.Finders
         IList<BookInfo> SearchByKeyword(string keyword);
 
         IList<ChapterInfo> GetChapters(string url);
-        string GetContent(string url);
+
+        List<string> GetParagraphList(string url);
     }
 }

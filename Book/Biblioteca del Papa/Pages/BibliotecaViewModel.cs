@@ -1,6 +1,7 @@
 ﻿using Biblioteca_del_Papa.DAL;
 using Biblioteca_del_Papa.Entities;
 using Biblioteca_del_Papa.Finders;
+using Newtonsoft.Json;
 using Stylet;
 using StyletIoC;
 using System;
@@ -78,7 +79,7 @@ namespace Biblioteca_del_Papa.Pages
                             {
                                 ID = c.ID,
                                 Title = c.Title,
-                                Content = c.Content,
+                                Content = string.IsNullOrEmpty(c.Content)?string.Empty: "\t" + string.Join(Environment.NewLine + "\t", JsonConvert.DeserializeObject<List<string>>(c.Content)),
                                 URL = c.URL
                             }).ToList()
                         }).ToList()
@@ -104,9 +105,10 @@ namespace Biblioteca_del_Papa.Pages
                 {
                     using (var db = container.Get<DBContext>())
                     {
-                        chapter.Content = chapter.Finder.GetContent(chapter.URL);
+                        var paragraphList = chapter.Finder.GetParagraphList(chapter.URL);
+                        chapter.Content = "\t" + string.Join(Environment.NewLine + "\t", paragraphList);
                         var dbChapter = db.Chapters.Single(a => a.ID == chapter.ID);
-                        dbChapter.Content = chapter.Content;
+                        dbChapter.Content = JsonConvert.SerializeObject(paragraphList);
                         db.Entry(dbChapter).State = EntityState.Modified;
                         db.SaveChanges();
                     }

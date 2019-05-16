@@ -17,7 +17,7 @@ namespace Biblioteca_del_Papa.Finders
             throw new NotImplementedException();
         }
 
-        public string GetContent(string url)
+        public List<string> GetParagraphList(string url)
         {
             throw new NotImplementedException();
         }

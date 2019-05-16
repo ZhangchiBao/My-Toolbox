@@ -20,7 +20,7 @@ namespace Biblioteca_del_Papa.Finders
             return data;
         }
 
-        public string GetContent(string url)
+        public List<string> GetParagraphList(string url)
         {
             throw new NotImplementedException();
         }

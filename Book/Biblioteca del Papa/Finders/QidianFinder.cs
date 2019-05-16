@@ -2,6 +2,7 @@
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Biblioteca_del_Papa.Finders
@@ -29,9 +30,12 @@ namespace Biblioteca_del_Papa.Finders
             return data;
         }
 
-        public string GetContent(string url)
+        public List<string> GetParagraphList(string url)
         {
-            throw new NotImplementedException();
+            HtmlWeb web = new HtmlWeb();
+            var doc = web.Load(url);
+            var nodes = doc.DocumentNode.SelectNodes($"//div[@class='text-wrap']/div/div[2]/p");
+            return nodes.Select(node => node.InnerText.Trim()).ToList();
         }
 
         public IList<BookInfo> SearchByKeyword(string keyword)
