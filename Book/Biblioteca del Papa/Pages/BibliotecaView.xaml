@@ -7,59 +7,10 @@
              xmlns:controls="clr-namespace:Biblioteca_del_Papa.Controls"
              xmlns:entities="clr-namespace:Biblioteca_del_Papa.Entities"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
-             xmlns:ts="clr-namespace:Biblioteca_del_Papa.TemplateSelectors"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              xmlns:s="https://github.com/canton7/Stylet"
              d:DataContext="{d:DesignInstance local:BibliotecaViewModel}">
-    <UserControl.Resources>
-        <ts:BookShowTemplateSelector x:Key="BookShowTemplateSelector">
-            <ts:BookShowTemplateSelector.CatalogTemplate>
-                <DataTemplate DataType="{x:Type entities:BookShowEntity}">
-                    <DockPanel>
-                        <TextBlock Text="{Binding Path=BookName}" FontSize="18" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
-                        <TextBlock Text="{Binding Path=Author}" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
-                        <TextBlock Text="{Binding Path=BookName}" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
-                        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden" Focusable="False">
-                            <ItemsControl ItemsSource="{Binding Path=Chapters}" HorizontalContentAlignment="Center" HorizontalAlignment="Center">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <WrapPanel/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate DataType="{x:Type entities:ChapterInfo}">
-                                        <Button Content="{Binding Path=Title}" Focusable="False" ToolTip="{Binding Path=Title}" Margin="10,5" Width="200" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Command="{Binding Path=ShowChapterCommand}" CommandParameter="{Binding}"/>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </ScrollViewer>
-                    </DockPanel>
-                </DataTemplate>
-            </ts:BookShowTemplateSelector.CatalogTemplate>
-            <ts:BookShowTemplateSelector.ChapterTemplate>
-                <DataTemplate DataType="{x:Type entities:ChapterShowEntity}">
-                    <DockPanel>
-                        <DockPanel.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Header="重新下载章节内容"/>
-                                <MenuItem Header="换源下载章节内容"/>
-                            </ContextMenu>
-                        </DockPanel.ContextMenu>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Bottom">
-                            <Button Content="上一章" Command="{Binding Path=ShowLastChapterCommand}"/>
-                            <Button Content="目录" Command="{Binding Path=ShowCatalogCommand}" Margin="5,0"/>
-                            <Button Content="下一章" Command="{Binding Path=ShowNextChapterCommand}"/>
-                        </StackPanel>
-                        <TextBlock Text="{Binding Path=Title}" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
-                        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden" Margin="10">
-                            <TextBlock Text="{Binding Path=Content}" LineHeight="20" TextWrapping="WrapWithOverflow"/>
-                        </ScrollViewer>
-                    </DockPanel>
-                </DataTemplate>
-            </ts:BookShowTemplateSelector.ChapterTemplate>
-        </ts:BookShowTemplateSelector>
-    </UserControl.Resources>
     <Grid>
         <DockPanel>
             <DockPanel DockPanel.Dock="Left" Width="200">
@@ -89,7 +40,7 @@
                     </TreeView.ItemTemplate>
                 </TreeView>
             </DockPanel>
-            <ContentControl Content="{Binding Path=MainContentViewModel}" ContentTemplateSelector="{StaticResource BookShowTemplateSelector}"/>
+            <ContentControl s:View.Model="{Binding Path=MainContentViewModel}"/>
         </DockPanel>
     </Grid>
 </UserControl>

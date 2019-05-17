@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="Biblioteca_del_Papa.Pages.BookView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Biblioteca_del_Papa.Pages"
+             xmlns:s="https://github.com/canton7/Stylet"
+             xmlns:entities="clr-namespace:Biblioteca_del_Papa.Entities"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance local:BookViewModel}"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <DockPanel x:Name="catelogView" Visibility="{Binding Path=ShowCatelog,Converter={StaticResource BooleanToVisibilityConverter}}">
+            <TextBlock Text="{Binding Path=CurrentBook.BookName}" FontSize="18" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
+            <TextBlock Text="{Binding Path=CurrentBook.Author}" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
+            <TextBlock Text="{Binding Path=CurrentBook.BookName}" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden" Focusable="False">
+                <ItemsControl ItemsSource="{Binding Path=CurrentBook.Chapters}" HorizontalContentAlignment="Center" HorizontalAlignment="Center">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type entities:ChapterInfo}">
+                            <Button Content="{Binding Path=Title}" Focusable="False" ToolTip="{Binding Path=Title}" Margin="10,5" Width="200" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Command="{s:Action Method=GotoChapter}"  CommandParameter="{Binding Path=Index}"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </DockPanel>
+        <DockPanel Visibility="{Binding Path=ShowChapter,Converter={StaticResource BooleanToVisibilityConverter}}">
+            <DockPanel.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="重新下载章节内容" Command="{s:Action Method=ReDownloadContent}"/>
+                    <MenuItem Header="换源下载章节内容" Command="{s:Action Method=ChangeSourceToDownloadContent}"/>
+                </ContextMenu>
+            </DockPanel.ContextMenu>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Bottom">
+                <Button Content="上一章" Command="{s:Action Method=GotoLastChapter}"/>
+                <Button Content="目录" Command="{s:Action Method=GotoCatelog}" Margin="5,0"/>
+                <Button Content="下一章" Command="{s:Action Method=GotoNextChapter}"/>
+            </StackPanel>
+            <TextBlock Text="{Binding Path=CurrentChapter.Title}" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden" Margin="10">
+                <TextBlock Text="{Binding Path=CurrentChapter.Content}" LineHeight="20" TextWrapping="WrapWithOverflow"/>
+            </ScrollViewer>
+        </DockPanel>
+    </Grid>
+</UserControl>

@@ -75,11 +75,11 @@ namespace Biblioteca_del_Papa.Pages
                             Finder = finders.Single(f => f.FinderKey == b.Finder.Key),
                             URL = b.URL,
                             ID = b.ID,
-                            Chapters = b.Chapters.Select((c, index) => new ChapterShowEntity(finder: finders.Single(f => f.FinderKey == b.Finder.Key), index: index, maxIndex: b.Chapters.Count - 1, gotoChapter: GotoChapterAsync, gotoCatelog: GotoCatelogAsync)
+                            Chapters = b.Chapters.Select((c, index) => new ChapterShowEntity(finder: finders.Single(f => f.FinderKey == b.Finder.Key), index: index)
                             {
                                 ID = c.ID,
                                 Title = c.Title,
-                                Content = string.IsNullOrEmpty(c.Content)?string.Empty: "\t" + string.Join(Environment.NewLine + "\t", JsonConvert.DeserializeObject<List<string>>(c.Content)),
+                                Content = string.IsNullOrEmpty(c.Content) ? string.Empty : "\t" + string.Join(Environment.NewLine + "\t", JsonConvert.DeserializeObject<List<string>>(c.Content)),
                                 URL = c.URL
                             }).ToList()
                         }).ToList()
@@ -93,27 +93,6 @@ namespace Biblioteca_del_Papa.Pages
             await Task.Run(() =>
             {
                 MainContentViewModel = CurrentBook;
-            });
-        }
-
-        private async Task GotoChapterAsync(int index)
-        {
-            await Task.Run(() =>
-            {
-                var chapter = CurrentBook.Chapters[index];
-                if (string.IsNullOrWhiteSpace(chapter.Content))
-                {
-                    using (var db = container.Get<DBContext>())
-                    {
-                        var paragraphList = chapter.Finder.GetParagraphList(chapter.URL);
-                        chapter.Content = "\t" + string.Join(Environment.NewLine + "\t", paragraphList);
-                        var dbChapter = db.Chapters.Single(a => a.ID == chapter.ID);
-                        dbChapter.Content = JsonConvert.SerializeObject(paragraphList);
-                        db.Entry(dbChapter).State = EntityState.Modified;
-                        db.SaveChanges();
-                    }
-                }
-                MainContentViewModel = CurrentBook.Chapters[index];
             });
         }
 
@@ -149,8 +128,9 @@ namespace Biblioteca_del_Papa.Pages
         {
             if (e.OriginalSource is System.Windows.FrameworkElement element && element.DataContext is BookShowEntity book)
             {
-                CurrentBook = book;
-                MainContentViewModel = CurrentBook;
+                var viewModel = container.Get<BookViewModel>();
+                viewModel.CurrentBook = book;
+                MainContentViewModel = viewModel;
             }
             else
             {

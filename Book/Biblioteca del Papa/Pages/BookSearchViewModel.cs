@@ -85,7 +85,10 @@ namespace Biblioteca_del_Papa.Pages
                         {
                             item.Description = book.Description;
                         }
-                        item.Data.Add(book);
+                        App.Current.Dispatcher.Invoke(() =>
+                        {
+                            item.Data.Add(book);
+                        });
                     }
                     else
                     {
