@@ -30,12 +30,24 @@ namespace Biblioteca_del_Papa.Pages
             finders = container.GetAll<IFinder>();
         }
 
+        /// <summary>
+        /// 关键字
+        /// </summary>
         public string Keyword { get; set; }
 
+        /// <summary>
+        /// 搜索结果
+        /// </summary>
         public ObservableCollection<SearchBookByKeywordResult> SearchResults { get; set; } = new ObservableCollection<SearchBookByKeywordResult>();
 
+        /// <summary>
+        /// 能否执行搜索
+        /// </summary>
         public bool CanDoSearch => !string.IsNullOrEmpty(Keyword);
 
+        /// <summary>
+        /// 执行搜索
+        /// </summary>
         public void DoSearch()
         {
             ConcurrentQueue<BookInfo> tempQueue = new ConcurrentQueue<BookInfo>();
@@ -105,6 +117,11 @@ namespace Biblioteca_del_Papa.Pages
             });
         }
 
+        /// <summary>
+        /// 输入框按下按键
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void InputKeydown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
@@ -116,6 +133,11 @@ namespace Biblioteca_del_Papa.Pages
             }
         }
 
+        /// <summary>
+        /// 列表双击
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void ListDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (e.OriginalSource is FrameworkElement element && element.DataContext is SearchBookByKeywordResult result)
@@ -129,11 +151,17 @@ namespace Biblioteca_del_Papa.Pages
             }
         }
 
+        /// <summary>
+        /// 取消
+        /// </summary>
         public void Cancel()
         {
             base.RequestClose(false);
         }
 
+        /// <summary>
+        /// 确定
+        /// </summary>
         public void Determine()
         {
             RequestClose(true);

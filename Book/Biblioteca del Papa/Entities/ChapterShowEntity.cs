@@ -8,9 +8,8 @@ namespace Biblioteca_del_Papa.Entities
 {
     public class ChapterShowEntity : PropertyChangedBase
     {
-        public ChapterShowEntity(IFinder finder, int index)
+        public ChapterShowEntity(int index)
         {
-            this.Finder = finder;
             this.Index = index;
         }
 
@@ -22,7 +21,7 @@ namespace Biblioteca_del_Papa.Entities
 
         public string URL { get; set; }
 
-        public IFinder Finder { get; private set; }
+        public IFinder Finder { get; set; }
 
         public int Index { get; set; }
     }

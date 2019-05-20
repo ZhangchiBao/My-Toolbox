@@ -81,14 +81,19 @@ namespace Biblioteca_del_Papa.DAL
         public string Author { get; set; }
 
         /// <summary>
-        /// 搜索器Key
+        /// 封面地址
         /// </summary>
-        public Guid FinderKey { get; set; }
+        public string CoverURL { get; set; }
 
         /// <summary>
         /// 当前地址
         /// </summary>
         public string URL { get; set; }
+
+        /// <summary>
+        /// 搜索器Key
+        /// </summary>
+        public Guid FinderKey { get; set; }
 
         /// <summary>
         /// 章节

@@ -21,32 +21,63 @@ namespace Biblioteca_del_Papa.Pages
             this.container = container;
         }
 
+        /// <summary>
+        /// 当前小说
+        /// </summary>
         public BookShowEntity CurrentBook { get; set; }
 
+        /// <summary>
+        /// 显示目录
+        /// </summary>
         public bool ShowCatelog { get; set; }
 
+        /// <summary>
+        /// 显示章节
+        /// </summary>
         public bool ShowChapter => !ShowCatelog;
 
+        /// <summary>
+        /// 当前章节
+        /// </summary>
         public ChapterShowEntity CurrentChapter { get; set; }
 
+        /// <summary>
+        /// 能否点击下一章
+        /// </summary>
         public bool CanGotoNextChapter => CurrentChapter == null ? false : CurrentBook.Chapters.IndexOf(CurrentChapter) < CurrentBook.Chapters.Count - 1;
 
+        /// <summary>
+        /// 能否点击上一章
+        /// </summary>
         public bool CanGotoLastChapter => CurrentChapter == null ? false : CurrentBook.Chapters.IndexOf(CurrentChapter) > 0;
 
+        /// <summary>
+        /// 点击下一章
+        /// </summary>
         public void GotoNextChapter()
         {
             GotoChapter(CurrentChapter.Index + 1);
         }
 
+        /// <summary>
+        /// 点击下一章
+        /// </summary>
         public void GotoLastChapter()
         {
             GotoChapter(CurrentChapter.Index - 1);
         }
 
+        /// <summary>
+        /// 换源下单章节
+        /// </summary>
         public void ChangeSourceToDownloadContent()
         {
         }
 
+        /// <summary>
+        /// 切换章节
+        /// </summary>
+        /// <param name="index"></param>
         public void GotoChapter(int index)
         {
             Task.Run(() =>
@@ -61,6 +92,9 @@ namespace Biblioteca_del_Papa.Pages
             });
         }
 
+        /// <summary>
+        /// 重新下载章节内容
+        /// </summary>
         public async void ReDownloadContent()
         {
             await Task.Run(() =>
@@ -77,6 +111,9 @@ namespace Biblioteca_del_Papa.Pages
             });
         }
 
+        /// <summary>
+        /// 前往目录页
+        /// </summary>
         public async void GotoCatelog()
         {
             await Task.Run(() =>

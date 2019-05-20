@@ -120,40 +120,12 @@ namespace Biblioteca_del_Papa.Pages
             }).ContinueWith(task =>
             {
                 LoadBookrack();
-                var category = CategoryShowEntityCollection.Single(a=>a.CategoryID==book.CategoryID);
+                var category = CategoryShowEntityCollection.Single(a => a.CategoryID == book.CategoryID);
                 category.IsExpanded = true;
                 var currentBook = category.Books.Single(a => a.ID == book.ID);
                 currentBook.IsSelected = true;
 
             });
-        }
-
-        /// <summary>
-        /// 重新加载当前小说
-        /// </summary>
-        /// <param name="bookID"></param>
-        private BookShowEntity ReloadBook(int bookID)
-        {
-            var finders = container.GetAll<IFinder>();
-            using (var db = container.Get<DBContext>())
-            {
-                var book = db.Books.Include(a => a.Chapters).Where(a => a.ID == bookID).ToList().Select(b => new BookShowEntity
-                {
-                    Author = b.Author,
-                    BookName = b.BookName,
-                    Finder = finders.Single(f => f.FinderKey == b.FinderKey),
-                    URL = b.URL,
-                    ID = b.ID,
-                    Chapters = b.Chapters.Select((c, index) => new ChapterShowEntity(finders.Single(f => f.FinderKey == b.FinderKey), index)
-                    {
-                        ID = c.ID,
-                        Title = c.Title,
-                        Content = string.IsNullOrEmpty(c.Content) ? string.Empty : "\t" + string.Join(Environment.NewLine + "\t", JsonConvert.DeserializeObject<List<string>>(c.Content)),
-                        URL = c.URL
-                    }).ToList()
-                }).SingleOrDefault();
-                return book;
-            }
         }
 
         /// <summary>
@@ -177,10 +149,11 @@ namespace Biblioteca_del_Papa.Pages
                             URL = b.URL,
                             ID = b.ID,
                             CategoryID = a.ID,
-                            Chapters = b.Chapters.Select((c, index) => new ChapterShowEntity(finders.Single(f => f.FinderKey == b.FinderKey), index)
+                            Chapters = b.Chapters.Select((c, index) => new ChapterShowEntity(index)
                             {
                                 ID = c.ID,
                                 Title = c.Title,
+                                Finder = finders.Single(f => f.FinderKey == c.FinderKey),
                                 Content = string.IsNullOrEmpty(c.Content) ? string.Empty : "\t" + string.Join(Environment.NewLine + "\t", JsonConvert.DeserializeObject<List<string>>(c.Content)),
                                 URL = c.URL
                             }).ToList()
@@ -190,6 +163,11 @@ namespace Biblioteca_del_Papa.Pages
             }
         }
 
+        /// <summary>
+        /// 树形图双击
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void TreeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (e.OriginalSource is System.Windows.FrameworkElement element && element.DataContext is BookShowEntity book)
