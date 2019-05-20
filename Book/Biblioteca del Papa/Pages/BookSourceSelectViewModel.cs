@@ -56,13 +56,12 @@ namespace Biblioteca_del_Papa.Pages
                     {
                         category = db.Categories.Single(a => a.CategoryName == "其他");
                     }
-                    var finder = db.Finders.Single(a => a.Key == SelectedSource.Finder.FinderKey);
                     db.Books.Add(new Book
                     {
                         CategoryID = category.ID,
                         BookName = SelectedSource.BookName,
                         Author = SelectedSource.Author,
-                        Finder = finder,
+                        FinderKey = SelectedSource.Finder.FinderKey,
                         URL = SelectedSource.URL
                     });
                     db.SaveChanges();

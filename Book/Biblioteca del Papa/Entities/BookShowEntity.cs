@@ -1,29 +1,11 @@
 ﻿using Biblioteca_del_Papa.Finders;
 using Stylet;
-using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace Biblioteca_del_Papa.Entities
 {
     public class BookShowEntity : PropertyChangedBase
     {
-        public BookShowEntity(Func<BookShowEntity, Task> renewFunc)
-        {
-            RenewCommand = new Command(() =>
-            {
-                Renewing = true;
-                renewFunc(this).ContinueWith(task =>
-                {
-                    System.Windows.Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        Renewing = false;
-                    });
-                });
-            });
-        }
-
         public int ID { get; set; }
 
         public string BookName { get; set; }
@@ -34,10 +16,24 @@ namespace Biblioteca_del_Papa.Entities
 
         public string URL { get; set; }
 
-        public ICommand RenewCommand { get; set; }
+        public bool Updating { get; set; }
+        public int CategoryID { get; internal set; }
+        public bool IsSelected { get; set; }
 
         public List<ChapterShowEntity> Chapters { get; set; }
 
-        public bool Renewing { get; private set; }
+        protected override void OnPropertyChanged(string propertyName)
+        {
+            base.OnPropertyChanged(propertyName);
+            switch (propertyName)
+            {
+                case nameof(IsSelected):
+                    if (IsSelected)
+                    {
+
+                    }
+                    break;
+            }
+        }
     }
 }

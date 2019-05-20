@@ -104,6 +104,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Controls\TreeViewHelper.cs" />
     <Compile Include="Pages\BookView.xaml.cs">
       <DependentUpon>BookView.xaml</DependentUpon>
     </Compile>
@@ -125,11 +126,6 @@
     <Compile Include="Finders\LewenFinder.cs" />
     <Compile Include="Finders\QidianFinder.cs" />
     <Compile Include="Finders\UCTextFinder.cs" />
-    <Compile Include="Migrations\201905101037175_InitialCreate.cs" />
-    <Compile Include="Migrations\201905101037175_InitialCreate.Designer.cs">
-      <DependentUpon>201905101037175_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Pages\BibliotecaView.xaml.cs">
       <DependentUpon>BibliotecaView.xaml</DependentUpon>
     </Compile>
@@ -163,9 +159,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Migrations\201905101037175_InitialCreate.resx">
-      <DependentUpon>201905101037175_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

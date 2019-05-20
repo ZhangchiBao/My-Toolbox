@@ -10,7 +10,6 @@ using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 
 namespace Biblioteca_del_Papa.Pages
@@ -27,11 +26,15 @@ namespace Biblioteca_del_Papa.Pages
             LoadBookrack();
         }
 
+        /// <summary>
+        /// Tab页标题
+        /// </summary>
         public string TabTitle => "书库";
 
+        /// <summary>
+        /// Tab顺序
+        /// </summary>
         public int TabIndex => 0;
-
-        public BookShowEntity CurrentBook { get; set; }
 
         /// <summary>
         /// 书架分类
@@ -56,6 +59,104 @@ namespace Biblioteca_del_Papa.Pages
         }
 
         /// <summary>
+        /// 下载所有空白章节
+        /// </summary>
+        /// <param name="book"></param>
+        public void DownloadAllBlankchapters(BookShowEntity book)
+        {
+            List<Task> tasks = new List<Task>();
+            book.Updating = true;
+            foreach (var chapter in book.Chapters)
+            {
+                if (string.IsNullOrEmpty(chapter.Content))
+                {
+                    tasks.Add(Task.Run(() =>
+                    {
+                        using (var db = container.Get<DBContext>())
+                        {
+                            var paragraphList = chapter.Finder.GetParagraphList(chapter.URL);
+                            var dbChapter = db.Chapters.Single(a => a.ID == chapter.ID);
+                            dbChapter.Content = JsonConvert.SerializeObject(paragraphList);
+                            db.Entry(dbChapter).State = EntityState.Modified;
+                            db.SaveChanges();
+                        }
+                    }));
+                }
+            }
+            Task.WhenAll(tasks).ContinueWith(task =>
+            {
+                LoadBookrack();
+                var category = CategoryShowEntityCollection.Single(a => a.CategoryID == book.CategoryID);
+                category.IsExpanded = true;
+                var currentBook = category.Books.Single(a => a.ID == book.ID);
+                currentBook.IsSelected = true;
+            });
+        }
+
+        /// <summary>
+        /// 更新目录
+        /// </summary>
+        /// <param name="book"></param>
+        public void Renew(BookShowEntity book)
+        {
+            book.Updating = true;
+            Task.Run(() =>
+            {
+                using (var db = container.Get<DBContext>())
+                {
+                    IList<ChapterInfo> chapters = book.Finder.GetChapters(book.URL);
+                    var existChapterNames = book.Chapters.Select(a => a.Title).ToList();
+                    var notExistChapters = chapters.Where(c => !existChapterNames.Contains(c.Title)).ToList();
+                    db.Chapters.AddRange(notExistChapters.Select(a => new Chapter
+                    {
+                        Title = a.Title,
+                        BookID = book.ID,
+                        URL = a.URL,
+                        FinderKey = book.Finder.FinderKey,
+                        Content = a.Content
+                    }));
+                    db.SaveChanges();
+                }
+            }).ContinueWith(task =>
+            {
+                LoadBookrack();
+                var category = CategoryShowEntityCollection.Single(a=>a.CategoryID==book.CategoryID);
+                category.IsExpanded = true;
+                var currentBook = category.Books.Single(a => a.ID == book.ID);
+                currentBook.IsSelected = true;
+
+            });
+        }
+
+        /// <summary>
+        /// 重新加载当前小说
+        /// </summary>
+        /// <param name="bookID"></param>
+        private BookShowEntity ReloadBook(int bookID)
+        {
+            var finders = container.GetAll<IFinder>();
+            using (var db = container.Get<DBContext>())
+            {
+                var book = db.Books.Include(a => a.Chapters).Where(a => a.ID == bookID).ToList().Select(b => new BookShowEntity
+                {
+                    Author = b.Author,
+                    BookName = b.BookName,
+                    Finder = finders.Single(f => f.FinderKey == b.FinderKey),
+                    URL = b.URL,
+                    ID = b.ID,
+                    Chapters = b.Chapters.Select((c, index) => new ChapterShowEntity(finders.Single(f => f.FinderKey == b.FinderKey), index)
+                    {
+                        ID = c.ID,
+                        Title = c.Title,
+                        Content = string.IsNullOrEmpty(c.Content) ? string.Empty : "\t" + string.Join(Environment.NewLine + "\t", JsonConvert.DeserializeObject<List<string>>(c.Content)),
+                        URL = c.URL
+                    }).ToList()
+                }).SingleOrDefault();
+                return book;
+            }
+        }
+
+        /// <summary>
         /// 加载书架
         /// </summary>
         public void LoadBookrack()
@@ -63,19 +164,20 @@ namespace Biblioteca_del_Papa.Pages
             var finders = container.GetAll<IFinder>();
             using (var db = container.Get<DBContext>())
             {
-                var data = db.Categories.Include(a => a.Books).Include(a => a.Books.Select(b => b.Chapters)).Include(a => a.Books.Select(b => b.Finder)).ToList()
+                var data = db.Categories.Include(a => a.Books).Include(a => a.Books.Select(b => b.Chapters)).ToList()
                     .Select(a => new CategoryShowEntity()
                     {
                         CategoryID = a.ID,
                         CategoryName = a.CategoryName,
-                        Books = a.Books.Select(b => new BookShowEntity(RenewAsync)
+                        Books = a.Books.Select(b => new BookShowEntity
                         {
                             Author = b.Author,
                             BookName = b.BookName,
-                            Finder = finders.Single(f => f.FinderKey == b.Finder.Key),
+                            Finder = finders.Single(f => f.FinderKey == b.FinderKey),
                             URL = b.URL,
                             ID = b.ID,
-                            Chapters = b.Chapters.Select((c, index) => new ChapterShowEntity(finder: finders.Single(f => f.FinderKey == b.Finder.Key), index: index)
+                            CategoryID = a.ID,
+                            Chapters = b.Chapters.Select((c, index) => new ChapterShowEntity(finders.Single(f => f.FinderKey == b.FinderKey), index)
                             {
                                 ID = c.ID,
                                 Title = c.Title,
@@ -86,42 +188,6 @@ namespace Biblioteca_del_Papa.Pages
                     }).ToList();
                 CategoryShowEntityCollection = new ObservableCollection<CategoryShowEntity>(data);
             }
-        }
-
-        private async Task GotoCatelogAsync()
-        {
-            await Task.Run(() =>
-            {
-                MainContentViewModel = CurrentBook;
-            });
-        }
-
-        /// <summary>
-        /// 更新
-        /// </summary>
-        /// <param name="book"></param>
-        /// <returns></returns>
-        private async Task RenewAsync(BookShowEntity book)
-        {
-            await Task.Run(() =>
-             {
-                 using (var db = container.Get<DBContext>())
-                 {
-                     IList<ChapterInfo> chapters = book.Finder.GetChapters(book.URL);
-                     var finder = db.Finders.Single(a => a.Key == book.Finder.FinderKey);
-                     var existChapterNames = book.Chapters.Select(a => a.Title).ToList();
-                     var notExistChapters = chapters.Where(c => !existChapterNames.Contains(c.Title)).ToList();
-                     db.Chapters.AddRange(notExistChapters.Select(a => new Chapter
-                     {
-                         Title = a.Title,
-                         BookID = book.ID,
-                         URL = a.URL,
-                         FinderID = finder.ID,
-                         Content = a.Content
-                     }));
-                     db.SaveChanges();
-                 }
-             });
         }
 
         public void TreeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)

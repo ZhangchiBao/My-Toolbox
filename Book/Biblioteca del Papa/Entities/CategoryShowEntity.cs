@@ -11,6 +11,8 @@ namespace Biblioteca_del_Papa.Entities
     {
         public int CategoryID { get; set; }
         public string CategoryName { get; set; }
+        public bool IsSelected { get; set; }
+        public bool IsExpanded { get; set; }
         public List<BookShowEntity> Books { get; set; }
     }
 }
