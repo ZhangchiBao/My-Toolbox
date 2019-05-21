@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Data.Common;
 using System.Data.Entity;
 using System.Data.SqlClient;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Biblioteca_del_Papa.DAL
 {
@@ -17,7 +13,7 @@ namespace Biblioteca_del_Papa.DAL
         {
             ConnectionString = new SqlConnectionStringBuilder()
             {
-                ConnectionString = $"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Biblioteca del Papa", "bdp.mdf")}\";Integrated Security=True;Connect Timeout=30"
+                ConnectionString = $"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"{Path.Combine(App.APPFloder, "bdp.mdf")}\";Integrated Security=True;Connect Timeout=30"
             }.ConnectionString
         }, true)
         {
@@ -32,7 +28,7 @@ namespace Biblioteca_del_Papa.DAL
                 Categories.Add(new Category { CategoryName = "科幻灵异", Alias = new List<CategoryAlias> { new CategoryAlias { AliasName = "科幻" }, new CategoryAlias { AliasName = "悬疑灵异" }, new CategoryAlias { AliasName = "灵异" }, new CategoryAlias { AliasName = "悬疑" }, new CategoryAlias { AliasName = "科幻灵异" } } });
                 Categories.Add(new Category { CategoryName = "其他", Alias = new List<CategoryAlias> { new CategoryAlias { AliasName = "其他" } } });
                 SaveChanges();
-            } 
+            }
             #endregion
         }
 

@@ -134,7 +134,7 @@ namespace Biblioteca_del_Papa.Pages
         }
 
         /// <summary>
-        /// 列表双击
+        /// 搜索结果列表双击
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -146,6 +146,25 @@ namespace Biblioteca_del_Papa.Pages
                 bookSourceSelectViewModel.Data = result;
                 if (windowManager.ShowDialog(bookSourceSelectViewModel) ?? false)
                 {
+                    BookInfo selectedSource = bookSourceSelectViewModel.SelectedSource;
+                    using (var db = container.Get<DBContext>())
+                    {
+                        var category = db.Categories.Include(a => a.Alias).SingleOrDefault(a => a.Alias.Any(b => b.AliasName == selectedSource.Category));
+                        if (category == null)
+                        {
+                            category = db.Categories.Single(a => a.CategoryName == "其他");
+                        }
+                        db.Books.Add(new Book
+                        {
+                            CategoryID = category.ID,
+                            BookName = selectedSource.BookName,
+                            Author = selectedSource.Author,
+                            FinderKey = selectedSource.Finder.FinderKey,
+                            URL = selectedSource.URL,
+                            CoverURL = selectedSource.Cover
+                        });
+                        db.SaveChanges();
+                    }
                     RequestClose(true);
                 }
             }

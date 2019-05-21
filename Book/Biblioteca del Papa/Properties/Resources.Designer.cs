@@ -19,7 +19,7 @@ namespace Biblioteca_del_Papa.Properties {
     // 类通过类似于 ResGen 或 Visual Studio 的工具自动生成的。
     // 若要添加或移除成员，请编辑 .ResX 文件，然后重新运行 ResGen
     // (以 /str 作为命令选项)，或重新生成 VS 项目。
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -57,6 +57,100 @@ namespace Biblioteca_del_Papa.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+        ///&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.1//EN&quot; &quot;http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd&quot;&gt;
+        ///&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+        ///  &lt;head&gt;
+        ///    &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;
+        ///    &lt;title&gt;{ChapterTitle}&lt;/title&gt;
+        ///    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;style.css&quot; /&gt;
+        ///  &lt;/head&gt;
+        ///  &lt;body&gt;
+        ///    &lt;p&gt;&lt;b&gt;{ChapterTitle}&lt;/b&gt;&lt;/p&gt;
+        ///    {ChapterContent}
+        ///  &lt;/body&gt;
+        ///&lt;/html&gt;
+        /// 的本地化字符串。
+        /// </summary>
+        internal static string chapterTemplate {
+            get {
+                return ResourceManager.GetString("chapterTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+        ///&lt;container version=&quot;1.0&quot; xmlns=&quot;urn:oasis:names:tc:opendocument:xmlns:container&quot;&gt;
+        ///  &lt;rootfiles&gt;
+        ///    &lt;rootfile full-path=&quot;OEBPS/content.opf&quot; media-type=&quot;application/oebps-package+xml&quot;/&gt;
+        ///  &lt;/rootfiles&gt;
+        ///&lt;/container&gt;
+        /// 的本地化字符串。
+        /// </summary>
+        internal static string container {
+            get {
+                return ResourceManager.GetString("container", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;package unique-identifier=&quot;ShuHuang&quot; xmlns=&quot;http://www.idpf.org/2007/opf&quot; version=&quot;2.0&quot;&gt;
+        ///  &lt;metadata&gt;
+        ///    &lt;dc-metadata xmlns:dc=&quot;http://purl.org/dc/elements/1.1/&quot; xmlns:dcterms=&quot;http://purl.org/dc/terms/&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;
+        ///      &lt;meta name=&quot;cover&quot; content=&quot;cover-image&quot;/&gt;
+        ///      &lt;dc:title&gt;暴风法神&lt;/dc:title&gt;
+        ///      &lt;dc:creator&gt;余云飞&lt;/dc:creator&gt;
+        ///      &lt;dc:contributor&gt;书荒小说阅读器制作，书籍版权归原作者所有&lt;/dc:contributor&gt;
+        ///      &lt;dc:date&gt;2019-5-21&lt;/dc:d [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        /// </summary>
+        internal static string contentTemplate {
+            get {
+                return ResourceManager.GetString("contentTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 body {
+        ///font-family: sans-serif;
+        ///}
+        ///h1,h2,h3,h4 {
+        ///font-family: serif;
+        ///color: red;
+        ///}
+        /// 的本地化字符串。
+        /// </summary>
+        internal static string style {
+            get {
+                return ResourceManager.GetString("style", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;ncx version=&quot;2005-1&quot; xmlns=&quot;http://www.daisy.org/z3986/2005/ncx/&quot;&gt;
+        ///  &lt;head&gt;
+        ///    &lt;meta name=&quot;dtb:uid&quot; content=&quot;&quot;/&gt;
+        ///    &lt;meta name=&quot;dtb:depth&quot; content=&quot;-1&quot;/&gt;
+        ///    &lt;meta name=&quot;dtb:totalPageCount&quot; content=&quot;0&quot;/&gt;
+        ///    &lt;meta name=&quot;dtb:maxPageNumber&quot; content=&quot;0&quot;/&gt;
+        ///  &lt;/head&gt;
+        ///  &lt;docTitle&gt;
+        ///    &lt;text&gt;{BookTitle}&lt;/text&gt;
+        ///  &lt;/docTitle&gt;
+        ///  &lt;docAuthor&gt;
+        ///    &lt;text&gt;{Author}&lt;/text&gt;
+        ///  &lt;/docAuthor&gt;
+        ///  &lt;navMap&gt;
+        ///    {navMap}
+        ///  &lt;/navMap&gt;
+        ///&lt;/ncx&gt; 的本地化字符串。
+        /// </summary>
+        internal static string tocTemplate {
+            get {
+                return ResourceManager.GetString("tocTemplate", resourceCulture);
             }
         }
     }

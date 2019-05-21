@@ -15,10 +15,12 @@ namespace Biblioteca_del_Papa.Pages
     public class BookViewModel : Screen
     {
         private readonly IContainer container;
+        private readonly IWindowManager windowManager;
 
-        public BookViewModel(IContainer container)
+        public BookViewModel(IContainer container, IWindowManager windowManager)
         {
             this.container = container;
+            this.windowManager = windowManager;
         }
 
         /// <summary>
@@ -68,10 +70,60 @@ namespace Biblioteca_del_Papa.Pages
         }
 
         /// <summary>
-        /// 换源下单章节
+        /// 换源下载章节内容
         /// </summary>
         public void ChangeSourceToDownloadContent()
         {
+            var finders = container.GetAll<IFinder>();
+            SearchBookByKeywordResult result = new SearchBookByKeywordResult
+            {
+                Author = CurrentBook.Author,
+                BookName = CurrentBook.BookName
+            };
+            var tasks = finders.Select(finder => Task.Run(() =>
+            {
+                var searchResult = finder.SearchByKeyword(result.BookName);
+                if (searchResult.Any(a => a.Author == result.Author && a.BookName == result.BookName))
+                {
+                    result.Data.Add(searchResult.Single(a => a.Author == result.Author && a.BookName == result.BookName));
+                }
+            })).ToArray();
+            Task.WhenAll(tasks).ContinueWith(task =>
+            {
+                result.Data.Remove(result.Data.SingleOrDefault(a => a.Finder.FinderKey == CurrentBook.Finder.FinderKey));
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    BookSourceSelectViewModel bookSourceSelectViewModel = container.Get<BookSourceSelectViewModel>();
+                    bookSourceSelectViewModel.Data = result;
+                    if (windowManager.ShowDialog(bookSourceSelectViewModel) ?? false)
+                    {
+                        var selectSource = bookSourceSelectViewModel.SelectedSource;
+                        var chapters = selectSource.Finder.GetChapters(selectSource.URL);
+                        for (int i = 0; i < chapters.Count; i++)
+                        {
+                            var chapter = chapters[i];
+                            if (chapter.Title == CurrentChapter.Title)
+                            {
+                                using (var db = container.Get<DBContext>())
+                                {
+                                    var dbChapter = db.Chapters.SingleOrDefault(a => a.ID == CurrentChapter.ID);
+                                    dbChapter.FinderKey = selectSource.Finder.FinderKey;
+                                    dbChapter.URL = chapter.URL;
+                                    dbChapter.Content = string.Empty;
+                                    db.Entry(dbChapter).State = EntityState.Modified;
+                                    db.SaveChanges();
+                                    CurrentChapter.Finder = selectSource.Finder;
+                                    CurrentChapter.Content = string.Empty;
+                                    CurrentChapter.URL = chapter.URL;
+                                    GotoChapter(i);
+                                }
+                                break;
+                            }
+                        }
+                        RequestClose(true);
+                    }
+                });
+            });
         }
 
         /// <summary>

@@ -69,26 +69,8 @@ namespace Biblioteca_del_Papa.Pages
         {
             if (MessageBox.Show($"要把小说《{SelectedSource.BookName}》({SelectedSource.Author})加入到书架么？", "提示", MessageBoxButton.OKCancel, MessageBoxImage.Information) == MessageBoxResult.OK)
             {
-                using (var db = container.Get<DBContext>())
-                {
-                    var category = db.Categories.Include(a => a.Alias).SingleOrDefault(a => a.Alias.Any(b => b.AliasName == SelectedSource.Category));
-                    if (category == null)
-                    {
-                        category = db.Categories.Single(a => a.CategoryName == "其他");
-                    }
-                    db.Books.Add(new Book
-                    {
-                        CategoryID = category.ID,
-                        BookName = SelectedSource.BookName,
-                        Author = SelectedSource.Author,
-                        FinderKey = SelectedSource.Finder.FinderKey,
-                        URL = SelectedSource.URL,
-                        CoverURL = SelectedSource.Cover
-                    });
-                    db.SaveChanges();
-                }
+                RequestClose(true);
             }
-            RequestClose(true);
         }
 
         protected override void OnPropertyChanged(string propertyName)

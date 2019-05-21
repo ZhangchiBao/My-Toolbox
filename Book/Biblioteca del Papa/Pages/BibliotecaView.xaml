@@ -34,6 +34,7 @@
                                             <ContextMenu>
                                                 <MenuItem Header="更新" Command="{s:Action Method=Renew}" CommandParameter="{Binding}"/>
                                                 <MenuItem Header="下载所有空白章节" Command="{s:Action Method=DownloadAllBlankchapters}" CommandParameter="{Binding}"/>
+                                                <MenuItem Header="生成电子书" Command="{s:Action Method=BuildEbook}" CommandParameter="{Binding}"/>
                                             </ContextMenu>
                                         </StackPanel.ContextMenu>
                                         <TextBlock Text="{Binding Path=BookName}" x:Name="bookName"/>

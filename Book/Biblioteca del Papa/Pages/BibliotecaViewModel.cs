@@ -124,8 +124,22 @@ namespace Biblioteca_del_Papa.Pages
                 category.IsExpanded = true;
                 var currentBook = category.Books.Single(a => a.ID == book.ID);
                 currentBook.IsSelected = true;
-
+                if(MainContentViewModel is BookViewModel)
+                {
+                    var viewModel = container.Get<BookViewModel>();
+                    viewModel.CurrentBook = currentBook;
+                    MainContentViewModel = viewModel;
+                }
             });
+        }
+
+        /// <summary>
+        /// 生成电子书
+        /// </summary>
+        /// <param name="book"></param>
+        public void BuildEbook(BookShowEntity book)
+        {
+
         }
 
         /// <summary>

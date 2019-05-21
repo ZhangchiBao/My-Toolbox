@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><package unique-identifier="ShuHuang" xmlns="http://www.idpf.org/2007/opf" version="2.0">
+  <metadata>
+    <dc-metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <meta name="cover" content="cover-image"/>
+      <dc:title>{BookTitle}</dc:title>
+      <dc:creator>{Author}</dc:creator>
+      <dc:contributor>{AppName}制作，书籍版权归原作者所有</dc:contributor>
+      <dc:date>{Date}</dc:date>
+      <dc:language>zh-CN</dc:language>
+    </dc-metadata>
+    <x-metadata/>
+  </metadata>
+  <manifest>
+    {manifest}
+  </manifest>
+  <spine toc="ncx">
+    {spine}
+  </spine>
+  <guide>
+    <reference type="Other" title="" href=""/>
+  </guide>
+</package>

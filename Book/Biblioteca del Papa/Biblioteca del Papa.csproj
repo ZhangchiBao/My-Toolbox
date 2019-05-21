@@ -104,6 +104,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Builders\EpubBuilder.cs" />
+    <Compile Include="Builders\IBuilder.cs" />
+    <Compile Include="Common\EnumerableExtentions.cs" />
     <Compile Include="Controls\TreeViewHelper.cs" />
     <Compile Include="Pages\BookView.xaml.cs">
       <DependentUpon>BookView.xaml</DependentUpon>
@@ -228,6 +231,21 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\container.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\style.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\chapterTemplate.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\tocTemplate.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\contentTemplate.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.4.2.1\build\Fody.targets" Condition="Exists('..\packages\Fody.4.2.1\build\Fody.targets')" />
