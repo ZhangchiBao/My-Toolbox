@@ -124,7 +124,7 @@ namespace Biblioteca_del_Papa.Pages
                 category.IsExpanded = true;
                 var currentBook = category.Books.Single(a => a.ID == book.ID);
                 currentBook.IsSelected = true;
-                if(MainContentViewModel is BookViewModel)
+                if (MainContentViewModel is BookViewModel)
                 {
                     var viewModel = container.Get<BookViewModel>();
                     viewModel.CurrentBook = currentBook;
@@ -139,7 +139,9 @@ namespace Biblioteca_del_Papa.Pages
         /// <param name="book"></param>
         public void BuildEbook(BookShowEntity book)
         {
-
+            var viewModel = container.Get<BuildEbookViewModel>();
+            viewModel.Book = book;
+            windowManager.ShowDialog(viewModel);
         }
 
         /// <summary>
@@ -163,6 +165,7 @@ namespace Biblioteca_del_Papa.Pages
                             URL = b.URL,
                             ID = b.ID,
                             CategoryID = a.ID,
+                            CoverUrl = b.CoverURL,
                             Chapters = b.Chapters.Select((c, index) => new ChapterShowEntity(index)
                             {
                                 ID = c.ID,

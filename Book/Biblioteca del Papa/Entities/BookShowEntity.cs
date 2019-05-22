@@ -17,10 +17,13 @@ namespace Biblioteca_del_Papa.Entities
         public string URL { get; set; }
 
         public bool Updating { get; set; }
-        public int CategoryID { get; internal set; }
+
+        public int CategoryID { get; set; }
+
         public bool IsSelected { get; set; }
 
         public List<ChapterShowEntity> Chapters { get; set; }
+        public string CoverUrl { get; set; }
 
         protected override void OnPropertyChanged(string propertyName)
         {

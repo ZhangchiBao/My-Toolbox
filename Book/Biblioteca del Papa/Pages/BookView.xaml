@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Biblioteca_del_Papa.Pages.BookView"
+﻿<UserControl xmlns:cui="https://cui.bugmaker.xyz"  x:Class="Biblioteca_del_Papa.Pages.BookView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -46,5 +46,6 @@
                 <TextBlock Text="{Binding Path=CurrentChapter.Content}" LineHeight="20" TextWrapping="WrapWithOverflow"/>
             </ScrollViewer>
         </DockPanel>
+        <cui:BusyBox IsActive="{Binding Path=InBusy}" RingWidth="60" RingHeight="60"/>
     </Grid>
 </UserControl>

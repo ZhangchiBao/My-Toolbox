@@ -102,10 +102,10 @@ namespace Biblioteca_del_Papa.Properties {
         ///  &lt;metadata&gt;
         ///    &lt;dc-metadata xmlns:dc=&quot;http://purl.org/dc/elements/1.1/&quot; xmlns:dcterms=&quot;http://purl.org/dc/terms/&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;
         ///      &lt;meta name=&quot;cover&quot; content=&quot;cover-image&quot;/&gt;
-        ///      &lt;dc:title&gt;暴风法神&lt;/dc:title&gt;
-        ///      &lt;dc:creator&gt;余云飞&lt;/dc:creator&gt;
-        ///      &lt;dc:contributor&gt;书荒小说阅读器制作，书籍版权归原作者所有&lt;/dc:contributor&gt;
-        ///      &lt;dc:date&gt;2019-5-21&lt;/dc:d [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///      &lt;dc:title&gt;{BookTitle}&lt;/dc:title&gt;
+        ///      &lt;dc:creator&gt;{Author}&lt;/dc:creator&gt;
+        ///      &lt;dc:contributor&gt;{AppName}制作，书籍版权归原作者所有&lt;/dc:contributor&gt;
+        ///      &lt;dc:date&gt;{ [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string contentTemplate {
             get {

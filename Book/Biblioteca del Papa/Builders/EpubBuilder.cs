@@ -38,7 +38,9 @@ namespace Biblioteca_del_Papa.Builders
 
                 var tempFloder = Path.Combine(floder, "temp");
                 if (!Directory.Exists(tempFloder))
+                {
                     Directory.CreateDirectory(tempFloder);
+                }
 
                 var mimetypeFile = Path.Combine(tempFloder, "mimetype");
                 File.WriteAllText(mimetypeFile, "application/epub+zip", Encoding.UTF8);
@@ -59,6 +61,7 @@ namespace Biblioteca_del_Papa.Builders
 
                 File.WriteAllText(Path.Combine(OEBPSFolder, "style.css"), Properties.Resources.style);
 
+                #region paragraph
                 List<KeyValuePair<string, string>> chapterMap = new List<KeyValuePair<string, string>>();
                 for (int i = 0; i < book.Chapters.Count; i++)
                 {
@@ -66,17 +69,25 @@ namespace Biblioteca_del_Papa.Builders
                     var chapterTemplate = Properties.Resources.chapterTemplate;
                     var chapterContent = chapterTemplate.Replace("{ChapterTitle}", chapter.Title);
                     StringBuilder @string = new StringBuilder();
-                    var paragraphList = JsonConvert.DeserializeObject<List<string>>(chapter.Content);
+                    List<string> paragraphList = new List<string>();
+                    if (!string.IsNullOrEmpty(chapter.Content))
+                    {
+                        paragraphList = JsonConvert.DeserializeObject<List<string>>(chapter.Content);
+                    }
+
                     foreach (var paragraph in paragraphList)
                     {
                         @string.AppendLine($"<p>　　{paragraph}</p>");
                     }
+
                     chapterContent = chapterContent.Replace("{ChapterContent}", @string.ToString());
                     var chapterFile = $"chapter{i}";
                     File.WriteAllText(Path.Combine(OEBPSFolder, chapterFile + ".xhtml"), chapterContent, Encoding.UTF8);
                     chapterMap.Add(new KeyValuePair<string, string>(chapter.Title, chapterFile));
-                }
+                } 
+                #endregion
 
+                #region toc.ncx
                 var tocFile = Path.Combine(OEBPSFolder, "toc.ncx");
                 var tocContent = Properties.Resources.tocTemplate;
                 tocContent = tocContent.Replace("{BookTitle}", book.BookName);
@@ -91,7 +102,10 @@ namespace Biblioteca_del_Papa.Builders
                     navMpa.AppendLine($"<content src=\"{chapterMap[i].Value}\"/>");
                     navMpa.AppendLine($"</navPoint>");
                 }
+
                 tocContent.Replace("{navMap}", navMpa.ToString());
+                File.WriteAllText(tocFile, tocContent, Encoding.UTF8); 
+                #endregion
 
                 if (!string.IsNullOrEmpty(book.CoverURL))
                 {
@@ -102,6 +116,8 @@ namespace Biblioteca_del_Papa.Builders
                     }
                 }
 
+                #region content.opf
+                var contentFile = Path.Combine(OEBPSFolder, "content.opf");
                 var contentContent = Properties.Resources.contentTemplate;
                 contentContent = contentContent.Replace("{BookTitle}", book.BookName);
                 contentContent = contentContent.Replace("{Author}", book.Author);
@@ -117,8 +133,11 @@ namespace Biblioteca_del_Papa.Builders
                     manifest.AppendLine($"<item id=\"{chapterMap[i].Value}\" href=\"{chapterMap[i].Value}.xhtml\" media-type=\"application/xhtml+xml\"/>");
                     spine.AppendLine($"<itemref idref=\"{chapterMap[i].Value}\"/>");
                 }
+
                 contentContent.Replace("{manifest}", manifest.ToString());
                 contentContent = contentContent.Replace("{spine}", spine.ToString());
+                File.WriteAllText(contentFile, contentContent, Encoding.UTF8); 
+                #endregion
             }
         }
     }

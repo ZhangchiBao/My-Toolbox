@@ -33,6 +33,8 @@ namespace Biblioteca_del_Papa.Pages
         /// </summary>
         public bool ShowCatelog { get; set; }
 
+        public bool InBusy { get; set; }
+
         /// <summary>
         /// 显示章节
         /// </summary>
@@ -147,9 +149,10 @@ namespace Biblioteca_del_Papa.Pages
         /// <summary>
         /// 重新下载章节内容
         /// </summary>
-        public async void ReDownloadContent()
+        public void ReDownloadContent()
         {
-            await Task.Run(() =>
+            InBusy = true;
+            Task.Run(() =>
             {
                 using (var db = container.Get<DBContext>())
                 {
@@ -160,6 +163,7 @@ namespace Biblioteca_del_Papa.Pages
                     db.Entry(dbChapter).State = EntityState.Modified;
                     db.SaveChanges();
                 }
+                InBusy = false;
             });
         }
 

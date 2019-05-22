@@ -1,0 +1,35 @@
+﻿<Window xmlns:Controls="clr-namespace:Biblioteca_del_Papa.Controls"  x:Class="Biblioteca_del_Papa.Pages.BuildEbookView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Biblioteca_del_Papa.Pages"
+        xmlns:s="https://github.com/canton7/Stylet"
+        ShowInTaskbar="False"
+        mc:Ignorable="d"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
+        SizeToContent="WidthAndHeight"
+        d:DataContext="{d:DesignInstance local:BuildEbookViewModel}"
+        Title="制作电子书" Height="200" Width="300">
+    <Grid Margin="10">
+        <DockPanel>
+            <DockPanel DockPanel.Dock="Top">
+                <Image DockPanel.Dock="Left" Source="{Binding Path=Book.Cover}" Width="80" Margin="5"/>
+                <DockPanel DockPanel.Dock="Top" Margin="5">
+                    <TextBlock DockPanel.Dock="Left" Text="小说名称：" VerticalAlignment="Center" FontSize="16"/>
+                    <TextBlock Text="{Binding Path=Book.BookName}" VerticalAlignment="Center" FontSize="16"/>
+                </DockPanel>
+                <DockPanel DockPanel.Dock="Top" Margin="5">
+                    <TextBlock DockPanel.Dock="Left" Text="作者：" VerticalAlignment="Center" FontSize="16"/>
+                    <TextBlock Text="{Binding Path=Book.Author}" VerticalAlignment="Center" FontSize="16"/>
+                </DockPanel>
+                <DockPanel DockPanel.Dock="Top" Margin="5">
+                    <TextBlock DockPanel.Dock="Left" Text="电子书类型：" VerticalAlignment="Center" FontSize="16"/>
+                    <ComboBox ItemsSource="{Binding Path=Builders}" DisplayMemberPath="BuilderName" SelectedItem="{Binding Path=SelectedBuilder}" VerticalAlignment="Center" FontSize="16"/>
+                </DockPanel>
+            </DockPanel>
+            <Controls:BottomBtnGroup  Margin="5" CancelCommand="{s:Action Method=Cancel}" ConfirmCommand="{s:Action Method=Confirm}"/>
+        </DockPanel>
+    </Grid>
+</Window>
