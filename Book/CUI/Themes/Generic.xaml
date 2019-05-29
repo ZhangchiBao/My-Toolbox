@@ -4,5 +4,6 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/CUI;component/Themes/ProgressRing.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/CUI;component/Themes/BusyBox.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/CUI;component/Themes/CWindow.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
