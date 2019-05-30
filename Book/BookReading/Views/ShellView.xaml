@@ -6,19 +6,20 @@
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:local="clr-namespace:BookReading.Views"
         xmlns:vm="clr-namespace:BookReading.ViewModels"
-        xmlns:pu="clr-namespace:Panuon.UI;assembly=Panuon.UI"
         xmlns:entities="clr-namespace:BookReading.Entities"
         xmlns:behaviors="clr-namespace:BookReading.Behaviors"
+        xmlns:s="https://github.com/canton7/Stylet"
         mc:Ignorable="d"
+        WindowState="Maximized"
         d:DataContext="{d:DesignInstance vm:ShellViewModel}"
         Title="小说阅读器" Height="450" Width="800">
     <Grid>
         <DockPanel Margin="5">
-            <ToolBarTray DockPanel.Dock="Top">
+            <!--<ToolBarTray DockPanel.Dock="Top">
                 <ToolBar IsOverflowOpen="False" ToolBarTray.IsLocked="True" behaviors:ToolBarBehavior.OverflowGridVisibility="Collapsed">
                     <Button Content="设置"/>
                 </ToolBar>
-            </ToolBarTray>
+            </ToolBarTray>-->
             <Border DockPanel.Dock="Left" BorderThickness="1" BorderBrush="Black" Width="150" Margin="5">
                 <TreeView ItemsSource="{Binding Path=ShlefData}">
                     <TreeView.ContextMenu>
@@ -55,8 +56,8 @@
             <DockPanel Margin="5">
                 <Border DockPanel.Dock="Top" BorderBrush="Transparent" BorderThickness="1">
                     <DockPanel>
-                        <Button DockPanel.Dock="Right" Content="搜索" Margin="5,0,0,0"/>
-                        <!--<xctk:WatermarkTextBox Watermark="请输入搜索关键字" KeepWatermarkOnGotFocus="True"/>-->
+                        <Button DockPanel.Dock="Right" Content="搜索" Margin="5,0,0,0" Command="{s:Action Method=ShowSearchView}"/>
+                        <TextBox KeyDown="{s:Action Method=Keyword_Inputbox_Keydown}" Text="{Binding Path=Keyword,UpdateSourceTrigger=PropertyChanged}"/>
                     </DockPanel>
                 </Border>
                 <Grid/>
