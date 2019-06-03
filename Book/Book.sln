@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CUITests", "CUITests\CUITes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookReading", "BookReading\BookReading.csproj", "{16A0AE89-D7EE-492A-8DFA-FCB572411B3F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookReading.Libs", "BookReading.Libs\BookReading.Libs.csproj", "{0361A09D-D98D-492C-9300-7FC51070871C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,14 @@ Global
 		{16A0AE89-D7EE-492A-8DFA-FCB572411B3F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{16A0AE89-D7EE-492A-8DFA-FCB572411B3F}.Release|x86.ActiveCfg = Release|x86
 		{16A0AE89-D7EE-492A-8DFA-FCB572411B3F}.Release|x86.Build.0 = Release|x86
+		{0361A09D-D98D-492C-9300-7FC51070871C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0361A09D-D98D-492C-9300-7FC51070871C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0361A09D-D98D-492C-9300-7FC51070871C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0361A09D-D98D-492C-9300-7FC51070871C}.Debug|x86.Build.0 = Debug|Any CPU
+		{0361A09D-D98D-492C-9300-7FC51070871C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0361A09D-D98D-492C-9300-7FC51070871C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0361A09D-D98D-492C-9300-7FC51070871C}.Release|x86.ActiveCfg = Release|Any CPU
+		{0361A09D-D98D-492C-9300-7FC51070871C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

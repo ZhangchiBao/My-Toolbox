@@ -18,7 +18,7 @@
                 <DockPanel>
                     <TextBlock VerticalAlignment="Center" Text="名称：" DockPanel.Dock="Left" Margin="5"/>
                     <!--<Button Content="网站设置" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="5"/>-->
-                    <CheckBox Content="详细信息" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="5"/>
+                    <CheckBox Content="详细信息" x:Name="ShowSearchDetail" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="5"/>
                     <Button Content="开始搜索" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="5" Command="{s:Action Method=DoSearch}"/>
                     <TextBox Text="{Binding Path=Keyword,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="5"/>
                 </DockPanel>
@@ -34,6 +34,12 @@
                     <TextBox Width="100"/>
                 </StackPanel>
             </Grid>
+            <DataGrid DockPanel.Dock="Bottom" ItemsSource="{Binding Path=FinderCollection}" AutoGenerateColumns="False" HeadersVisibility="Column" Margin="5" IsReadOnly="True" Visibility="{Binding ElementName=ShowSearchDetail,Path=IsChecked,Converter={StaticResource BooleanToVisibilityConverter}}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Path=Finder.FinderName}" Width="*" Header="站点名称"/>
+                    <DataGridTextColumn Binding="{Binding Path=DoneStatus,Converter={StaticResource EnumToStringConverter}}" Header="状态" TextBlock.TextAlignment="Center"/>
+                </DataGrid.Columns>
+            </DataGrid>
             <DataGrid Margin="5"/>
         </DockPanel>
     </Grid>
