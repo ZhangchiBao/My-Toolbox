@@ -16,28 +16,11 @@ namespace BookReading
         {
             Configuration.LazyLoadingEnabled = true;
             Configuration.ProxyCreationEnabled = true;
-            //#region 初始化数据库
-            //if (Database.CreateIfNotExists())
-            //{
-            //    Categories.Add(new Category { CategoryName = "玄幻奇幻", Alias = new List<CategoryAlias> { new CategoryAlias { AliasName = "玄幻" }, new CategoryAlias { AliasName = "奇幻" }, new CategoryAlias { AliasName = "玄幻奇幻" } } });
-            //    Categories.Add(new Category { CategoryName = "武侠修真", Alias = new List<CategoryAlias> { new CategoryAlias { AliasName = "武侠" }, new CategoryAlias { AliasName = "仙侠" }, new CategoryAlias { AliasName = "武侠修真" } } });
-            //    Categories.Add(new Category { CategoryName = "现代都市", Alias = new List<CategoryAlias> { new CategoryAlias { AliasName = "都市" }, new CategoryAlias { AliasName = "现实" }, new CategoryAlias { AliasName = "现代都市" } } });
-            //    Categories.Add(new Category { CategoryName = "历史军事", Alias = new List<CategoryAlias> { new CategoryAlias { AliasName = "历史" }, new CategoryAlias { AliasName = "军事" }, new CategoryAlias { AliasName = "历史军事" } } });
-            //    Categories.Add(new Category { CategoryName = "游戏竞技", Alias = new List<CategoryAlias> { new CategoryAlias { AliasName = "游戏" }, new CategoryAlias { AliasName = "体育" }, new CategoryAlias { AliasName = "游戏竞技" } } });
-            //    Categories.Add(new Category { CategoryName = "科幻灵异", Alias = new List<CategoryAlias> { new CategoryAlias { AliasName = "科幻" }, new CategoryAlias { AliasName = "悬疑灵异" }, new CategoryAlias { AliasName = "灵异" }, new CategoryAlias { AliasName = "悬疑" }, new CategoryAlias { AliasName = "科幻灵异" } } });
-            //    Categories.Add(new Category { CategoryName = "其他", Alias = new List<CategoryAlias> { new CategoryAlias { AliasName = "其他" } } });
-            //    SaveChanges();
-            //}
-            //#endregion
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            //Database.SetInitializer(new SqliteCreateDatabaseIfNotExists<BookContext>(modelBuilder));
             Database.SetInitializer(new BookContextInitializer(modelBuilder));
-            //var model = modelBuilder.Build(Database.Connection);
-            //IDatabaseCreator sqliteDatabaseCreator = new SqliteDatabaseCreator();
-            //sqliteDatabaseCreator.Create(Database, model);
         }
 
         public DbSet<Category> Categories { get; set; }
@@ -53,21 +36,32 @@ namespace BookReading
     public class Chapter
     {
         [Key]
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("ID")]
-        public Guid ID { get; set; }
+        public string ID { get; set; }
+
+        /// <summary>
+        /// 章节序号
+        /// </summary>
+        [Column("Index")]
+        public int Index { get; set; }
 
         /// <summary>
         /// 小说ID
         /// </summary>
         [Column("BookID")]
-        public int BookID { get; set; }
+        public string BookID { get; set; }
 
         /// <summary>
         /// 标题
         /// </summary>
         [Column("Title")]
         public string Title { get; set; }
+
+        /// <summary>
+        /// 当前地址
+        /// </summary>
+        [Column("URL")]
+        public string URL { get; set; }
 
         /// <summary>
         /// 章节地址
@@ -85,28 +79,21 @@ namespace BookReading
         /// 搜索器Key
         /// </summary>
         [Column("FinderKey")]
-        public Guid FinderKey { get; set; }
-
-        /// <summary>
-        /// 当前地址
-        /// </summary>
-        [Column("URL")]
-        public string URL { get; set; }
+        public string FinderKey { get; set; }
     }
 
     [Table("Book")]
     public class Book
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("ID")]
-        public int ID { get; set; }
+        public string ID { get; set; }
 
         /// <summary>
         /// 分类ID
         /// </summary>
         [Column("CategoryID")]
-        public int CategoryID { get; set; }
+        public string CategoryID { get; set; }
 
         /// <summary>
         /// 小说名称
@@ -148,7 +135,7 @@ namespace BookReading
         /// 搜索器Key
         /// </summary>
         [Column("FinderKey")]
-        public Guid FinderKey { get; set; }
+        public string FinderKey { get; set; }
 
         /// <summary>
         /// 章节
@@ -160,9 +147,8 @@ namespace BookReading
     public class Category
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("ID")]
-        public int ID { get; set; }
+        public string ID { get; set; }
 
         /// <summary>
         /// 分类名称
@@ -185,9 +171,8 @@ namespace BookReading
     public class CategoryAlias
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("ID")]
-        public int ID { get; set; }
+        public string ID { get; set; }
 
         /// <summary>
         /// 所属分类ID

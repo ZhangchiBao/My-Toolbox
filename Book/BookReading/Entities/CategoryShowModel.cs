@@ -12,6 +12,6 @@ namespace BookReading.Entities
     {
         public ObservableCollection<BookShowModel> Books { get; internal set; }
         public string Name { get; internal set; }
-        public int ID { get; internal set; }
+        public Guid ID { get; internal set; }
     }
 }

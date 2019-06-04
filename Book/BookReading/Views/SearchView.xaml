@@ -9,9 +9,20 @@
         mc:Ignorable="d"
         WindowStyle="ToolWindow"
         ResizeMode="NoResize"
+        SizeToContent="Height"
         ShowInTaskbar="False"
         d:DataContext="{d:DesignInstance vm:SearchViewModel}"
         Title="搜索小说" Height="450" Width="800">
+    <Window.Resources>
+        <Style x:Key="BaseGridHeaderStyle" TargetType="DataGridColumnHeader">
+            <Setter Property="FontWeight" Value="Heavy"/>
+            <Setter Property="FontStyle" Value="Normal"/>
+        </Style>
+        <Style x:Key="CenterGridHeaderStyle" TargetType="DataGridColumnHeader" BasedOn="{StaticResource BaseGridHeaderStyle}">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource BaseGridHeaderStyle}"/>
+    </Window.Resources>
     <Grid>
         <DockPanel>
             <GroupBox Header="基本信息" DockPanel.Dock="Top">
@@ -20,13 +31,11 @@
                     <!--<Button Content="网站设置" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="5"/>-->
                     <CheckBox Content="详细信息" x:Name="ShowSearchDetail" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="5"/>
                     <Button Content="开始搜索" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="5" Command="{s:Action Method=DoSearch}"/>
-                    <TextBox Text="{Binding Path=Keyword,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="5"/>
+                    <TextBox Text="{Binding Path=Keyword,UpdateSourceTrigger=PropertyChanged}"
+                             KeyDown="{s:Action Method=Keyword_Inputbox_Keydown}"
+                             VerticalAlignment="Center" Margin="5"/>
                 </DockPanel>
             </GroupBox>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Bottom" Margin="5">
-                <Button Content="下载" Margin="5" Command="{s:Action Method=Download}"/>
-                <Button Content="退出" Margin="5" Command="{s:Action Method=Exist}"/>
-            </StackPanel>
             <Grid DockPanel.Dock="Top" Margin="5">
                 <TextBlock Text="双击书名直接下载或选中后按[下载]按钮下载。"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
@@ -34,13 +43,34 @@
                     <TextBox Width="100"/>
                 </StackPanel>
             </Grid>
-            <DataGrid DockPanel.Dock="Bottom" ItemsSource="{Binding Path=FinderCollection}" AutoGenerateColumns="False" HeadersVisibility="Column" Margin="5" IsReadOnly="True" Visibility="{Binding ElementName=ShowSearchDetail,Path=IsChecked,Converter={StaticResource BooleanToVisibilityConverter}}">
+            <DataGrid DockPanel.Dock="Bottom"
+                      ItemsSource="{Binding Path=FinderCollection}"
+                      AutoGenerateColumns="False"
+                      HeadersVisibility="Column"
+                      Margin="5" IsReadOnly="True"
+                      Visibility="{Binding ElementName=ShowSearchDetail,Path=IsChecked,Converter={StaticResource BooleanToVisibilityConverter}}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Path=Finder.FinderName}" Width="*" Header="站点名称"/>
                     <DataGridTextColumn Binding="{Binding Path=DoneStatus,Converter={StaticResource EnumToStringConverter}}" Header="状态" TextBlock.TextAlignment="Center"/>
                 </DataGrid.Columns>
             </DataGrid>
-            <DataGrid Margin="5"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Bottom" Margin="5">
+                <Button Content="下载" Margin="5" Command="{s:Action Method=Download}"/>
+                <Button Content="退出" Margin="5" Command="{s:Action Method=Exist}"/>
+            </StackPanel>
+            <DataGrid Margin="5"
+                      ItemsSource="{Binding Path=SearchResultData}"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      MouseDoubleClick="{s:Action Method=ResultView_MouseDoubleClick}"
+                      SelectedItem="{Binding Path=SelectedSearchResult}"
+                      HeadersVisibility="Column" Height="284">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="书名" Binding="{Binding Path=BookName}" Width="*"/>
+                    <DataGridTextColumn Header="站点" Binding="{Binding Path=Finder.FinderName}" Width="Auto" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
+                    <DataGridTextColumn Header="作者" Binding="{Binding Path=Author}" Width="Auto" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
+                </DataGrid.Columns>
+            </DataGrid>
         </DockPanel>
     </Grid>
 </Window>

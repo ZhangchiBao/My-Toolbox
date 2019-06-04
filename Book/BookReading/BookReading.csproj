@@ -127,6 +127,7 @@
     <Compile Include="Entities\CategoryShowModel.cs" />
     <Compile Include="Entities\ChapterShowModel.cs" />
     <Compile Include="Entities\FinderStatusModel.cs" />
+    <Compile Include="MenuHandlers\MenuHandler.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\SearchViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
@@ -183,6 +184,15 @@
       <Project>{daf5a783-a753-4a72-a915-4b7af54d2913}</Project>
       <Name>CUI</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\style.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\head.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\List.htm" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.5.0.6\build\Fody.targets" Condition="Exists('..\packages\Fody.5.0.6\build\Fody.targets')" />

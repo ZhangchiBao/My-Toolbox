@@ -4,8 +4,14 @@ using System;
 
 namespace BookReading.ViewModels
 {
+    public delegate void ViewLoadedEventHandler();
     public class BaseViewModel : Screen
     {
+        /// <summary>
+        /// 数据库连接
+        /// </summary>
+        protected readonly BookContext db;
+
         /// <summary>
         /// IOC容器
         /// </summary>
@@ -27,8 +33,9 @@ namespace BookReading.ViewModels
         /// <param name="container">IContainer</param>
         /// <param name="windowManager">IWindowManager</param>
         /// <param name="viewManager">IViewManager</param>
-        public BaseViewModel(IContainer container, IWindowManager windowManager, IViewManager viewManager)
+        public BaseViewModel(IContainer container, IWindowManager windowManager, IViewManager viewManager, BookContext db)
         {
+            this.db = db;
             this.container = container;
             this.windowManager = windowManager;
             this.viewManager = viewManager;
@@ -41,6 +48,14 @@ namespace BookReading.ViewModels
         protected void ExecuteOnView(Action callback)
         {
             View.Dispatcher.Invoke(callback);
+        }
+
+        public event ViewLoadedEventHandler ViewLoaded;
+
+        protected override void OnViewLoaded()
+        {
+            base.OnViewLoaded();
+            ViewLoaded?.Invoke();
         }
     }
 }

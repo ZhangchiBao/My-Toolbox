@@ -6,6 +6,7 @@
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:local="clr-namespace:BookReading.Views"
         xmlns:vm="clr-namespace:BookReading.ViewModels"
+        xmlns:cefSharpWPF="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
         xmlns:entities="clr-namespace:BookReading.Entities"
         xmlns:behaviors="clr-namespace:BookReading.Behaviors"
         xmlns:s="https://github.com/canton7/Stylet"
@@ -21,7 +22,8 @@
                 </ToolBar>
             </ToolBarTray>-->
             <Border DockPanel.Dock="Left" BorderThickness="1" BorderBrush="Black" Width="150" Margin="5">
-                <TreeView ItemsSource="{Binding Path=ShlefData}">
+                <TreeView ItemsSource="{Binding Path=ShlefData}"
+                          MouseDoubleClick="{s:Action Method=Shelf_DoubleClick}">
                     <TreeView.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="刷新"/>
@@ -60,7 +62,9 @@
                         <TextBox KeyDown="{s:Action Method=Keyword_Inputbox_Keydown}" Text="{Binding Path=Keyword,UpdateSourceTrigger=PropertyChanged}"/>
                     </DockPanel>
                 </Border>
-                <Grid/>
+                <Grid>
+                    <cefSharpWPF:ChromiumWebBrowser x:Name="WebBrowser" Address="{Binding Path=ShowFile}"/>
+                </Grid>
             </DockPanel>
         </DockPanel>
     </Grid>
