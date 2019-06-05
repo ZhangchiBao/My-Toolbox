@@ -12,4 +12,7 @@ function scrollwindow() {
         clr();
 }
 document.onmousedown = clr
-document.ondblclick = initialize 
+document.ondblclick = initialize
+function execute(methodName, parameters) {
+    wpfObj.execute(methodName, parameters);
+}

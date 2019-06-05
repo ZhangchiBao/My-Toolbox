@@ -19,14 +19,18 @@ namespace BookReading.Libs
             HtmlWeb web = new HtmlWeb();
             var doc = web.Load(url);
             var nodes = doc.DocumentNode.SelectNodes("//*[@id='j-catalogWrap']/div[2]/div/ul/li/a");
-            foreach (var node in nodes)
+            if (nodes != null)
             {
-                data.Add(new ChapterModel(finder:this)
+                foreach (var node in nodes)
                 {
-                    Title = node.InnerText,
-                    URL = new Uri(new Uri(url), node.GetAttributeValue("href", string.Empty)).ToString()
-                });
+                    data.Add(new ChapterModel(finder: this)
+                    {
+                        Title = node.InnerText,
+                        URL = new Uri(new Uri(url), node.GetAttributeValue("href", string.Empty)).ToString()
+                    });
+                }
             }
+
             return data;
         }
 

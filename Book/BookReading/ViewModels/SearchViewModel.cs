@@ -13,6 +13,7 @@ using BookReading.Libs.Entity;
 using System.Data.Entity;
 using Stylet;
 using StyletIoC;
+using System.Net.Http;
 
 namespace BookReading.ViewModels
 {
@@ -110,20 +111,29 @@ namespace BookReading.ViewModels
                 return;
             }
             var category = db.Categories.Include(c => c.Alias).FirstOrDefault(a => a.Alias.Any(b => b.AliasName == SelectedSearchResult.Category));
-            var bookFloder = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{SelectedSearchResult.BookName}_{SelectedSearchResult.Author}"));
+            if (category == null)
+            {
+                category = db.Categories.Single(a => a.CategoryName == "其他");
+            }
+            var bookFloder = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{SelectedSearchResult.BookName}_{SelectedSearchResult.Author}")).Replace(@"\", "").Replace(".", "").Replace("/", "");
             var bookPath = Path.Combine(App.BOOKSHELF_FLODER, bookFloder);
             if (Directory.Exists(bookPath))
             {
                 Directory.Delete(bookPath);
             }
             Directory.CreateDirectory(bookPath);
+            var coverFile = "cover.jpg";
+            if (!string.IsNullOrEmpty(SelectedSearchResult.Cover))
+            {
+                DownloadCover(Path.Combine(bookPath, coverFile), SelectedSearchResult.Cover);
+            }
             var chapterList = SelectedSearchResult.Finder.GetChapters(SelectedSearchResult.URL);
             var index = 0;
             var trs = new List<string>();
             var tds = new List<string>();
             foreach (var chapter in chapterList)
             {
-                tds.Add($"<td width=50% align=left>&nbsp;<a id=\"chapter{index}\">{chapter.Title}</a></td>");
+                tds.Add($"<td width=50% align=left>&nbsp;<a id=\"chapter{index}\" onclick=\"execute('GotoChapter',{index})\">{chapter.Title}</a></td>");
                 if (tds.Count == 2 || index == chapterList.Count - 1)
                 {
                     trs.Add($"<tr>{string.Join("", tds)}</tr>");
@@ -140,7 +150,7 @@ namespace BookReading.ViewModels
                 Author = SelectedSearchResult.Author,
                 BookFloder = bookFloder,
                 BookName = SelectedSearchResult.BookName,
-                CoverURL = SelectedSearchResult.Cover,
+                CoverURL = coverFile,
                 Descption = SelectedSearchResult.Description,
                 FinderKey = SelectedSearchResult.Finder.FinderKey.ToString(),
                 URL = SelectedSearchResult.URL,
@@ -157,6 +167,15 @@ namespace BookReading.ViewModels
             });
             db.SaveChanges();
             RequestClose(true);
+        }
+
+        private async void DownloadCover(string path, string coverUrl)
+        {
+            using (var client = new HttpClient())
+            {
+                var buffer = await client.GetByteArrayAsync(coverUrl);
+                File.WriteAllBytes(path, buffer);
+            }
         }
         #endregion
 

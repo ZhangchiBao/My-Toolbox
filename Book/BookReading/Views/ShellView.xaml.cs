@@ -1,5 +1,9 @@
-﻿using System;
+﻿using BookReading.BrowserHandlers;
+using CefSharp;
+using StyletIoC;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,9 +23,10 @@ namespace BookReading.Views
     /// </summary>
     public partial class ShellView
     {
-        public ShellView()
+        public ShellView(IContainer container)
         {
             InitializeComponent();
+            WebBrowser.RegisterAsyncJsObject("wpfObj", container.Get<CallbackObjectForJs>(), new BindingOptions { CamelCaseJavascriptNames = false });
         }
     }
 }

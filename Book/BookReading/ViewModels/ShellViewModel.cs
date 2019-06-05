@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using BookReading.BrowserHandlers;
+using BookReading.Entities;
+using BookReading.Libs;
+using BookReading.Views;
+using CefSharp;
+using Stylet;
+using StyletIoC;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using AutoMapper;
-using BookReading.Entities;
-using BookReading.MenuHandlers;
-using BookReading.Views;
-using Stylet;
-using StyletIoC;
 
 namespace BookReading.ViewModels
 {
@@ -31,6 +29,8 @@ namespace BookReading.ViewModels
         /// 搜索关键字
         /// </summary>
         public string Keyword { get; set; }
+
+        private BookShowModel currentBook;
 
         public string ShowFile { get; set; }
 
@@ -68,12 +68,26 @@ namespace BookReading.ViewModels
             menuHandler.MenuItems.Clear();
             if (e.OriginalSource is System.Windows.FrameworkElement element && element.DataContext is BookShowModel book)
             {
+                currentBook = book;
                 ShowFile = Path.Combine(App.BOOKSHELF_FLODER, book.BookFloder, "List.htm");
                 menuHandler.MenuItems.Add("测试菜单1", null);
                 menuHandler.MenuItems.Add("测试菜单2", null);
+                if (View is ShellView view)
+                {
+                    //view.WebBrowser.RegisterJsObject("wpfObj", new CategotyCallbackObjectForJs(book, this), new BindingOptions { CamelCaseJavascriptNames = false });
+                }
             }
             else
             {
+            }
+        }
+
+        public void GotoChapter(int index)
+        {
+            var chapter = currentBook.Chapters[index];
+            if (string.IsNullOrEmpty(chapter.FilePath))
+            {
+                var finder = container.GetAll<IFinder>().Single(a => a.FinderKey == chapter.FinderKey);
             }
         }
 
@@ -99,8 +113,9 @@ namespace BookReading.ViewModels
             base.OnViewLoaded();
             if (View is ShellView view)
             {
-                menuHandler = new MenuHandlers.MenuHandler();
+                menuHandler = new MenuHandler();
                 view.WebBrowser.MenuHandler = menuHandler;
+                container.Get<CallbackObjectForJs>().DataContext = this;
             }
         }
     }

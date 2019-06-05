@@ -125,13 +125,14 @@
     <Compile Include="BookContext.cs" />
     <Compile Include="BookContextInitializer.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="BrowserHandlers\CallbackObjectForJs.cs" />
     <Compile Include="Converters\EnumToStringConverter.cs" />
     <Compile Include="DTOMapper.cs" />
     <Compile Include="Entities\BookShowModel.cs" />
     <Compile Include="Entities\CategoryShowModel.cs" />
     <Compile Include="Entities\ChapterShowModel.cs" />
     <Compile Include="Entities\FinderStatusModel.cs" />
-    <Compile Include="MenuHandlers\MenuHandler.cs" />
+    <Compile Include="BrowserHandlers\MenuHandler.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\SearchViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />

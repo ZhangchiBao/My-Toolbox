@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace BookReading.MenuHandlers
+namespace BookReading.BrowserHandlers
 {
     public class MenuHandler : IContextMenuHandler
     {
@@ -16,12 +16,15 @@ namespace BookReading.MenuHandlers
 
         public void OnBeforeContextMenu(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IContextMenuParams parameters, IMenuModel model)
         {
-
+            if (MenuItems.Count == 0)
+            {
+                model.Clear();
+            }
         }
 
         public bool OnContextMenuCommand(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IContextMenuParams parameters, CefMenuCommand commandId, CefEventFlags eventFlags)
         {
-            return true;
+            return MenuItems.Count > 0;
         }
 
         public void OnContextMenuDismissed(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame)
