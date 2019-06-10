@@ -17,8 +17,9 @@ namespace BookReading.Libs
         {
             var data = new List<ChapterModel>();
             HtmlWeb web = new HtmlWeb();
+            web.UseCookies = true;
             var doc = web.Load(url);
-            var nodes = doc.DocumentNode.SelectNodes("//*[@id='j-catalogWrap']/div[2]/div/ul/li/a");
+            var nodes = doc.DocumentNode.SelectNodes("//*[@class='catalog-content-wrap']/div/div/ul/li/a");
             if (nodes != null)
             {
                 foreach (var node in nodes)

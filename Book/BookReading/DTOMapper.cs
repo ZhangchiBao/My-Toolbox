@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using BookReading.Entities;
+using BookReading.Libs.Entity;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,13 +17,14 @@ namespace BookReading
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Chapter, ChapterShowModel>()
-                .ForMember(c => c.ID, c => c.MapFrom(option => new Guid(option.ID)));
+                .ForMember(c => c.ID, c => c.MapFrom(option => new Guid(option.ID)))
+                .ForMember(c => c.Sections, c => c.MapFrom(option => string.IsNullOrEmpty(option.Sections) ? null : JsonConvert.DeserializeObject<List<string>>(option.Sections)));
 
                 cfg.CreateMap<Book, BookShowModel>()
-                .ForMember(b => b.ID, b => b.MapFrom(option => new Guid(option.ID)))
-                .ForMember(b => b.Name, b => b.MapFrom(option => option.BookName))
-                .ForMember(b => b.Cover, b => b.MapFrom(option => option.CoverURL))
-                .ForMember(b => b.Chapters, b => b.MapFrom(option => option.Chapters.Select(c => mapper.Map<ChapterShowModel>(c)).ToList()));
+                .ForMember(b => b.ID, c => c.MapFrom(option => new Guid(option.ID)))
+                .ForMember(b => b.CoverContent, b => b.MapFrom(option => string.IsNullOrEmpty(option.CoverContent) ? null : Convert.FromBase64String(option.CoverContent)))
+                .ForMember(b => b.CoverUrl, b => b.MapFrom(option => option.CoverURL))
+                .ForMember(b => b.Chapters, b => b.MapFrom(option => option.Chapters.Select(c => mapper.Map<ChapterShowModel>(c)).OrderBy(a => a.Index).ToList()));
 
                 cfg.CreateMap<Category, CategoryShowModel>()
                 .ForMember(c => c.ID, c => c.MapFrom(option => new Guid(option.ID)))

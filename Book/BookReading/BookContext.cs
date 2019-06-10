@@ -58,16 +58,16 @@ namespace BookReading
         public string Title { get; set; }
 
         /// <summary>
+        /// 段落
+        /// </summary>
+        [Column("Sections")]
+        public string Sections { get; set; }
+
+        /// <summary>
         /// 当前地址
         /// </summary>
         [Column("URL")]
         public string URL { get; set; }
-
-        /// <summary>
-        /// 章节地址
-        /// </summary>
-        [Column("FilePath")]
-        public string FilePath { get; set; }
 
         /// <summary>
         /// 是否已下载
@@ -98,8 +98,8 @@ namespace BookReading
         /// <summary>
         /// 小说名称
         /// </summary>
-        [Column("BookName")]
-        public string BookName { get; set; }
+        [Column("Name")]
+        public string Name { get; set; }
 
         /// <summary>
         /// 作者
@@ -110,8 +110,8 @@ namespace BookReading
         /// <summary>
         /// 简介
         /// </summary>
-        [Column("Descption")]
-        public string Descption { get; set; }
+        [Column("Description")]
+        public string Description { get; set; }
 
         /// <summary>
         /// 封面地址
@@ -120,16 +120,16 @@ namespace BookReading
         public string CoverURL { get; set; }
 
         /// <summary>
+        /// 封面内容
+        /// </summary>
+        [Column("CoverContent")]
+        public string CoverContent { get; set; }
+
+        /// <summary>
         /// 当前更新地址
         /// </summary>
         [Column("URL")]
         public string URL { get; set; }
-
-        /// <summary>
-        /// 小说目录
-        /// </summary>
-        [Column("BookFloder")]
-        public string BookFloder { get; set; }
 
         /// <summary>
         /// 搜索器Key

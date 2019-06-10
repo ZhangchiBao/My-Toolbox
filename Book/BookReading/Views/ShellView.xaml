@@ -6,14 +6,45 @@
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:local="clr-namespace:BookReading.Views"
         xmlns:vm="clr-namespace:BookReading.ViewModels"
-        xmlns:cefSharpWPF="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
         xmlns:entities="clr-namespace:BookReading.Entities"
         xmlns:behaviors="clr-namespace:BookReading.Behaviors"
+        xmlns:selectors="clr-namespace:BookReading.Selectors"
         xmlns:s="https://github.com/canton7/Stylet"
         mc:Ignorable="d"
         WindowState="Maximized"
         d:DataContext="{d:DesignInstance vm:ShellViewModel}"
         Title="小说阅读器" Height="450" Width="800">
+    <Window.Resources>
+        <selectors:MainContentTemplateSelector x:Key="MainContentTemplateSelector">
+            <selectors:MainContentTemplateSelector.CatalogTemplate>
+                <DataTemplate DataType="{x:Type entities:BookShowModel}">
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden">
+                        <DockPanel>
+                            <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Center" Margin="10">
+                                <Image DockPanel.Dock="Left" Source="{Binding Path=CoverContent}" Width="70" Margin="5,0"/>
+                                <TextBlock Text="{Binding Path=Name}" DockPanel.Dock="Top" TextAlignment="Center" FontWeight="Black" FontSize="20"/>
+                                <TextBlock Text="{Binding Path=Author}" DockPanel.Dock="Top" TextAlignment="Center"/>
+                                <TextBlock Text="{Binding Path=Description}" TextWrapping="Wrap"/>
+                            </DockPanel>
+                            <ItemsControl ItemsSource="{Binding Path=Chapters}"
+                                 HorizontalAlignment="Center">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Button Content="{Binding Path=Title}" BorderBrush="Transparent" BorderThickness="0" Command="{s:Action Method=ChapterClick}" CommandParameter="{Binding}" HorizontalContentAlignment="Left" Background="Transparent" Width="200" Focusable="False"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </DockPanel>
+                    </ScrollViewer>
+                </DataTemplate>
+            </selectors:MainContentTemplateSelector.CatalogTemplate>
+        </selectors:MainContentTemplateSelector>
+    </Window.Resources>
     <Grid>
         <DockPanel Margin="5">
             <!--<ToolBarTray DockPanel.Dock="Top">
@@ -23,7 +54,7 @@
             </ToolBarTray>-->
             <Border DockPanel.Dock="Left" BorderThickness="1" BorderBrush="Black" Width="250" Margin="5">
                 <TreeView ItemsSource="{Binding Path=ShlefData}"
-                          MouseDoubleClick="{s:Action Method=Shelf_DoubleClick}">
+                          MouseDoubleClick="{s:Action Method=Shelf_DoubleClickAsync}">
                     <TreeView.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="刷新"/>
@@ -34,7 +65,7 @@
                             <TextBlock Text="{Binding Path=Name}">
                                 <TextBlock.ContextMenu>
                                     <ContextMenu>
-                                        <MenuItem Header="更新分类下所有"/>
+                                        <MenuItem Header="更新分类下所有" Command="{s:Action Method=UpdateCategory}" CommandParameter="{Binding}"/>
                                     </ContextMenu>
                                 </TextBlock.ContextMenu>
                             </TextBlock>
@@ -43,7 +74,7 @@
                                     <TextBlock Text="{Binding Path=Name}">
                                         <TextBlock.ContextMenu>
                                             <ContextMenu>
-                                                <MenuItem Header="更新"/>
+                                                <MenuItem Header="更新" Command="{s:Action Method=UpdateBook}" CommandParameter="{Binding}"/>
                                                 <MenuItem Header="下载所有未下载章节"/>
                                                 <MenuItem Header="制作电子书"/>
                                             </ContextMenu>
@@ -63,7 +94,7 @@
                     </DockPanel>
                 </Border>
                 <Grid>
-                    <cefSharpWPF:ChromiumWebBrowser x:Name="WebBrowser" Address="{Binding Path=ShowFile}"/>
+                    <ContentControl ContentTemplateSelector="{StaticResource MainContentTemplateSelector}" Content="{Binding Path=MainContentObject}"/>
                 </Grid>
             </DockPanel>
         </DockPanel>

@@ -1,14 +1,6 @@
-﻿using CefSharp;
-using CefSharp.Wpf;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
+﻿using System;
 using System.IO;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace BookReading
@@ -40,34 +32,24 @@ namespace BookReading
                 Directory.CreateDirectory(APP_FLODER);
             }
 
-            BOOKSHELF_FLODER = Path.Combine(APP_FLODER, "shelf");
-            if (!Directory.Exists(BOOKSHELF_FLODER))
-            {
-                Directory.CreateDirectory(BOOKSHELF_FLODER);
-            }
+            //BOOKSHELF_FLODER = Path.Combine(APP_FLODER, "shelf");
+            //if (!Directory.Exists(BOOKSHELF_FLODER))
+            //{
+            //    Directory.CreateDirectory(BOOKSHELF_FLODER);
+            //}
 
-            string styleCssFile = Path.Combine(BOOKSHELF_FLODER, "style.css");
-            if (!File.Exists(styleCssFile))
-            {
-                File.WriteAllText(styleCssFile, BookReading.Properties.Resources.style);
-            }
+            //string styleCssFile = Path.Combine(BOOKSHELF_FLODER, "style.css");
+            //if (!File.Exists(styleCssFile))
+            //{
+            //    File.WriteAllText(styleCssFile, BookReading.Properties.Resources.style);
+            //}
 
-            string headJsFile = Path.Combine(BOOKSHELF_FLODER, "head.js");
-            if (!File.Exists(headJsFile))
-            {
-                File.WriteAllText(headJsFile, BookReading.Properties.Resources.head);
-            }
-
+            //string headJsFile = Path.Combine(BOOKSHELF_FLODER, "head.js");
+            //if (!File.Exists(headJsFile))
+            //{
+            //    File.WriteAllText(headJsFile, BookReading.Properties.Resources.head);
+            //}
             #endregion
-            InitializeCefSharp();
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        private static void InitializeCefSharp()
-        {
-            var settings = new CefSettings();
-            settings.Locale = "zh-CN";
-            Cef.Initialize(settings, performDependencyCheck: false, browserProcessHandler: null);
         }
     }
 }

@@ -1,22 +1,20 @@
 ﻿using Stylet;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BookReading.Entities
 {
     public class BookShowModel : PropertyChangedBase
     {
-        public Guid ID { get; internal set; }
-        public string Name { get; internal set; }
-        public string Author { get; internal set; }
-        public string Descption { get; internal set; }
-        public string Cover { get; internal set; }
-        public ObservableCollection<ChapterShowModel> Chapters { get; internal set; }
-        public Guid FinderKey { get; internal set; }
-        public string BookFloder { get; internal set; }
+        public Guid ID { get; set; }
+        public string Name { get; set; }
+        public string Author { get; set; }
+        public string Description { get; set; }
+        public byte[] CoverContent { get; set; }
+
+        public string CoverUrl { get; set; }
+        public ObservableCollection<ChapterShowModel> Chapters { get; set; }
+        public Guid FinderKey { get; set; }
+        public string URL { get; set; }
     }
 }
