@@ -58,10 +58,10 @@ namespace BookReading.ViewModels
             {
                 Task.Run(() =>
                 {
-                    ExecuteOnView(() =>
+                    ExecuteOnView(async () =>
                     {
                         finder.DoneStatus = DoneStatus.Doing;
-                        var result = finder.Finder.SearchByKeyword(Keyword);
+                        var result = await finder.Finder.SearchByKeywordAsync(Keyword);
                         foreach (var item in result)
                         {
                             SearchResultData.Add(item);
@@ -103,7 +103,7 @@ namespace BookReading.ViewModels
         /// <summary>
         /// 执行下载
         /// </summary>
-        public void Download()
+        public async void Download()
         {
             if (db.Books.Any(a => a.Name == SelectedSearchResult.BookName && a.Author == SelectedSearchResult.Author))
             {
@@ -116,7 +116,7 @@ namespace BookReading.ViewModels
                 category = db.Categories.Single(a => a.CategoryName == "其他");
             }
             var bookFloder = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{SelectedSearchResult.BookName}_{SelectedSearchResult.Author}")).Replace(@"\", "").Replace(".", "").Replace("/", "");
-            var chapterList = SelectedSearchResult.Finder.GetChapters(SelectedSearchResult.URL);
+            var chapterList = await SelectedSearchResult.Finder.GetChaptersAsync(SelectedSearchResult.URL);
             db.Books.Add(new Book
             {
                 ID = Guid.NewGuid().ToString(),

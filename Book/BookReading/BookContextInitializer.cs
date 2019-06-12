@@ -13,6 +13,7 @@ namespace BookReading
 
         protected override void Seed(BookContext context)
         {
+            #region 初始化分类数据
             context.Categories.Add(new Category
             {
                 ID = Guid.NewGuid().ToString(),
@@ -172,7 +173,10 @@ namespace BookReading
                     }
                 }
             });
-            context.SaveChanges();
+            context.SaveChanges(); 
+            #endregion
+
+
         }
     }
 }

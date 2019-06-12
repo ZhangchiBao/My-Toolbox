@@ -71,15 +71,15 @@ namespace BookReading.ViewModels
         {
             foreach (var book in category.Books)
             {
-                UpdateBook(book);
+                UpdateBookAsync(book);
             }
         }
 
-        public void UpdateBook(BookShowModel book)
+        public async void UpdateBookAsync(BookShowModel book)
         {
             var finders = container.GetAll<IFinder>();
             var finder = finders.Single(a => a.FinderKey == book.FinderKey);
-            var chapterList = finder.GetChapters(book.URL);
+            var chapterList = await finder.GetChaptersAsync(book.URL);
             var db = container.Get<BookContext>();
             for (int i = 0; i < chapterList.Count; i++)
             {

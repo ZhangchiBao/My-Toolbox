@@ -13,10 +13,10 @@ namespace BookReading.Libs
 
         Guid FinderKey { get; }
 
-        IList<BookModel> SearchByKeyword(string keyword);
+        Task<IList<BookModel>> SearchByKeywordAsync(string keyword);
 
-        IList<ChapterModel> GetChapters(string url);
+        Task<IList<ChapterModel>> GetChaptersAsync(string url);
 
-        List<string> GetParagraphList(string url);
+        Task<IList<string>> GetParagraphListAsync(string url);
     }
 }

@@ -36,6 +36,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -47,6 +48,7 @@
     <Compile Include="Common\ExtentionMethods.cs" />
     <Compile Include="Entity\ChapterModel.cs" />
     <Compile Include="Entity\BookModel.cs" />
+    <Compile Include="FKZWWFinder.cs" />
     <Compile Include="IFinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QidianFinder.cs" />
