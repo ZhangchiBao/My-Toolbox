@@ -132,6 +132,11 @@ namespace BookReading.ViewModels
         {
             using (var client = new HttpClient())
             {
+                if (string.IsNullOrEmpty(book.CoverUrl))
+                {
+                    return;
+                }
+
                 var buffer = await client.GetByteArrayAsync(book.CoverUrl);
                 var coverContent = Convert.ToBase64String(buffer);
                 ExecuteOnView(() =>

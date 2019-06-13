@@ -62,10 +62,14 @@ namespace BookReading.ViewModels
                     {
                         finder.DoneStatus = DoneStatus.Doing;
                         var result = await finder.Finder.SearchByKeywordAsync(Keyword);
-                        foreach (var item in result)
+                        if (result != null)
                         {
-                            SearchResultData.Add(item);
+                            foreach (var item in result)
+                            {
+                                SearchResultData.Add(item);
+                            }
                         }
+
                         ExecuteOnView(() =>
                         {
                             finder.DoneStatus = DoneStatus.Done;
