@@ -1,19 +1,20 @@
-﻿using BookReading.Libs.Entity;
-using HtmlAgilityPack;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using BookReading.Libs.Entity;
+using HtmlAgilityPack;
 
 namespace BookReading.Libs
 {
-    public class FKZWWFinder : IFinder
+    public class FalooFinder : IFinder
     {
-        public string FinderName => "疯狂中文网";
+        public string FinderName => "飞卢小说网";
 
-        public Guid FinderKey => new Guid("19655589-6958-41E3-AE3A-8C8AB8061C91");
+        public Guid FinderKey => new Guid("D7BB3C0F-FB22-4D0E-9269-43871669558B");
 
         public async Task<IList<ChapterModel>> GetChaptersAsync(string url)
         {
@@ -21,7 +22,7 @@ namespace BookReading.Libs
             {
                 HtmlWeb web = new HtmlWeb();
                 var doc = await web.LoadFromWebAsync(url, Encoding.GetEncoding("GB2312"));
-                var nodes = doc.DocumentNode.SelectNodes("//*[@id='BookText']/ul/li/a");
+                var nodes = doc.DocumentNode.SelectNodes("/html/body/div[8]/div[1]/div/div[3]/div[2]/table/tbody/tr/td/a");
                 var data = new List<ChapterModel>();
                 foreach (var node in nodes)
                 {
@@ -39,11 +40,11 @@ namespace BookReading.Libs
         {
             var web = new HtmlWeb();
             var doc = await web.LoadFromWebAsync(url, Encoding.GetEncoding("GB2312"));
-            var nodes = doc.DocumentNode.SelectNodes("//*[@id='BookTextt']/text()");
+            var nodes = doc.DocumentNode.SelectNodes("//*[@id='content']/text()");
             var data = new List<string>();
             foreach (var node in nodes)
             {
-                data.Add(node.InnerText.Replace("&nbsp;", ""));
+                data.Add(node.InnerText.Replace("&nbsp;", "").Trim());
             }
             return data;
         }
@@ -53,33 +54,27 @@ namespace BookReading.Libs
             var data = new List<BookModel>();
             using (var client = new HttpClient())
             {
-                var url = $"http://www.fkzww.com/Book/Search.aspx?SearchClass=1&SearchKey={HttpUtility.UrlEncode(keyword, Encoding.GetEncoding("GB2312"))}";
+                var url = $"https://b.faloo.com/l/0/1.html?t=1&k={HttpUtility.UrlEncode(keyword, Encoding.GetEncoding("GB2312"))}";
                 var response = await client.GetAsync(url);
                 var responseContent = await response.Content.ReadAsStringAsync();
                 var doc = new HtmlDocument();
                 doc.LoadHtml(responseContent);
-                var nodes = doc.DocumentNode.SelectNodes("//*[@id='CListTitle']");
+                var nodes = doc.DocumentNode.SelectNodes("/html/body/div[@class='l_main']/div[@class='l_main0']/div[@class='l_main1']/div[@class='l_bar']");
                 if (nodes == null || nodes.Count == 0)
                 {
                     return data;
                 }
 
-                var descriptionNodes = doc.DocumentNode.SelectNodes("//*[@id='CListText']");
-                var index = 0;
                 foreach (var node in nodes)
                 {
-                    var imageUrl = new Uri(new Uri(url), node.SelectSingleNode("a[1]").GetAttributeValue("href", string.Empty)).ToString();
-                    HtmlWeb web = new HtmlWeb();
-                    var imageDoc = await web.LoadFromWebAsync(imageUrl);
-                    var coverUrl = new Uri(new Uri(imageUrl), imageDoc.DocumentNode.SelectSingleNode("//*[@id='CrbtlBookImg']/img").GetAttributeValue("src", string.Empty)).ToString();
                     data.Add(new BookModel(this)
                     {
-                        BookName = node.SelectSingleNode("a[1]/b").InnerText,
-                        Author = node.SelectSingleNode("a[2]").InnerText,
-                        Category = node.SelectSingleNode("a[3]").InnerText,
-                        Description = descriptionNodes[index].InnerText,
-                        URL = new Uri(new Uri(url), node.SelectSingleNode("a[1]").GetAttributeValue("href", string.Empty).Replace("/Book", "/Html/Book/1").Replace("/Index.aspx", "/List.shtml")).ToString(),
-                        Cover = coverUrl
+                        BookName = node.SelectSingleNode("div[@class='l_rc']/div[1]/h1/a").InnerText,
+                        Author = node.SelectSingleNode("div[@class='l_rc']/div[1]/span[1]/a").InnerText,
+                        Category = node.SelectSingleNode("div[@class='l_rc']/div[1]/span[2]/a").InnerText,
+                        Description = node.SelectSingleNode("div[@class='l_rc']/div[3]/a").InnerText,
+                        URL = new Uri(new Uri(url), node.SelectSingleNode("div[@class='l_rc']/div[1]/h1/a").GetAttributeValue("href", string.Empty)).ToString(),
+                        Cover = new Uri(new Uri(url), node.SelectSingleNode("div[@class='l_pic']/a/img").GetAttributeValue("src", string.Empty)).ToString()
                     });
                 }
                 return data;

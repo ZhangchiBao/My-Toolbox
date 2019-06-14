@@ -67,8 +67,8 @@
                       HeadersVisibility="Column" Height="284">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="书名" Binding="{Binding Path=BookName}" Width="*"/>
-                    <DataGridTextColumn Header="站点" Binding="{Binding Path=Finder.FinderName}" Width="Auto" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
-                    <DataGridTextColumn Header="作者" Binding="{Binding Path=Author}" Width="Auto" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
+                    <DataGridTextColumn Header="站点" Binding="{Binding Path=Finder.FinderName}" Width="Auto" MinWidth="100" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
+                    <DataGridTextColumn Header="作者" Binding="{Binding Path=Author}" Width="Auto" MinWidth="100" HeaderStyle="{StaticResource CenterGridHeaderStyle}"/>
                 </DataGrid.Columns>
             </DataGrid>
         </DockPanel>

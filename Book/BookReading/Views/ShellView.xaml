@@ -11,6 +11,7 @@
         xmlns:selectors="clr-namespace:BookReading.Selectors"
         xmlns:s="https://github.com/canton7/Stylet"
         mc:Ignorable="d"
+         FontSize="18"
         WindowState="Maximized"
         d:DataContext="{d:DesignInstance vm:ShellViewModel}"
         Title="小说阅读器" Height="450" Width="800">
@@ -35,7 +36,7 @@
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Button Content="{Binding Path=Title}" BorderBrush="Transparent" BorderThickness="0" Command="{s:Action Method=ChapterClick}" CommandParameter="{Binding}" HorizontalContentAlignment="Left" Background="Transparent" Width="200" Focusable="False"/>
+                                        <Button Content="{Binding Path=Title}" ToolTip="{Binding Path=Title}" BorderBrush="Transparent" BorderThickness="0" Command="{s:Action Method=ChapterClickAsync}" CommandParameter="{Binding}" HorizontalContentAlignment="Left" Background="Transparent" Width="300" Focusable="False" Margin="20,0"/>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
@@ -43,6 +44,29 @@
                     </ScrollViewer>
                 </DataTemplate>
             </selectors:MainContentTemplateSelector.CatalogTemplate>
+            <selectors:MainContentTemplateSelector.ChapterTemplate>
+                <DataTemplate DataType="{x:Type entities:ChapterShowModel}">
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden">
+                        <DockPanel>
+                            <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Center" Margin="10">
+                                <TextBlock Text="{Binding Path=Title}" DockPanel.Dock="Top" TextAlignment="Center" FontWeight="Black" FontSize="20"/>
+                            </DockPanel>
+                            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button Content="上一章" Margin="10" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Focusable="False" Command="{s:Action Method=GotoPreviousChapterAsync}" CommandParameter="{Binding}"/>
+                                <Button Content="目录" Margin="10" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Focusable="False" Command="{s:Action Method=GotoCatalog}"/>
+                                <Button Content="下一章" Margin="10" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Focusable="False" Command="{s:Action Method=GotoNextChapterAsync}" CommandParameter="{Binding}"/>
+                            </StackPanel>
+                            <ItemsControl ItemsSource="{Binding Path=Sections}" HorizontalAlignment="Stretch" Margin="5">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock xml:space="preserve" Text="{Binding StringFormat={}       {0}}" TextWrapping="Wrap"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </DockPanel>
+                    </ScrollViewer>
+                </DataTemplate>
+            </selectors:MainContentTemplateSelector.ChapterTemplate>
         </selectors:MainContentTemplateSelector>
     </Window.Resources>
     <Grid>
@@ -74,8 +98,8 @@
                                     <TextBlock Text="{Binding Path=Name}">
                                         <TextBlock.ContextMenu>
                                             <ContextMenu>
-                                                <MenuItem Header="更新" Command="{s:Action Method=UpdateBook}" CommandParameter="{Binding}"/>
-                                                <MenuItem Header="下载所有未下载章节"/>
+                                                <MenuItem Header="更新" Command="{s:Action Method=UpdateBookAsync}" CommandParameter="{Binding}"/>
+                                                <MenuItem Header="下载所有未下载章节" Command="{s:Action Method=DownloadAllUndownloadedChaptersAsync}" CommandParameter="{Binding}"/>
                                                 <MenuItem Header="制作电子书"/>
                                             </ContextMenu>
                                         </TextBlock.ContextMenu>
@@ -87,15 +111,15 @@
                 </TreeView>
             </Border>
             <DockPanel Margin="5">
-                <Border DockPanel.Dock="Top" BorderBrush="#ffffff" BorderThickness="1">
+                <Border DockPanel.Dock="Top" BorderThickness="0" Margin="0,0,0,5">
                     <DockPanel>
                         <Button DockPanel.Dock="Right" Content="搜索" Margin="5,0,0,0" Command="{s:Action Method=ShowSearchView}"/>
                         <TextBox KeyDown="{s:Action Method=Keyword_Inputbox_Keydown}" Text="{Binding Path=Keyword,UpdateSourceTrigger=PropertyChanged}"/>
                     </DockPanel>
                 </Border>
-                <Grid>
+                <Border BorderBrush="Black" BorderThickness="1.5">
                     <ContentControl ContentTemplateSelector="{StaticResource MainContentTemplateSelector}" Content="{Binding Path=MainContentObject}"/>
-                </Grid>
+                </Border>
             </DockPanel>
         </DockPanel>
     </Grid>

@@ -79,6 +79,9 @@ namespace BookReading.ViewModels
             }
         }
 
+        /// <summary>
+        /// 搜索输入框按下按键
+        /// </summary>
         public void Keyword_Inputbox_Keydown()
         {
             if (CanDoSearch)
@@ -87,6 +90,11 @@ namespace BookReading.ViewModels
             }
         }
 
+        /// <summary>
+        /// 搜索结果列表双击
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void ResultView_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             if (e.OriginalSource is System.Windows.FrameworkElement element && element.DataContext is BookModel book)
@@ -143,15 +151,6 @@ namespace BookReading.ViewModels
             });
             db.SaveChanges();
             RequestClose(true);
-        }
-
-        private async Task<string> GetCoverContentAsync(string url)
-        {
-            using (var client = new HttpClient())
-            {
-                var buffer = await client.GetByteArrayAsync(url);
-                return Convert.ToBase64String(buffer);
-            }
         }
         #endregion
 

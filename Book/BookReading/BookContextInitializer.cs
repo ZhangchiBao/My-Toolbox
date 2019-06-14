@@ -33,6 +33,11 @@ namespace BookReading
                     new CategoryAlias
                     {
                         ID = Guid.NewGuid().ToString(),
+                        AliasName = "东方奇幻"
+                    },
+                    new CategoryAlias
+                    {
+                        ID = Guid.NewGuid().ToString(),
                         AliasName = "玄幻奇幻"
                     }
                 }

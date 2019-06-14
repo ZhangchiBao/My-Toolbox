@@ -50,6 +50,9 @@ namespace BookReading.ViewModels
             View.Dispatcher.Invoke(callback);
         }
 
+        /// <summary>
+        /// 当视图加载完成时
+        /// </summary>
         public event ViewLoadedEventHandler ViewLoaded;
 
         protected override void OnViewLoaded()

@@ -48,6 +48,7 @@
     <Compile Include="Common\ExtentionMethods.cs" />
     <Compile Include="Entity\ChapterModel.cs" />
     <Compile Include="Entity\BookModel.cs" />
+    <Compile Include="FalooFinder.cs" />
     <Compile Include="FKZWWFinder.cs" />
     <Compile Include="IFinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

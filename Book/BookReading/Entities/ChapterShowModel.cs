@@ -1,6 +1,7 @@
 ﻿using Stylet;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace BookReading.Entities
 {
@@ -29,7 +30,7 @@ namespace BookReading.Entities
         /// <summary>
         /// 段落
         /// </summary>
-        public List<string> Sections { get; set; }
+        public ObservableCollection<string> Sections { get; set; }
 
         /// <summary>
         /// 章节序号
