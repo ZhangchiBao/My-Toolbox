@@ -183,6 +183,7 @@ namespace BookReading.ViewModels
 
                 await DownloadChapterContentAsync(chapter);
             }
+            base.ShowMessage("所有章节内容下载成功");
         }
         #endregion
 

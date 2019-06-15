@@ -1,6 +1,7 @@
 ﻿using Stylet;
 using StyletIoC;
 using System;
+using System.Windows;
 
 namespace BookReading.ViewModels
 {
@@ -59,6 +60,11 @@ namespace BookReading.ViewModels
         {
             base.OnViewLoaded();
             ViewLoaded?.Invoke();
+        }
+
+        protected void ShowMessage(string messageBoxText, string caption = "提示", MessageBoxButton button = MessageBoxButton.OK, MessageBoxImage icon = MessageBoxImage.Information)
+        {
+            MessageBox.Show(messageBoxText, caption, button, icon);
         }
     }
 }
