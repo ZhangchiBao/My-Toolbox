@@ -19,52 +19,48 @@
         <selectors:MainContentTemplateSelector x:Key="MainContentTemplateSelector">
             <selectors:MainContentTemplateSelector.CatalogTemplate>
                 <DataTemplate DataType="{x:Type entities:BookShowModel}">
-                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden">
-                        <DockPanel>
-                            <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Center" Margin="10">
-                                <Image DockPanel.Dock="Left" Source="{Binding Path=CoverContent}" Width="70" Margin="5,0"/>
-                                <TextBlock Text="{Binding Path=Name}" DockPanel.Dock="Top" TextAlignment="Center" FontWeight="Black" FontSize="20"/>
-                                <TextBlock Text="{Binding Path=Author}" DockPanel.Dock="Top" TextAlignment="Center"/>
-                                <TextBlock Text="{Binding Path=Description}" TextWrapping="Wrap"/>
-                            </DockPanel>
-                            <ItemsControl ItemsSource="{Binding Path=Chapters}"
-                                 HorizontalAlignment="Center">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <WrapPanel/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Button Content="{Binding Path=Title}" ToolTip="{Binding Path=Title}" BorderBrush="Transparent" BorderThickness="0" Command="{s:Action Method=ChapterClickAsync}" CommandParameter="{Binding}" HorizontalContentAlignment="Left" Background="Transparent" Width="300" Focusable="False" Margin="20,0"/>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
+                    <DockPanel>
+                        <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Center" Margin="10">
+                            <Image DockPanel.Dock="Left" Source="{Binding Path=CoverContent}" Width="70" Margin="5,0"/>
+                            <TextBlock Text="{Binding Path=Name}" DockPanel.Dock="Top" TextAlignment="Center" FontWeight="Black" FontSize="20"/>
+                            <TextBlock Text="{Binding Path=Author}" DockPanel.Dock="Top" TextAlignment="Center"/>
+                            <TextBlock Text="{Binding Path=Description}" TextWrapping="Wrap"/>
                         </DockPanel>
-                    </ScrollViewer>
+                        <ItemsControl ItemsSource="{Binding Path=Chapters}"
+                                 HorizontalAlignment="Center">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Content="{Binding Path=Title}" ToolTip="{Binding Path=Title}" BorderBrush="Transparent" BorderThickness="0" Command="{s:Action Method=ChapterClickAsync}" CommandParameter="{Binding}" HorizontalContentAlignment="Left" Background="Transparent" Width="300" Focusable="False" Margin="20,0"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </DockPanel>
                 </DataTemplate>
             </selectors:MainContentTemplateSelector.CatalogTemplate>
             <selectors:MainContentTemplateSelector.ChapterTemplate>
                 <DataTemplate DataType="{x:Type entities:ChapterShowModel}">
-                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden">
-                        <DockPanel>
-                            <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Center" Margin="10">
-                                <TextBlock Text="{Binding Path=Title}" DockPanel.Dock="Top" TextAlignment="Center" FontWeight="Black" FontSize="20"/>
-                            </DockPanel>
-                            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Button Content="上一章" Margin="10" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Focusable="False" Command="{s:Action Method=GotoPreviousChapterAsync}" CommandParameter="{Binding}"/>
-                                <Button Content="目录" Margin="10" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Focusable="False" Command="{s:Action Method=GotoCatalog}"/>
-                                <Button Content="下一章" Margin="10" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Focusable="False" Command="{s:Action Method=GotoNextChapterAsync}" CommandParameter="{Binding}"/>
-                            </StackPanel>
-                            <ItemsControl ItemsSource="{Binding Path=Sections}" HorizontalAlignment="Stretch" Margin="5">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock xml:space="preserve" Text="{Binding StringFormat={}       {0}}" TextWrapping="Wrap"/>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
+                    <DockPanel>
+                        <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Center" Margin="10">
+                            <TextBlock Text="{Binding Path=Title}" DockPanel.Dock="Top" TextAlignment="Center" FontWeight="Black" FontSize="20"/>
                         </DockPanel>
-                    </ScrollViewer>
+                        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Button Content="上一章" Margin="10" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Focusable="False" Command="{s:Action Method=GotoPreviousChapterAsync}" CommandParameter="{Binding}"/>
+                            <Button Content="目录" Margin="10" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Focusable="False" Command="{s:Action Method=GotoCatalog}"/>
+                            <Button Content="下一章" Margin="10" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Focusable="False" Command="{s:Action Method=GotoNextChapterAsync}" CommandParameter="{Binding}"/>
+                        </StackPanel>
+                        <ItemsControl ItemsSource="{Binding Path=Sections}" HorizontalAlignment="Stretch" Margin="5">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock xml:space="preserve" Text="{Binding StringFormat={}       {0}}" TextWrapping="Wrap"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </DockPanel>
                 </DataTemplate>
             </selectors:MainContentTemplateSelector.ChapterTemplate>
         </selectors:MainContentTemplateSelector>
@@ -118,7 +114,9 @@
                     </DockPanel>
                 </Border>
                 <Border BorderBrush="Black" BorderThickness="1.5">
-                    <ContentControl ContentTemplateSelector="{StaticResource MainContentTemplateSelector}" Content="{Binding Path=MainContentObject}"/>
+                    <ScrollViewer x:Name="MainContentScrollViewer" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden">
+                        <ContentControl ContentTemplateSelector="{StaticResource MainContentTemplateSelector}" Content="{Binding Path=MainContentObject}"/>
+                    </ScrollViewer>
                 </Border>
             </DockPanel>
         </DockPanel>
