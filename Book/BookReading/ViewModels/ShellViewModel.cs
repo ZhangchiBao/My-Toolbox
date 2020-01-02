@@ -183,6 +183,7 @@ namespace BookReading.ViewModels
 
                 await DownloadChapterContentAsync(chapter);
             }
+            base.ShowMessage("所有章节内容下载成功");
         }
         #endregion
 
@@ -207,12 +208,19 @@ namespace BookReading.ViewModels
         /// <param name="chapter"></param>
         private async Task DownloadChapterContentAsync(ChapterShowModel chapter)
         {
-            var finder = container.GetAll<IFinder>().Single(a => a.FinderKey == chapter.FinderKey);
-            chapter.Sections = new ObservableCollection<string>(await finder.GetParagraphListAsync(chapter.URL));
-            var dbChapter = await db.Chapters.SingleAsync(a => a.ID == chapter.ID.ToString());
-            dbChapter.Sections = JsonConvert.SerializeObject(chapter.Sections);
-            dbChapter.Downloaded = true;
-            await db.SaveChangesAsync();
+            try
+            {
+                var finder = container.GetAll<IFinder>().Single(a => a.FinderKey == chapter.FinderKey);
+                chapter.Sections = new ObservableCollection<string>(await finder.GetParagraphListAsync(chapter.URL));
+                var dbChapter = await db.Chapters.SingleAsync(a => a.ID == chapter.ID.ToString());
+                dbChapter.Sections = JsonConvert.SerializeObject(chapter.Sections);
+                dbChapter.Downloaded = true;
+                await db.SaveChangesAsync();
+            }
+            catch
+            {
+
+            }
         }
 
         /// <summary>
@@ -288,6 +296,9 @@ namespace BookReading.ViewModels
             base.OnPropertyChanged(propertyName);
             switch (propertyName)
             {
+                case nameof(MainContentObject):
+                    ((ShellView)View).MainContentScrollViewer.ScrollToVerticalOffset(0);
+                    break;
             }
         }
     }
