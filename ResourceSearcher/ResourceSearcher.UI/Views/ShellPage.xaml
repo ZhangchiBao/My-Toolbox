@@ -10,7 +10,7 @@
     xmlns:rs="https://github.com/zhchbao/My-Toolbox/ResourceSearcher"
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance rs:ShellPageViewModel}"
-    Title="资源搜索器" Height="450" Width="800" Icon="../Resources/20200101114932589_easyicon_net_512.ico">
+    Title="资源搜索器" Height="450" Width="800" Icon="/ResourceSearcher.UI;component/Resources/SEARCH.ico">
     <mah:MetroWindow.RightWindowCommands>
         <mah:WindowCommands>
             <TextBox mah:TextBoxHelper.AutoWatermark="True" mah:TextBoxHelper.Watermark="请输入资源关键字" mah:TextBoxHelper.ClearTextButton="True" VerticalAlignment="Center" Width="200" mah:TextBoxHelper.SelectAllOnFocus="True" Text="{Binding Path=Keyword,UpdateSourceTrigger=PropertyChanged}" KeyDown="{s:Action Method=Keyword_KeyDown}"/>

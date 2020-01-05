@@ -18,7 +18,7 @@ namespace ResourceSearcher.UILogic.Models
         public ObservableCollection<Searcher> Searchers { get; set; }
     }
 
-    public class Searcher
+    public class Searcher : PropertyChangedBase
     {
         public Searcher(SearcherData searcherData)
         {
